@@ -1,0 +1,124 @@
+body, html {
+    background: #000;
+    font-family: Helvetica, arial, serif;
+    color: #fff;
+    font-size: 10px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  /*  cursor: none;*/
+    webkit-font-smoothing: antialiased;
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-size: cover;
+    z-index: 0;
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    -o-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+}
+.musicText {
+    position: fixed;
+    left: 150px;
+    top: 150px;
+    width: 1000px;
+    height: 50px;
+    color: #fff;
+    opacity:0;
+    z-index: 999;
+    font-size: 30px;
+    transition: all 500ms ease-in-out;
+}
+.background1 {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 3840px;
+    height: 2160px;
+    background: rgb(96,89,61);
+    transition: opacity 500ms ease-in-out;
+
+}
+.background2 {
+    position: fixed;
+    left: 0px;
+    top: 0;
+    width: 3840px;
+    height: 2160px;
+    opacity: 0;
+    background: rgb(68,27,12);
+    transition: opacity 500ms ease-in-out;
+
+}
+.background3 {
+    position: fixed;
+    left: 0px;
+    top: 0;
+    width: 3840px;
+    opacity: 0;
+    height: 2160px;
+    background: rgb(68,27,12);
+    transition: opacity 500ms ease-in-out;
+
+}
+.background4 {
+    position: fixed;
+    left: 0px;
+    top: 0;
+    width: 3840px;
+    opacity: 0;
+    height: 2160px;
+    background: rgb(204,140,108);
+    transition: opacity 500ms ease-in-out;
+}
+.background5 {
+    position: fixed;
+    left: 0px;
+    top: 0;
+    width: 3840px;
+    opacity: 0;
+    height: 2160px;
+    background: rgb(68,27,12);
+    transition: opacity 500ms ease-in-out;
+}
+.musicBack {
+    position: fixed;
+    left: 0px;
+    top: 0;
+    width: 3840px;
+    opacity: 0;
+    height: 2160px;
+    background: rgb(255,255,255);
+}
+.introVideo {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 3840px;
+    height: 2160px;
+    opacity: 0;
+    /* transform: rotate(90deg); */
+    transition: opacity 500ms ease-in-out;
+}
+.colorPick {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 3840px;
+    height: 2160px;
+    opacity: 0;
+    background: rgb(0,0,0);
+    /* transform: rotate(90deg); */
+    transition: opacity 500ms ease-in-out;
+}
+.introVideo.show {
+    opacity: 1;
+}

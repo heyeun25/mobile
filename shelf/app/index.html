@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SHELF TV APP</title>
+    <link href="./node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+    <div class="name"># SHELF55</div>
+    <div class="product shelf55">
+        <div class="scroll-container">
+<!--             <button class="btn" data-name="play" data-target="shelf55">INTRO<br>PLAY</button>
+            <button class="btn" data-name="pause" data-target="shelf55">INTRO<br>PAUSE</button>
+            <button class="btn" data-name="resume" data-target="shelf55">INTRO<br>RESUME</button> -->
+            <button class="btn" data-name="refresh" data-target="shelf55">REFRESH</button>
+            <button class="btn" data-name="theme_cinegraph" data-target="shelf55">1</button>
+            <button class="btn" data-name="theme_kids" data-target="shelf55">2</button>
+            <button class="btn" data-name="theme_greenery" data-target="shelf55">3</button>
+            <button class="btn" data-name="theme_10" data-target="shelf55">10</button>
+            <button class="btn" data-name="theme_11" data-target="shelf55">video</button>
+            <!-- <button class="btn" data-name="theme_11" data-target="shelf55">11</button> -->
+            <button class="btn" data-name="theme_music1" data-target="shelf55">music1</button>
+            <button class="btn" data-name="theme_music2" data-target="shelf55">music2</button>
+            <button class="btn" data-name="theme_music3" data-target="shelf55">music3</button>
+        </div>
+    </div>
+
+    <div class="name"># SHELF75</div>
+    <div class="product shelf75">
+        <div class="scroll-container">
+<!--             <button class="btn" data-name="play" data-target="shelf75">PLAY</button>
+            <button class="btn" data-name="pause" data-target="shelf75">PAUSE</button>
+            <button class="btn" data-name="resume" data-target="shelf75">RESUME</button> -->
+            <button class="btn" data-name="refresh" data-target="shelf75">REFRESH</button>
+            <button class="btn" data-name="theme_4" data-target="shelf75">4</button>
+            <button class="btn" data-name="theme_5" data-target="shelf75">5</button>
+            <button class="btn" data-name="theme_6" data-target="shelf75">6</button>
+            <button class="btn" data-name="theme_7" data-target="shelf75">7</button>
+            <button class="btn" data-name="theme_8" data-target="shelf75">8</button>
+            <button class="btn" data-name="theme_9" data-target="shelf75">video</button>
+         <!--    <button class="btn" data-name="theme_12" data-target="shelf75">12</button>
+            <button class="btn" data-name="theme_13" data-target="shelf75">13</button>
+            <button class="btn" data-name="theme_14" data-target="shelf75">14</button>
+            <button class="btn" data-name="theme_15" data-target="shelf75">15</button> -->
+            <button class="btn" data-name="theme_music1" data-target="shelf75">music1</button>
+            <button class="btn" data-name="theme_music2" data-target="shelf75">music2</button>
+            
+        </div>
+    </div>
+
+
+    <div class="name"># COLOR SETTING</div>
+    <div class="target_select">
+        <button class="btn color_target" data-target="shelf55">Shelf55</button>
+        <button class="btn color_target" data-target="shelf75">Shelf75</button>
+    </div>
+    <div class="jumbotron">
+        <input id="cp2" type="text" class="form-control" value="rgb(255, 128, 0)" readonly=true/>
+    </div>
+
+
+    <script src="./node_modules/socket.io-client/dist/socket.io.js"></script>
+    <script src="./node_modules/jquery/dist/jquery.js"></script>
+
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.js"></script>
+
+    <script src="./main.js"></script>
+</body>
+</html>
