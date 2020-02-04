@@ -1,5 +1,6 @@
 // Socket.IO Connection & Handling
 var socket = io.connect(location.origin, {reconnect: true});
+var mobileSocket = io('http://localhost:8000');
 var nfcFlag = false;
 
 const audioElement = document.getElementById('music');
@@ -136,6 +137,29 @@ socket.on('nfc55',function(){
         playMusic('theme_music1');
     }
 });
+
+
+mobileSocket.on('connect', function() {
+    console.log("mobile connected");
+    mobileSocket.emit('identify', {name: 'view'});
+});
+var timeOut;
+mobileSocket.on('notification', function(data) {
+    console.log('notification', data.title.indexOf('충전'));
+    if (data.title.indexOf("충전")>=0) {
+        var mobileInfoEl = document.getElementsByClassName("mobileInfo")[0];
+        mobileInfoEl.innerHTML = data.text;
+        timeOut = setTimeout(function() {
+            mobileInfoEl.innerHTML = "";
+        }, 5000);
+    }
+});
+
+mobileSocket.on('charging', function(data) {
+    console.log('charging', data);
+});
+
+
 function playMusic(data){
     audioElement.pause();
     $('.background1').css('opacity', 0);
@@ -175,7 +199,8 @@ function playMusic(data){
 }
 
 renderer.setSize( window.innerWidth, window.innerHeight );
-renderer.shadowMapEnabled = true;
+//renderer.shadowMapEnabled = true;
+renderer.shadowMap.enabled = true;
 renderer.localClippingEnabled = true;
 document.getElementById( "canvas3D" )
   .appendChild( renderer.domElement );
