@@ -1,7 +1,6 @@
 <template>
   <div class="hello">
     <canvas class="treeCanvas" ref="treeCanvas">
-
     </canvas>
   </div>
 </template>
@@ -22,15 +21,20 @@ export default {
       ctx.beginPath();
       ctx.save();
       
-      ctx.translate(startX, startY);
-      ctx.rotate(angle * Math.PI/180);
-      ctx.moveTo(0, 0);
+      // ctx.translate(startX, startY);
+      // ctx.rotate(angle * Math.PI/180);
+
+      var rotateX = len * Math.sin(angle * Math.PI/180);
+      var rotateY = len * Math.cos(angle * Math.PI/180);
+      // console.log(rotateX, rotateY);
+
+      ctx.moveTo(startX, startY);
       // if(angle > 0) {
       //     ctx.bezierCurveTo(10, -len/2, 10, -len/2, 0, -len);
       // } else {
       //     ctx.bezierCurveTo(-10, -len/2, -10, -len/2, 0, -len);
       // }
-      ctx.lineTo(0, -len);
+      ctx.lineTo(startX - rotateX, startY - rotateY);
       ctx.strokeStyle = "darkgreen";
       ctx.fillStyle = "green";
       ctx.lineWidth = branchWidth;
@@ -49,8 +53,9 @@ export default {
       }
       var p = Math.random(0.2, 0.7) + 0.2;
 
-      this.draw(0, -len, len*p.toFixed(2), 15, branchWidth*0.95);
-      this.draw(0, -len, len*p.toFixed(2), -15, branchWidth*0.95);
+      this.draw(startX - rotateX, startY - rotateY, len*p.toFixed(2), angle+15, branchWidth*0.95);
+      this.draw(startX - rotateX, startY - rotateY, len*p.toFixed(2), angle-15, branchWidth*0.95);
+      // this.draw(0, -len, len*p.toFixed(2), angle-15, branchWidth*0.95);
 
       ctx.restore();
     }
