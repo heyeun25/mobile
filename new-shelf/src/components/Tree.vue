@@ -31,7 +31,7 @@ export default {
       //     ctx.bezierCurveTo(-10, -len/2, -10, -len/2, 0, -len);
       // }
       ctx.lineTo(0, -len);
-      ctx.strokeStyle = "yellowgreen";
+      ctx.strokeStyle = "darkgreen";
       ctx.fillStyle = "green";
       ctx.lineWidth = branchWidth;
       // ctx.shadowBlur = 15;
@@ -41,15 +41,16 @@ export default {
       if (len < 10) {
         ctx.beginPath();
         ctx.arc(0, -len, 10, 0, Math.PI/2);
-        ctx.fillStyle = "#" + Math.round(Math.random() * 0xffffff).toString(16);
+        if (Math.random() > 0.8)
+          ctx.fillStyle = "#" + Math.round(Math.random() * 0xffffff).toString(16);
         ctx.fill();
         ctx.restore();
         return;
       }
       var p = Math.random(0.2, 0.7) + 0.2;
 
-      this.draw(0, -len, len*p.toFixed(2), angle+10, branchWidth*0.95);
-      this.draw(0, -len, len*p.toFixed(2), angle-10, branchWidth*0.95);
+      this.draw(0, -len, len*p.toFixed(2), 15, branchWidth*0.95);
+      this.draw(0, -len, len*p.toFixed(2), -15, branchWidth*0.95);
 
       ctx.restore();
     }
@@ -58,7 +59,7 @@ export default {
     this.$refs.treeCanvas.width = window.innerWidth;
     this.$refs.treeCanvas.height = window.innerHeight;
     
-    this.draw(350, 600, 120, 0, 5);
+    this.draw(window.innerWidth/2, window.innerHeight, 120, 0, 5);
   }
 }
 </script>
