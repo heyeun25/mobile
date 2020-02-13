@@ -1,5 +1,6 @@
 <template>
   <div class="hello">
+    <!-- <img src="../assets/Beige_BG-01.png"/> -->
     <canvas class="treeCanvas" ref="treeCanvas">
     </canvas>
   </div>
@@ -10,6 +11,9 @@
 var ctx;
 var branches = [];
 var rAF;
+
+var leaf = [[0, 0], [5, -5], [10, 0], [5, 5], [0, 0]];
+var ADD = 1;
 
 function Line(x, y, len, angle, width) {
   this.originX = x;
@@ -53,6 +57,9 @@ export default {
               ctx.strokeStyle = "darkgreen";
               ctx.moveTo(branches[i].px, branches[i].py);
               ctx.lineTo(branches[i].x, branches[i].y);
+            //   ctx.strokeStyle = "rgba(224, 103, 67, 1)";
+                ctx.strokeStyle
+              ctx.lineWidth = 2;
               ctx.stroke();
               branches[i].update();
         }
@@ -61,11 +68,39 @@ export default {
           if (branches[j].done == true) {
                 var out = branches.shift();
                 if (out.len > 10) {
-                  var p = Math.random(0.2, 0.7) + 0.2;
-                  branches.push(new Line(out.endX, out.endY,
-                      (out.len*p).toFixed(2), out.angle+20, out.branchWidth*0.95));
-                  branches.push(new Line(out.endX, out.endY,
-                      (out.len*p).toFixed(2), out.angle-20, out.branchWidth*0.95));
+                    var p = Math.random(0.2, 0.7) + 0.2;
+                    // p = 0.5;
+                    branches.push(new Line(out.endX, out.endY,
+                        (out.len*p).toFixed(2), out.angle+20, out.branchWidth*0.95));
+                    branches.push(new Line(out.endX, out.endY,
+                        (out.len*p).toFixed(2), out.angle-20, out.branchWidth*0.95));
+                    // ctx.beginPath();
+                    // ctx.moveTo(out.endX, out.endY);
+
+
+
+                    // ctx.quadraticCurveTo(
+                    //         out.endX + (10 * Math.cos((20 + out.angle) * Math.PI/180)),
+                    //         out.endY - (10 * Math.sin((20 + out.angle) * Math.PI/180)),
+                    //         out.endX + (20 * Math.cos((out.angle) * Math.PI/180)),
+                    //         out.endY - (20 * Math.sin((out.angle) * Math.PI/180)));
+                    // ctx.strokeStyle="red";
+
+
+
+                    ctx.stroke();
+
+
+                } else {
+                    // ctx.beginPath();
+                    // ctx.moveTo(out.endX, out.endY);
+                    // ctx.quadraticCurveTo(out.endX - Math.sin((45 + angle) * Math.PI/180),
+                    //     out.endY + Math.cos((45 + angle) * Math.PI/180),
+                    //     out.endX + (10 * Math.cos(out.angle * Math.PI/180),
+                    //     out.endY + (10 * Math.sin(out.angle * Math.PI/180))))
+                    // ctx.lineTo(out.endX + (10 * Math.cos((out.angle) * Math.PI/180)),
+                    //         out.endY + (10 * Math.sin((out.angle) * Math.PI/180)))
+                    // ctx.stroke();
                 }
               }
         }
@@ -83,4 +118,14 @@ export default {
 </script>
 
 <style scoped>
+img {
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+canvas {
+    position: fixed;
+    left: 0;
+    top: 0;
+}
 </style>
