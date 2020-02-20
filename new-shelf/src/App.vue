@@ -2,16 +2,19 @@
   <div id="app">
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
     <Tree msg="Welcome to Your Vue.js App"/>
+    <!-- <CircleTree /> -->
   </div>
 </template>
 
 <script>
 import Tree from './components/Tree.vue'
+// import CircleTree from './components/CircleTree.vue'
 
 export default {
   name: 'app',
   components: {
     Tree
+    // CircleTree
   }
 }
 </script>
