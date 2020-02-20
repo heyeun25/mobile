@@ -21,6 +21,8 @@ var socketNameMap = {};
 var activatedDevice = null;
 var io = require('socket.io').listen(httpServer);
 io.sockets.on('connection', function (socket) {
+	console.log('connection ' + socket.id);
+	
 	socket.on('appMsg', function (data) {
 		log("[APP MESSAGE] " + JSON.stringify(data));
 		emitToAll('appMsg', data);
