@@ -2,13 +2,17 @@
   <div class="hello">
     <!-- <img src="../assets/navy_BG-01.jpg"/> -->
     <!-- <img src="../assets/Beige_BG-01.png"/> -->
-    <canvas class="treeCanvas" ref="treeCanvas">
-    </canvas>
+    <canvas class="treeCanvas" ref="treeCanvas"></canvas>
+    <canvas class="treeCanvas" ref="treeCanvas1"></canvas>
+    <canvas class="treeCanvas" ref="treeCanvas2"></canvas>
   </div>
 </template>
 
 <script>
 var ctx;
+var ctx1;
+var ctx2; 
+
 var branches = [];
 var rAF;
 
@@ -40,18 +44,20 @@ function Line(x, y, len, angle, width) {
         this.x = this.originX - len * this.v.toFixed(1) * Math.sin(angle * Math.PI/180);
         this.y = this.originY - len * this.v.toFixed(1) * Math.cos(angle * Math.PI/180);
         if (this.v > 1) this.done = true;
-        if (Math.random() > 0.99) {
-            // this.makeLeaf(this.x, this.y, this.angle);
-        }
+        // if (Math.random() > 0.99) {
+        //     this.makeLeaf(this.x, this.y, this.angle);
+        // }
     }
-    this.makeLeaf = function(x, y, angle) {
+    this.makeLeaf = function() {
         ctx.beginPath();
-        ctx.moveTo(x, y);
+        ctx.moveTo(this.x, this.y);
+        var d = 1;
+        if (Math.random() > 0.5) d = -1;
         ctx.quadraticCurveTo(
-                x - (20 * Math.cos((45 + angle) * Math.PI/180)),
-                y + (20 * Math.sin((45 + angle) * Math.PI/180)),
-                x - (40 * Math.cos((angle) * Math.PI/180)),
-                y + (40 * Math.sin((angle) * Math.PI/180)));
+                x - d*(10 * Math.cos((45 + this.angle) * Math.PI/180)),
+                y + d*(10 * Math.sin((45 + this.angle) * Math.PI/180)),
+                x - d*(20 * Math.cos((this.angle) * Math.PI/180)),
+                y + d*(20 * Math.sin((this.angle) * Math.PI/180)));
         ctx.fillStyle="darkgreen";
         ctx.fill();
     }
@@ -69,12 +75,10 @@ export default {
       function d() {
         for(var i =0; i<branches.length; i++) {
               ctx.beginPath();
-              // ctx.strokeStyle = "darkgreen";
-              ctx.strokeStyle = "rgba(15, 36, 10)";
-
+              ctx.strokeStyle = "rgba(15, 180, 10)";
               ctx.moveTo(branches[i].px, branches[i].py);
               ctx.lineTo(branches[i].x, branches[i].y);
-              ctx.lineWidth = 1;
+              ctx.lineWidth = 2;
               ctx.stroke();
               branches[i].update();
         }
@@ -82,6 +86,7 @@ export default {
         for(var j=0; j<branches.length; j++) {
           if (branches[j].done == true) {
                 var out = branches.shift();
+
                 if (out.len > 10) {
                     depth++;
                     var p = Math.random(0.2, 0.7) + 0.2;
@@ -90,6 +95,8 @@ export default {
                     branches.push(new Line(out.endX, out.endY,
                         (out.len*p), out.angle-20, out.branchWidth*0.95));
                 } else {
+                  var out = branches.shift();
+                  out.makeLeaf();
                 }
               }
         }
@@ -99,10 +106,12 @@ export default {
     }
   },
   mounted: function() {
-    this.$refs.treeCanvas.width = window.innerWidth;
-    this.$refs.treeCanvas.height = window.innerHeight;
-    ctx = this.$refs.treeCanvas.getContext("2d");
-    this.draw(window.innerWidth/2, window.innerHeight + 150, 120, 0, 5);
+      this.$refs.treeCanvas.width = window.innerWidth;
+      this.$refs.treeCanvas.height = window.innerHeight;
+      ctx = this.$refs.treeCanvas.getContext("2d");
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
+      this.draw(window.innerWidth/2, window.innerHeight + 150, 120, 0, 5);
   },
   unmounted: function() {
       cancelAnimationFrame(rAF);

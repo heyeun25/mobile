@@ -1,20 +1,27 @@
 <template>
   <div id="app">
-    <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
-    <Tree msg="Welcome to Your Vue.js App"/>
-    <!-- <CircleTree /> -->
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Tree from './components/Tree.vue'
-// import CircleTree from './components/CircleTree.vue'
-
 export default {
   name: 'app',
   components: {
-    Tree
-    // CircleTree
+  },
+  mounted: function() {
+    const socket = this.$socket;
+    this.$socket.on('connect', function() {
+      socket.emit('identify', 'shelf');
+    });
+
+    const myRouter = this.$router;
+    this.$socket.on('appMsg', function(d) {
+      // console.log(d);
+      // console.log(myRouter.currentRoute);
+      if (myRouter.currentRoute.name !== d.func)
+        myRouter.push({name: d.func, params: d.value})
+    });
   }
 }
 </script>

@@ -1,21 +1,69 @@
 <template>
   <div class="hello" v-on:keydown="keyDown" tabindex="-1" ref="container">
-    <!-- <img src="../assets/Beige_BG-01.png"/> -->
-    <canvas class="treeCanvas" ref="treeCanvas">
-    </canvas>
+    <svg viewBox="0 0 550 400" ref="svg" preserveAspectRatio="xMidYMax meet">
+        <g id="stems" ref="stems" fill="none" stroke="green"></g>
+        <g id="leaves" ref="leaves"></g>
+    </svg>
   </div>
 </template>
 
 <script>
-import gsap from "gsap";
-// var canvasEl;
-var ctx;
-// var points;
+// import gsap from "gsap";
+// import _ from "underscore";
+import _ from "lodash";
+import EventManager from "../utils/Event.js";
+import "../utils/DrawSVG.js";
+import "../utils/TweenMax.js";
+// import TweenMax from "gsap";
+// import TweenLite from "gsap";
+import 'gsap/CSSPlugin'
 
-function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max, min)) + min;
+var events = new EventManager();
+var ns = "http://www.w3.org/2000/svg";
+var leafPath  = "M0,0 Q5,-5 10,0 5,5 0,0z";
+leafPath = "M6.5,1.8c-0.4-0.4-0.7-0.7-1.1-1L4.9,0.4c0,0-0.1-0.1-0.2-0.1L3.3,0H3.2C2.2,0,1.7,0.1,1,0.9C0.8,1.1,0.6,1.3,0.4,1.4c-0.6,0.4-1.1,1-1.3,1.7c-0.2,1.1,0,2.2,0.4,3.3c0.2,0.6,0.6,1.2,1,1.8c0.1,0.1,0.2,0.2,0.2,0.4C1,9.2,1.4,9.9,2.3,10c0.2,0,0.5,0,0.7,0c1.8,0.1,3.6-1,4.3-2.7C8.1,5.5,7.8,3.3,6.5,1.8z";
+var ctx, stems, leaves, svg;
+var leafCount = 30;
+var plants    = 30;
+var centerX   = 275;
+var offsetX   = 175;
+
+// function getRandomInt(min, max) {
+//   min = Math.ceil(min);
+//   max = Math.floor(max);
+//   var ret = Math.floor(Math.random() * (max - min)) + min; //최댓값은 제외, 최솟값은 포함
+//   return ret;
+// }
+
+function solve(data) {
+  var size = data.length;
+  var last = size - 4;    
+
+  var path = "M" + [data[0], data[1]];
+
+  for (var i = 0; i < size - 2; i +=2) {
+
+    var x0 = i ? data[i - 2] : data[0];
+    var y0 = i ? data[i - 1] : data[1];
+
+    var x1 = data[i + 0];
+    var y1 = data[i + 1];
+
+    var x2 = data[i + 2];
+    var y2 = data[i + 3];
+
+    var x3 = i !== last ? data[i + 4] : x2;
+    var y3 = i !== last ? data[i + 5] : y2;
+
+    var cp1x = (-x0 + 6 * x1 + x2) / 6;
+    var cp1y = (-y0 + 6 * y1 + y2) / 6;
+
+    var cp2x = (x1 + 6 * x2 - x3) / 6;
+    var cp2y = (y1 + 6 * y2 - y3) / 6;
+   
+    path += "C" + [cp1x, cp1y, cp2x, cp2y, x2, y2];
+  } 
+  return path;
 }
 
 export default {
@@ -25,30 +73,109 @@ export default {
   },
   methods: {
     keyDown: function() {
-        PAUSE = !PAUSE;
-        console.log('pause', PAUSE);
     },
     draw: function() {
+        // this.createBranch();
+        stems = this.$refs.stems;
+        leaves = this.$refs.leaves;
+        svg = this.$refs.svg;
+        this.generate();
+    }, 
+    generate: function() {
+        _.times(plants, this.createPlant);
+        stems.children.forEach(function(el) {
+            var tween = TweenMax.to(el, _.random(2, 4, true), {
+            drawSVG: true,    
+            delay: _.random(2, true),
+            onStart: () => {
+                return TweenMax.set(el, { opacity: 1 })
+            },
+            onUpdate: () => {
+                events.fire(el.id, tween.progress())
+            }});
+        });  
+    },
+    createPlant: function() {
+        var points = this.createPoints();
+        var stem   = this.createPath(stems);
+        var length = points.length;  
+        var values = points.map(point => `${point.x},${point.y}`);
+        var height = points[length - 1].y;   
+        var id     = _.uniqueId("grow");   
+        var coords = [];
+        
+        for (var i = 0; i < length; i++) {
+            var point = points[i];
+            coords.push(point.x, point.y);
+        }
+        
+        TweenMax.set(stem, {     
+            opacity: 0,
+            drawSVG: 0,
+            //attr: { id, d: `M${values.join(" ")}` }
+            attr: { id, d: solve(coords) }
+        });
+        
+        for (var i = 0; i < leafCount; i++) {
+            var point = points[length - 1 - i];    
+            var scale = {
+            x: 1 + 0.0001  * i,
+            y: 1 + 0.0005 * i
+            };
+            // console.log(point);
+            this.createLeaf(point, scale, height, id);
+        }    
+    },
+    createPoints: function() {
+        var x = _.random(centerX - offsetX, centerX + offsetX);
+        var y = 0;
+        var dy = 5;  
         var offset = 0.007;
-        for(var i=0; i<20; i++) {
-            var x = getRandomInt(0, window.innerWidth);
-            var y = 0;
-            var dy = 5;
-            var points = [{x, y}];
-            var plantHeight = getRandomInt(0, window.innerHeight);
-            for(var j=0; j<plantHeight; j++) {
-                points.push({
-                    x: points[i - 1].x + i * offset * (getRandomInt(0, 21) - 10),
-                    y: dy * i
+        var count  = _.random(30, 55);
+        var points = [{ x, y }];
+            
+        for (var i = 1; i <= count; i++) {
+            var p = {
+            x: points[i - 1].x + i * offset * (_.random(21) - 10),
+            y: 5 + dy * i
+            };
+            points.push(p);
+
+        }
+        return points;
+    },
+    createPath: function(parent) {
+        return parent.appendChild(document.createElementNS(ns, "path"));
+    },
+    createLeaf: function(point, scale, height, grow) {
+        // console.log(point, scale, height, grow);
+        var leaf  = this.createPath(leaves);   
+        var start = point.y / height;  // 
+        var off   = events.on(grow, growLeaf);
+        function growLeaf(growth) {
+            // console.log('growth' + growth, start);
+            if (growth >= start) {
+                // Remove listener
+                off();
+                TweenMax.set(leaf, {
+                    x: point.x,
+                    y: point.y,
+                    scaleX: scale.x,
+                    scaleY: scale.y,
+                    rotation: _.random(180) - 180,
+                    fill: `rgba(0,${_.random(110, 160)},0, 0.5)`,
+                    // fill: "red",
+                    attr: { d: leafPath }        
                 });
+                
+                TweenMax.from(leaf, 1, { scale: 0 });
             }
         }
     }
   },
   mounted: function() {
-    this.$refs.treeCanvas.width = window.innerWidth;
-    this.$refs.treeCanvas.height = window.innerHeight;
-    ctx = this.$refs.treeCanvas.getContext("2d");
+    // this.$refs.treeCanvas.width = window.innerWidth;
+    // this.$refs.treeCanvas.height = window.innerHeight;
     this.draw();
     this.$refs.container.focus();
   },
@@ -59,16 +186,19 @@ export default {
 </script>
 
 <style scoped>
-img {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
+body {
+  background: #eee;
 }
-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
+
+* {
+  box-sizing: border-box;
+}
+
+svg {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;  
+  position: absolute;
 }
 </style>
