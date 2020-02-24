@@ -5,8 +5,8 @@
       <div class="btnContainer">
         <div v-for="(item, index) in value.list"
              v-bind:key="index" class="btn"
-             v-on:click="send(item.func)">
-          {{item.func}}
+             v-on:click="send(item.data)">
+          {{item.name}}
         </div>
       </div>
     </ol>
@@ -30,12 +30,12 @@ export default {
       info : [
         {
             category: "image",
-            list: [{ func: "image0" },
-                  { func: "image1" }],
+            list: [{ name: "image0", data: { func: 'image', value: "Beige_BG-01.png"}},
+                  { name: "image1", data: { func: 'image', value: "navy_BG-01.jpg" }}],
         },
         {
             category: "video",
-            list: [],
+            list: [{ name: "video0", data: { func: 'video', value: "video0.mp4"}}],
         }
       ]
     }
