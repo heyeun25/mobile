@@ -8,8 +8,10 @@
              v-on:click="send(item.data)">
           {{item.name}}
         </div>
+        <input type="color" v-if="value.category == 'picker'" @change="colorChange($event)"/>
       </div>
     </ol>
+    
   </div>
 </template>
 
@@ -27,6 +29,8 @@ export default {
   },
   data: function() {
     return {
+      // func : router name of client
+      // value : func page will get value by props
       info : [
         {
             category: "image",
@@ -36,14 +40,29 @@ export default {
         {
             category: "video",
             list: [{ name: "video0", data: { func: 'video', value: "video0.mp4"}}],
-        }
-      ]
+        },
+        {
+            category: "picker",
+        },
+        {
+            category: "fractal",
+            list: [
+                    { name: "play/pause", data: { func: 'home', value: {pp : 'pp'}}},
+                    { name: "restart", data: {func: 'home', value: {restart: 'restart'}}},
+                    { name: 'pleatsOpen', data: {func: 'home', value: {pleats: 'pleats'}}}
+                  ]
+        },
+      ],
     }
   },
   methods: {
-    send: function(value) {
-      console.log(value);
-      socket.emit('appMsg', value);
+    colorChange: function(e) {
+      console.log(e.target.value);
+      socket.emit('appMsg', { func: "home", value: {color: e.target.value}})
+    },
+    send: function(data) {
+      console.log(JSON.stringify(data));
+      socket.emit('appMsg', data);
     }
   }
 }
@@ -59,6 +78,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
+  height: 100px;
 }
 .btn {
   width: 100px;
@@ -67,5 +87,11 @@ export default {
   text-align: center;
   line-height: 100px;
   color: white;
+  outline: 1px solid white;
+}
+input {
+  position: absolute;
+  width: 100px;
+  height: 100px;
 }
 </style>

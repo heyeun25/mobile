@@ -1,5 +1,5 @@
 <template>
-  <div class="hello" v-on:keydown="keyDown" tabindex="-1" ref="container">
+  <div tabindex="-1" ref="container">
     <svg viewBox="0 0 550 400" ref="svg" preserveAspectRatio="xMidYMax meet">
         <g id="stems" ref="stems" fill="none" stroke="green"></g>
         <g id="leaves" ref="leaves"></g>
@@ -174,10 +174,7 @@ export default {
     }
   },
   mounted: function() {
-    // this.$refs.treeCanvas.width = window.innerWidth;
-    // this.$refs.treeCanvas.height = window.innerHeight;
     this.draw();
-    this.$refs.container.focus();
   },
   unmounted: function() {
       cancelAnimationFrame(rAF);
