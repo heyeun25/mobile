@@ -28,7 +28,7 @@ socket.on('connect', function () {
 });
 socket.on('appMsg',function(data){
     console.log("appMsg Target(" + data.target.toUpperCase() + "), EVT(" + data.evtName + ")");
-    $('.videosrc').get(0).pause();
+    //$('.videosrc').get(0).pause();
     $('.musicText').css('opacity', 0);
     if(data.target.toUpperCase() == 'SHELF55') {
         $('.musicBack').css('opacity', 0);
@@ -110,7 +110,7 @@ socket.on('appMsg',function(data){
             audioElement.pause();
            // $('#videosrc').get(0).load();
             //$('#videosrc')[0].play();
-            $('.videosrc').get(0).play();
+        //$('.videosrc').get(0).play();
         }
 
         else if(data.evtName == 'theme_music1'|| data.evtName == 'theme_music2'||data.evtName == 'theme_music3'){
