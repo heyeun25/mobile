@@ -1,5 +1,5 @@
 <template>
-  <div class="hello" ref="container">
+  <div class="tree" ref="container">
     <!-- <img src="../assets/navy_BG-01.jpg"/> -->
     <!-- <img src="../assets/Beige_BG-01.png"/> -->
     <canvas class="treeCanvas" ref="treeCanvas"></canvas>
@@ -13,7 +13,7 @@
 // import TimelineMax from "gsap";
 import TweenMax from "../utils/TweenMax.js";
 
-
+var trash = [];
 var fadeInOut;
 
 var ctx, ctx1, ctx2;
@@ -51,23 +51,8 @@ function Line(x, y, len, angle, width, depth, canvasNumber) {
         this.x = this.originX - (len * this.v).toFixed(1) * Math.sin(angle * Math.PI/180);
         this.y = this.originY - (len * this.v).toFixed(1) * Math.cos(angle * Math.PI/180);
         if (this.v > 1) this.done = true;
-        // if (Math.random() > 0.99) {
-        //     this.makeLeaf(this.x, this.y, this.angle);
-        // }
     }
-    // this.makeLeaf = function() {
-    //     ctx.beginPath();
-    //     ctx.moveTo(this.x, this.y);
-    //     var d = 1;
-    //     if (Math.random() > 0.5) d = -1;
-    //     ctx.quadraticCurveTo(
-    //             x - d*(10 * Math.cos((45 + this.angle) * Math.PI/180)),
-    //             y + d*(10 * Math.sin((45 + this.angle) * Math.PI/180)),
-    //             x - d*(20 * Math.cos((this.angle) * Math.PI/180)),
-    //             y + d*(20 * Math.sin((this.angle) * Math.PI/180)));
-    //     ctx.fillStyle="darkgreen";
-    //     ctx.fill();
-    // }
+    
 }
 
 function getRandom(min, max) {
@@ -87,8 +72,6 @@ export default {
   methods: {
     restart: function() {
       console.log('restart');
-      // fadeInOut.reverse();
-        // fadeInOut.staggerTo('.treeCanvas')
       if (fadeInOut) {
         for(var i =0; i<fadeInOut.length; i++) {
           fadeInOut[i].reverse();
@@ -111,49 +94,83 @@ export default {
       console.log(fadeInOut);
     },
     draw: function() {
+      console.log('draw');
       const startX = window.innerWidth/2,
-      startY = window.innerHeight + 150,
-      len = 120,
+      startY = window.innerHeight,
+      len = 30,
       angle = 0,
       branchWidth = 5;
 
       branches.push(new Line(startX, startY, len, angle, branchWidth, 0, 0));
       var that = this;
-      function d() {
-        if (that.playpause == false) {
-            for(var i =0; i<branches.length; i++) {
-                // console.log(branches[i].number);
-                var ctx = ctxs[branches[i].number];
-                ctx.beginPath();
-                ctx.strokeStyle = "rgba(15, 180, 10)";
-                ctx.moveTo(branches[i].px, branches[i].py);
-                ctx.lineTo(branches[i].x, branches[i].y);
-                ctx.lineWidth = 2;
-                ctx.stroke();
-                branches[i].update();
-              }
 
-            for(var j=0; j<branches.length; j++) {
-              if (branches[j].done == true) {
-                    var out = branches.shift();
-                    var num = 0;
-                    if (out.len > 10) {
-                        if (out.depth > 10) num = 1;
-                        if (out.depth > 30) num = 2;
-                        // console.log(out.depth);
-                        var p = Math.random() + 0.2;
-                        p = p.toFixed(1);
-                        branches.push(new Line(out.endX, out.endY,
-                            (out.len*p), out.angle+20, out.branchWidth*0.95, out.depth+1, num));
-                        branches.push(new Line(out.endX, out.endY,
-                            (out.len*p), out.angle-20, out.branchWidth*0.95, out.depth+1, num));
-                    }
-                }
-          }
-        }
-        rAF = requestAnimationFrame(d);
+      function getRandom(depth) {
+        // return Math.random(0.2, 0.7) + 0.2;
+        var r;
+        if (depth < 3)
+          r = Math.random() * (1.1 - 0.4) + 0.4;
+        else if (depth < 10)
+          r = Math.random(0.2, 0.7) + 0.3;
+        else 
+          r = Math.random() * (1.0 - 0.5) + 0.5;
+        return r.toFixed(1);
       }
-      rAF = requestAnimationFrame(d);
+
+      function animate() {
+        now = Date.now();
+        elapsed = now - then;
+        if (elapsed < fpsInterval) {
+          rAF = requestAnimationFrame(animate);
+          return;
+        }
+
+        if (that.playpause == true) {
+          rAF = requestAnimationFrame(animate);
+          return;
+        }
+        // draw
+        for(var i =0; i<branches.length; i++) {
+            // console.log(branches[i].number);
+            var ctx = ctxs[branches[i].number];
+            ctx.beginPath();
+            // ctx.strokeStyle = "rgba(15, 180, 10)";
+            
+            // ctx.globalCompositeOperation = "destination-in";
+            ctx.moveTo(branches[i].px, branches[i].py);
+            ctx.lineTo(branches[i].x, branches[i].y);
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            branches[i].update();
+          }
+
+        for(var j=0; j<branches.length; j++) {
+          if (branches[j].done == true) {
+                var out = branches.shift();
+                trash.push(out);
+                var num = 0;
+                if (out.len > 10) {
+                    if (out.depth > 10) num = 1;
+                    if (out.depth > 30) num = 2;
+                    var p = getRandom(out.depth)
+                    branches.push(new Line(out.endX, out.endY,
+                        (out.len* getRandom(out.depth)), out.angle+20, out.branchWidth*0.95, out.depth+1, num));
+                    branches.push(new Line(out.endX, out.endY,
+                        (out.len* getRandom(out.depth)), out.angle-20, out.branchWidth*0.95, out.depth+1, num));
+                }
+              }
+          }
+        
+        rAF = requestAnimationFrame(animate);
+      }
+
+      // start animate first 
+      var fpsInterval = 1000 / 50,
+          then = Date.now(),
+          now, elapsed;
+      animate();
+    },
+    getNewItem: function(line) {
+
     }
   },
   mounted: function() {
@@ -164,6 +181,9 @@ export default {
         var c = totalCanvas[i].getContext("2d");
         totalCanvas[i].width = window.innerWidth;
         totalCanvas[i].height = window.innerHeight;
+        // c.fillRect(0, 0, window.innerWidth, window.innerHeight);
+        c.fillStyle = "navy";
+        // c.fillRect(0, 0, window.innerWidth, window.innerHeight);
         ctxs.push(c);
       }
 
@@ -197,5 +217,9 @@ canvas {
   width: 100%;
   height: 100%;
   /* background-color: black; */
+}
+
+.tree {
+  z-index: 99999;
 }
 </style>

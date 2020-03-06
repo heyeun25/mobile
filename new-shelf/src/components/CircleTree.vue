@@ -1,5 +1,5 @@
 <template>
-  <div tabindex="-1" ref="container">
+  <div tabindex="-1" ref="container" class="circle">
     <svg viewBox="0 0 550 400" ref="svg" preserveAspectRatio="xMidYMax meet">
         <g id="stems" ref="stems" fill="none" stroke="green"></g>
         <g id="leaves" ref="leaves"></g>
@@ -119,8 +119,8 @@ export default {
         for (var i = 0; i < leafCount; i++) {
             var point = points[length - 1 - i];    
             var scale = {
-            x: 1 + 0.0001  * i,
-            y: 1 + 0.0005 * i
+            x: 0.8 + 0.00001  * i,
+            y: 0.8 + 0.00005 * i
             };
             // console.log(point);
             this.createLeaf(point, scale, height, id);
@@ -197,5 +197,14 @@ svg {
   width: 100%;
   height: 100%;  
   position: absolute;
+}
+
+.circle {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: navy;
+    width: 100%;
+    height: 100%;
 }
 </style>

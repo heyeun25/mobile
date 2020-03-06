@@ -15,7 +15,7 @@ export default {
   methods: {
       changeImage: function(obj) {
           console.log('changeImage', obj);
-          this.$refs.myImg.src = require("../assets/" + obj.value);
+          this.$refs.myImg.src = require("../assets/concept/" + obj.value);
       },
   },
   mounted: function() {
