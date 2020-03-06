@@ -1,17 +1,16 @@
 <template>
   <div class="container">
-    <ol v-for="(value, index) in info" v-bind:key="index" class="category">
-      {{value.category}}
+    <div v-for="(value, index) in info" v-bind:key="index" class="category">
+      <span>{{value.category}}</span>
       <div class="btnContainer">
         <div v-for="(item, index) in value.list"
              v-bind:key="index" class="btn"
              v-on:click="send(item.data)">
           {{item.name}}
+          <input type="color" v-if="value.category == 'picker'" @change="colorChange($event)"/>
         </div>
-        <input type="color" v-if="value.category == 'picker'" @change="colorChange($event)"/>
       </div>
-    </ol>
-    
+    </div>
   </div>
 </template>
 
@@ -29,27 +28,43 @@ export default {
   },
   data: function() {
     return {
-      // func : router name of client
-      // value : func page will get value by props
+      // func : router name of shelf front app
+      // category : category on mobile app
+      // name : button name on mobile app
+      // value : func page will get value as props
       info : [
         {
             category: "image",
-            list: [{ name: "image0", data: { func: 'image', value: "Beige_BG-01.png"}},
-                  { name: "image1", data: { func: 'image', value: "navy_BG-01.jpg" }}],
+            list: [{name: "Health", data: { func: 'image', value: "Energetic-01.jpg"}},
+                  {name: "Family", data: { func: 'image', value: "Family-01.jpg" }},
+                  {name: "Fandom", data: { func: 'image', value: "Fandom-01.jpg" }},
+                  {name: "Green", data: { func: 'image', value: "Green-01.jpg" }},
+                  {name: "Kidult", data: { func: 'image', value: "Kidult.jpg" }}],
         },
         {
             category: "video",
-            list: [{ name: "video0", data: { func: 'video', value: "video0.mp4"}}],
+            list: [{name: "video0", data: { func: 'video', value: "video0.mp4"}}],
+        },
+        {
+            category: "Scenario",
+            list: [{name: "Green Life1", data: { func: 'home', value: { theme: 'green1'}}},
+                   {name: "Green Life2", data: { func: 'home', value: { theme: 'green2'}}},
+                   {name: "Family Board", data: { func: 'home', value: 'photo'}},
+                   {name: "Edit Board", data: { func: 'home', value: 'addBoard'}},
+                   {name: "On Mirroring", data: { func: 'home', value: 'on'}},
+                   {name: "Off Mirroring", data: { func: 'home', value: 'off'}}
+                   ]
         },
         {
             category: "picker",
+            list: [{name: "picker"}],
         },
         {
             category: "fractal",
             list: [
-                    { name: "play/pause", data: { func: 'home', value: {pp : 'pp'}}},
-                    { name: "restart", data: {func: 'home', value: {restart: 'restart'}}},
-                    { name: 'pleatsOpen', data: {func: 'home', value: {pleats: 'pleats'}}}
+                    {name: "play/pause", data: { func: 'home', value: {pp : 'pp'}}},
+                    {name: "restart", data: {func: 'home', value: {restart: 'restart'}}},
+                    {name: 'pleatsOpen', data: {func: 'home', value: {pleats: 'pleats'}}}
                   ]
         },
       ],
@@ -70,22 +85,24 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.category {
+.container {
   display: flex;
+  flex-direction: column;
+}
+.category {
+  /* display: flex; */
   flex-direction: column;
 }
 .btnContainer {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  height: 100px;
 }
 .btn {
-  width: 100px;
-  height: 100px;
   background-color: darkgreen;
   text-align: center;
   line-height: 100px;
+  width: 100px;
   color: white;
   outline: 1px solid white;
 }

@@ -1,108 +1,167 @@
 <template>
-    <div class="container" ref="container">
+    <div class="container" ref="container" v-bind:style="containerStyle">
         <div class="pleats" ref="pleats"
-            v-for="index in 40" v-bind:key="'p' + index"
-            v-bind:style="{backgroundColor: color}">
+                v-bind:key="'p' + index"
+                v-for="index in 140"
+                v-bind:id="'p' + index"
+                v-bind:style="{
+                    backgroundColor: color, 
+                    width: pleatsWidth}">
+            <div class="widget" ref="widget"
+                v-if="showWidget(index)"
+                v-bind:style="getWidgetStyle(index)"
+                v-bind:key="'w' + index"
+                v-bind:id="'w' + index">
+            </div>
         </div>
-        <div class="widget" ref="widget"
-            v-for="index in 1" v-bind:key="'w' + index">
-        </div>
-
     </div>
 </template>
 <script>
-const PLEATS_CNT = 40;
+import TweenMax from "gsap"
+import { setTimeout } from 'timers'
+import * as widgetData from '../assets/widgets.json'
+
 const PLEATS_WIDTH = 40;
 const WIDGET_WIDTH = 300;
+const SHIRINK = 0.95;
+var PLEATS_CNT = 140;
 
-var animation;
-var widgetAni;
-import TweenMax from "gsap";
-import { setTimeout } from 'timers';
+var pleatsAni;
+var widgetAni = [];
+
 export default {
     name: 'Pleats',
     props: ['show', 'color'],
     watch: {
         show: function(newVal, oldVal) {
-            // console.log('newVal', newVal);
             if (newVal) this.open(); 
             else this.close();
         }
     },
+    data: function () {
+        return {
+            containerStyle: {
+                left: -PLEATS_WIDTH + 'px',
+            },
+            pleatsWidth: PLEATS_WIDTH + 'px',
+            widgets: widgetData.widgets,
+        }
+    },
     methods: {
         open: function() {
-            setTimeout(() => {
-                animation.play();
-                widgetAni.play();
-            }, 1000)
+            pleatsAni.play();
+            for(var i=0; i<widgetAni.length; i++) {
+                widgetAni[i].play();
+            }
         },
         close: function() {
-            animation.reverse();
-            widgetAni.reverse();
+            pleatsAni.play();
+            for(var i=0; i<widgetAni.length; i++) {
+                widgetAni[i].reverse();
+            }
         },
         changeColor: function(data) {
             var p = this.$refs.pleats;
             for(var i =0; i<p.length; i++) {
                 p[i].style.backgroundColor = data.value;
             }
+        },
+        showWidget: function(index) {
+            for(var i =0; i<this.widgets.length; i++) {
+                if (this.widgets[i].index == index) {
+                    return true;
+                }
+            }
+            return false;
+        },
+        getWidgetStyle: function(index) {
+            for(var i =0; i<this.widgets.length; i++) {
+                if (this.widgets[i].index == index) {
+                    return this.widgets[i].style;
+                }
+            }
+            return {};
+        },
+        onCompleteShowWidget: function() {
+            console.log('complete');;
+            setTimeout(() => {
+                pleatsAni.reverse();
+            }, 500)
+        },
+        addWidget: function(widget) {
+            console.log('addWidget');
+            this.widgets.push(widget);
+            this.widgetAni.push(TweenMax.to("#w" + widget.index, 0.1, {
+                translateX: widget.translateX,
+            }).reverse())
+            this.open();
+        },
+        addMirroring: function() {
+            console.log('addMirroring');
+            // move current widgets
+            TweenMax.to('.widget', )
+            this.addWidget({
+                
+            })
+        },
+        removeMirroring: function() {
+            console.log('removeMirroring');
         }
     },
     mounted() {
         // this.$socket.on('appMsg', this.changeColor);
+        PLEATS_CNT = window.innerWidth / PLEATS_WIDTH * SHIRINK;
         var p = this.$refs.pleats;
         var w = this.$refs.widget;
+        console.log('w', w);
         for(var i =0; i<p.length; i++) {
-            p[i].style.left = i * PLEATS_WIDTH + 'px';
-            p[i].style.zIndex = (p.length-i)*2;
-            w[i] ? w[i].style.zIndex = (p.length-1-i)*2 : null;
+            p[i].style.left = i * PLEATS_WIDTH * SHIRINK + 'px';
+            p[i].style.zIndex = -i*2;
+            w[i] ? w[i].style.zIndex = -i*2-1 : null;
         }
         
-        console.log('w', w.length);
-        for(var i =0; i<w.length; i++) {
-            w[i].style.left = i * PLEATS_WIDTH - WIDGET_WIDTH + 'px';
-            
+        pleatsAni = TweenMax.to('.pleats', 0.3, {
+            boxShadow: "20px 8px 20px rgba(0, 0, 0, 0.5)",
+            width: PLEATS_WIDTH * SHIRINK,
+        }).reverse();
+
+        for(var i=0; i<this.widgets.length; i++) {
+            widgetAni.push(TweenMax.to("#w" + this.widgets[i].index, 0.1, {
+                translateX: this.widgets[i].translateX,
+                onComplete: (i == 0 ? this.onCompleteShowWidget : null),
+                onReverseComplete: (i == 0 ? this.onCompleteShowWidget : null),
+            }).reverse());
         }
-
-        animation =TweenMax.to('.pleats', 0.2, {
-            boxShadow: "10px 5px 15px rgba(0, 0, 0, 0.5)",
-            width: PLEATS_WIDTH,
-        }).reverse();
-
-        widgetAni = TweenMax.to(".widget", 0.5, {
-            translateX: WIDGET_WIDTH + 100,
-        }).reverse();
         // this.open();
     },
     destroyed() {
+        widgetAni = [];
         // this.$socket.off('appMsg', this.changeColor);
     },
 }
 </script>
 <style>
 .container {
-    position: fixed;
-    left: 0;
+    position: absolute;
     top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
+    /* overflow: hidden; */
 }
 
 .pleats {
     position: absolute;
-    top: -20px;
+    top: 0;
     left: 0;
-    width: 50px;
-    height: 120%;
+    /* outline: 1px solid red; */
+    width: 10px;
+    height: 110%;
     background-color: rgb(0, 0, 228);
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .widget {
-    position: absolute;
-    top: 100px;
-    width: 300px;
-    height: 500px;
-    background-color:rgb(187, 153, 91);
-    outline: 1px solid black;
+    position: relative;
 }
 </style>

@@ -26,7 +26,7 @@ io.sockets.on('connection', function (socket) {
 	socket.on('appMsg', function (data) {
 		log("[APP MESSAGE] " + JSON.stringify(data));
 		emitToAll('appMsg', data);
-		if(data.evtName == 'sync') {
+		if(data && data.evtName == 'sync') {
 			prepareSync();
 		}
 	});
