@@ -1,10 +1,6 @@
 <template>
   <div class="tree" ref="container">
-    <!-- <img src="../assets/navy_BG-01.jpg"/> -->
-    <!-- <img src="../assets/Beige_BG-01.png"/> -->
     <canvas class="treeCanvas" ref="treeCanvas"></canvas>
-    <canvas class="treeCanvas" ref="treeCanvas1"></canvas>
-    <canvas class="treeCanvas" ref="treeCanvas2"></canvas>
   </div>
 </template>
 
@@ -130,15 +126,11 @@ export default {
         }
         // draw
         for(var i =0; i<branches.length; i++) {
-            // console.log(branches[i].number);
             var ctx = ctxs[branches[i].number];
             ctx.beginPath();
-            // ctx.strokeStyle = "rgba(15, 180, 10)";
-            
-            // ctx.globalCompositeOperation = "destination-in";
             ctx.moveTo(branches[i].px, branches[i].py);
             ctx.lineTo(branches[i].x, branches[i].y);
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 5;
             ctx.stroke();
             branches[i].update();
           }
@@ -149,13 +141,13 @@ export default {
                 trash.push(out);
                 var num = 0;
                 if (out.len > 10) {
-                    if (out.depth > 10) num = 1;
-                    if (out.depth > 30) num = 2;
+                    // if (out.depth > 10) num = 1;
+                    // if (out.depth > 30) num = 2;
                     var p = getRandom(out.depth)
                     branches.push(new Line(out.endX, out.endY,
-                        (out.len* getRandom(out.depth)), out.angle+20, out.branchWidth*0.95, out.depth+1, num));
+                        (out.len* getRandom(out.depth)), out.angle+20, out.branchWidth*0.95, out.depth+1, 0));
                     branches.push(new Line(out.endX, out.endY,
-                        (out.len* getRandom(out.depth)), out.angle-20, out.branchWidth*0.95, out.depth+1, num));
+                        (out.len* getRandom(out.depth)), out.angle-20, out.branchWidth*0.95, out.depth+1, 0));
                 }
               }
           }
@@ -181,9 +173,7 @@ export default {
         var c = totalCanvas[i].getContext("2d");
         totalCanvas[i].width = window.innerWidth;
         totalCanvas[i].height = window.innerHeight;
-        // c.fillRect(0, 0, window.innerWidth, window.innerHeight);
         c.fillStyle = "navy";
-        // c.fillRect(0, 0, window.innerWidth, window.innerHeight);
         ctxs.push(c);
       }
 
