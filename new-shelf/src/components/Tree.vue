@@ -3,6 +3,8 @@
     <canvas class="temp" ref="temp"></canvas>
     <canvas class="colorCanvas" ref="colorCanvas"></canvas>
     <canvas class="treeCanvas" ref="treeCanvas"></canvas>
+    <img id="gradient" ref="gradient" src="../assets/aurora.jpg" />
+    <canvas id="gradientCanvas" ref="gradientCanvas"></canvas>
   </div>
 </template>
 <script>
@@ -21,30 +23,33 @@ var rAF, fps = 10;
 var leaf = [[0, 0], [5, -5], [10, 0], [5, 5], [0, 0]];
 var ADD = 1;
 
-function Line(x, y, len, angle, width, depth, canvasNumber) {
-    this.originX = x;
-    this.originY = y;
-    this.px = x;
-    this.py = y;
-    this.v = 0.1;
-    this.len = len;
-    this.angle = angle;
-    this.width = width;
-    this.number = canvasNumber;
-    this.endX = x - parseInt(len * Math.sin(angle * Math.PI/180));
-    this.endY = y - parseInt(len * Math.cos(angle * Math.PI/180));
-    this.branch = false;
-    this.done = false;
-    this.depth = depth;
-    this.update = function() {
-        // update
-        this.v += 0.1; // 
-        this.px = this.x;
-        this.py = this.y;
-        this.x = this.originX - (len * this.v).toFixed(1) * Math.sin(angle * Math.PI/180);
-        this.y = this.originY - (len * this.v).toFixed(1) * Math.cos(angle * Math.PI/180);
-        if (this.v > 1) this.done = true;
-    }
+// var aurora = new Image();
+// aurora.src = '../assets/aurora.jpg';
+
+function Tree(x, y, len, angle, depth, parent) {
+  this.x = x;
+  this.y = y;
+  this.originX = x;
+  this.originY = y;
+  this.len = len;
+  this.angle = angle;
+  this.depth = depth;
+  this.parent = parent;
+  this.done = false;
+  this.right = null;
+  this.left = null;
+  this.v = 0.1;
+  this.endX = x - parseInt(len * Math.sin(angle * Math.PI/180));
+  this.endY = y - parseInt(len * Math.cos(angle * Math.PI/180));
+  this.update = function() {
+      // update
+      this.v += 0.1; // 
+      this.px = this.x;
+      this.py = this.y;
+      this.x = this.originX - (this.len * this.v).toFixed(1) * Math.sin(angle * Math.PI/180);
+      this.y = this.originY - (this.len * this.v).toFixed(1) * Math.cos(angle * Math.PI/180);
+      if (this.v > 1) this.done = true;
+  }
 }
 
 function getRandom(depth) {
@@ -64,6 +69,7 @@ function selectReversed(query) {
   nodes = Array.prototype.slice.call(nodes, 0);
   return nodes.reverse();
 }
+
 export default {
   name: 'Tree',
   props: {
@@ -96,17 +102,13 @@ export default {
     },
     draw: function() {
       console.log('draw');
-      const startX = window.innerWidth/2,
-      startY = window.innerHeight,
-      len = 30,
-      angle = 0,
-      branchWidth = 5;
+      var ret = this.makeTree();
+      while(ret.count < 1000) {
+        ret = this.makeTree();
+      }
 
-      branches.push(new Line(startX, startY, len, angle, branchWidth, 0, 0));
+      branches.push(ret.root);
       var that = this;
-
-
-
       function animate() {
         now = Date.now();
         elapsed = now - then;
@@ -120,34 +122,32 @@ export default {
           return;
         }
         // draw
+        if (branches.length <= 0) {
+          cancelAnimationFrame(rAF);
+          return;
+        }
+
         for(var i =0; i<branches.length; i++) {
-            var ctx = tempCtx;
-            ctx.beginPath();
-            ctx.moveTo(branches[i].px, branches[i].py);
-            ctx.lineTo(branches[i].x, branches[i].y);
-            ctx.lineWidth = 2;
-            ctx.stroke();
+            tempCtx.beginPath();
+            tempCtx.moveTo(branches[i].px, branches[i].py);
+            tempCtx.lineTo(branches[i].x, branches[i].y);
+            tempCtx.lineWidth = 2;
+            tempCtx.stroke();
             branches[i].update();
         }
 
-        var imageData = tempCtx.getImageData(0, 0, window.innerWidth, window.innerHeight);
-        colorCtx.putImageData(imageData, 0, 0);
+        var treeData = tempCtx.getImageData(0, 0, window.innerWidth, window.innerHeight);
+        colorCtx.putImageData(treeData, 0, 0);
         colorCtx.globalCompositeOperation = 'source-in';
-        colorCtx.fillStyle = "green";
-        colorCtx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+        var gradientCtx = that.$refs.gradientCanvas.getContext('2d');
+        var colorData = gradientCtx.getImageData(0, 0, window.innerWidth, window.innerHeight);
+        colorCtx.putImageData(colorData, 0, 0);
 
         for(var j=0; j<branches.length; j++) {
           if (branches[j].done == true) {
                 var out = branches.shift();
-                trash.push(out);
-                var num = 0;
-                if (out.len > 10) {
-                    var p = getRandom(out.depth)
-                    branches.push(new Line(out.endX, out.endY,
-                        (out.len* getRandom(out.depth)), out.angle+20, out.branchWidth*0.95, out.depth+1, 0));
-                    branches.push(new Line(out.endX, out.endY,
-                        (out.len* getRandom(out.depth)), out.angle-20, out.branchWidth*0.95, out.depth+1, 0));
-                }
+                (out.left ? branches.push(out.left) : null);
+                (out.right ?  branches.push(out.right) : null);
               }
           }
         rAF = requestAnimationFrame(animate);
@@ -164,30 +164,9 @@ export default {
     },
     makeTree: function() {
       var trees = [];
-
-      function Tree(x, y, len, angle, depth, parent) {
-        this.originX = x;
-        this.originY = y;
-        this.len = len;
-        this.angle = angle;
-        this.depth = depth;
-        this.parent = parent;
-        this.endX = x - parseInt(len * Math.sin(angle * Math.PI/180));
-        this.endY = y - parseInt(len * Math.cos(angle * Math.PI/180));
-        this.update = function() {
-            // update
-            this.v += 0.1; // 
-            this.px = this.x;
-            this.py = this.y;
-            this.x = this.originX - (this.len * this.v).toFixed(1) * Math.sin(angle * Math.PI/180);
-            this.y = this.originY - (this.len * this.v).toFixed(1) * Math.cos(angle * Math.PI/180);
-            if (this.v > 1) this.done = true;
-        }
-      }
-
       const startX = window.innerWidth/2,
-      startY = window.innerHeight,
-      len = 30,
+      startY = window.innerHeight + 150,
+      len = 120,
       angle = 0;
 
       var first = new Tree(startX, startY, len, angle, 0, null);
@@ -195,21 +174,20 @@ export default {
       function createTree(item) {
         // console.log(item.len);
         if (item.len < 10) return;
-        item.right = new Tree(item.endX, item.endY, item.len * getRandom(item.depth), angle+20,  item.depth+1, item);
-        item.left = new Tree(item.endX, item.endY, item.len * getRandom(item.depth), angle-20, item.depth+1, item);
+        item.right = new Tree(item.endX, item.endY, item.len * getRandom(item.depth), item.angle+20,  item.depth+1, item);
+        item.left = new Tree(item.endX, item.endY, item.len * getRandom(item.depth), item.angle-20, item.depth+1, item);
         count += 2;
         createTree(item.right);
         createTree(item.left);
       }
-
       createTree(first);
       console.log(first, count);
+      return {root: first, count};
     }
   },
   mounted: function() {
       // this.$refs.container.focus();
       totalCanvas = document.getElementsByClassName("treeCanvas");
-      
       tempCanvas = this.$refs.temp;
       tempCtx = tempCanvas.getContext('2d');
 
@@ -220,6 +198,9 @@ export default {
 
       tempCanvas.width = window.innerWidth;
       tempCanvas.height = window.innerHeight;
+
+      this.$refs.gradientCanvas.width = window.innerWidth;
+      this.$refs.gradientCanvas.height = window.innerHeight;
       // console.log('mounted', totalCanvas);
       for (var i =0; i<totalCanvas.length; i++) {
         var c = totalCanvas[i].getContext("2d");
@@ -229,11 +210,14 @@ export default {
         ctxs.push(c);
       }
 
-      // this.draw();
-      this.makeTree();
-      // fadeInOut = TweenMax.staggerTo('.treeCanvas', 1, {
-      //   opacity: 0
-      // }).reverse();
+      var that = this;
+      this.$refs.gradient.onload = () => {
+        console.log('onload');
+        var gradientCtx = that.$refs.gradientCanvas.getContext('2d');
+        gradientCtx.drawImage(that.$refs.gradient, 0, 0, window.innerWidth, window.innerHeight);
+      }
+
+      this.draw();
   },
   unmounted: function() {
       cancelAnimationFrame(rAF);
@@ -270,7 +254,15 @@ canvas {
   visibility: hidden;
 }
 
-.colorCanvas {
-  /* visibility: hidden; */
+#gradientCanvas {
+  visibility: hidden;
+}
+
+#gradientImage {
+  visibility: hidden;
+}
+
+#gradient {
+  visibility: hidden;
 }
 </style>
