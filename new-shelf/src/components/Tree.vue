@@ -139,9 +139,9 @@ export default {
         var treeData = tempCtx.getImageData(0, 0, window.innerWidth, window.innerHeight);
         colorCtx.putImageData(treeData, 0, 0);
         colorCtx.globalCompositeOperation = 'source-in';
-        var gradientCtx = that.$refs.gradientCanvas.getContext('2d');
-        var colorData = gradientCtx.getImageData(0, 0, window.innerWidth, window.innerHeight);
-        colorCtx.putImageData(colorData, 0, 0);
+        // var gradientCtx = that.$refs.gradientCanvas.getContext('2d');
+        var colorData = colorCtx.drawImage(that.$refs.gradientCanvas, 0, 0, window.innerWidth, window.innerHeight);
+        // colorCtx.putImageData(colorData, 0, 0);
 
         for(var j=0; j<branches.length; j++) {
           if (branches[j].done == true) {
