@@ -1,8 +1,19 @@
 <template>
   <div tabindex="-1" ref="container" class="circle">
     <svg viewBox="0 0 550 400" ref="svg" preserveAspectRatio="xMidYMax meet">
-        <g id="stems" ref="stems" fill="none" stroke="green"></g>
-        <g id="leaves" ref="leaves"></g>
+        
+        <!-- <defs> -->
+            <!-- <mask id="photo-mask"> -->
+                <g id="stems" ref="stems" fill="none" stroke="green" stroke-width="0.5"></g>
+                <g id="leaves" ref="leaves"></g>
+            <!-- </mask> -->
+        <!-- </defs> -->
+
+        <!-- <image
+            mask="url(#photo-mask)"
+            xlink:href="../assets/Beige_BG-01.png"
+            x="0" y="0"
+            width="1920" height="1080" /> -->
     </svg>
   </div>
 </template>
@@ -23,8 +34,8 @@ var ns = "http://www.w3.org/2000/svg";
 var leafPath  = "M0,0 Q5,-5 10,0 5,5 0,0z";
 leafPath = "M6.5,1.8c-0.4-0.4-0.7-0.7-1.1-1L4.9,0.4c0,0-0.1-0.1-0.2-0.1L3.3,0H3.2C2.2,0,1.7,0.1,1,0.9C0.8,1.1,0.6,1.3,0.4,1.4c-0.6,0.4-1.1,1-1.3,1.7c-0.2,1.1,0,2.2,0.4,3.3c0.2,0.6,0.6,1.2,1,1.8c0.1,0.1,0.2,0.2,0.2,0.4C1,9.2,1.4,9.9,2.3,10c0.2,0,0.5,0,0.7,0c1.8,0.1,3.6-1,4.3-2.7C8.1,5.5,7.8,3.3,6.5,1.8z";
 var ctx, stems, leaves, svg;
-var leafCount = 30;
-var plants    = 30;
+var leafCount = 20;
+var plants    = 1;
 var centerX   = 275;
 var offsetX   = 175;
 
@@ -115,14 +126,14 @@ export default {
             //attr: { id, d: `M${values.join(" ")}` }
             attr: { id, d: solve(coords) }
         });
-        
+        console.log(points);
         for (var i = 0; i < leafCount; i++) {
             var point = points[length - 1 - i];    
             var scale = {
             x: 0.8 + 0.00001  * i,
             y: 0.8 + 0.00005 * i
             };
-            // console.log(point);
+            console.log(point);
             this.createLeaf(point, scale, height, id);
         }    
     },
@@ -153,7 +164,6 @@ export default {
         var start = point.y / height;  // 
         var off   = events.on(grow, growLeaf);
         function growLeaf(growth) {
-            // console.log('growth' + growth, start);
             if (growth >= start) {
                 // Remove listener
                 off();
@@ -163,8 +173,8 @@ export default {
                     scaleX: scale.x,
                     scaleY: scale.y,
                     rotation: _.random(180) - 180,
-                    fill: `rgba(0,${_.random(110, 160)},0, 0.5)`,
-                    // fill: "red",
+                    fill: `rgba(0,${_.random(110, 160)},0, ${Math.random().toFixed(1)})`,
+                    // fill: "white",
                     attr: { d: leafPath }        
                 });
                 
@@ -203,7 +213,7 @@ svg {
     position: absolute;
     left: 0;
     top: 0;
-    background-color: navy;
+    /* background-color: navy; */
     width: 100%;
     height: 100%;
 }
