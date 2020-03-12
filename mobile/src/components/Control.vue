@@ -33,26 +33,27 @@ export default {
       // name : button name on mobile app
       // value : func page will get value as props
       info : [
-        {
-            category: "image",
-            list: [{name: "Health", data: { func: 'image', value: "Energetic-01.jpg"}},
-                  {name: "Family", data: { func: 'image', value: "Family-01.jpg" }},
-                  {name: "Fandom", data: { func: 'image', value: "Fandom-01.jpg" }},
-                  {name: "Green", data: { func: 'image', value: "Green-01.jpg" }},
-                  {name: "Kidult", data: { func: 'image', value: "Kidult.jpg" }}],
-        },
+        // {
+        //     category: "image",
+        //     list: [{name: "Health", data: { func: 'image', value: "Energetic-01.jpg"}},
+        //           {name: "Family", data: { func: 'image', value: "Family-01.jpg" }},
+        //           {name: "Fandom", data: { func: 'image', value: "Fandom-01.jpg" }},
+        //           {name: "Green", data: { func: 'image', value: "Green-01.jpg" }},
+        //           {name: "Kidult", data: { func: 'image', value: "Kidult.jpg" }}],
+        // },
         {
             category: "video",
             list: [{name: "video0", data: { func: 'video', value: "video0.mp4"}}],
         },
         {
             category: "Scenario",
-            list: [{name: "Green Life1", data: { func: 'home', value: { theme: 'green1'}}},
-                   {name: "Green Life2", data: { func: 'home', value: { theme: 'green2'}}},
-                   {name: "Family Board", data: { func: 'home', value: 'photo'}},
-                   {name: "Edit Board", data: { func: 'home', value: 'addBoard'}},
-                   {name: "On Mirroring", data: { func: 'home', value: 'on'}},
-                   {name: "Off Mirroring", data: { func: 'home', value: 'off'}}
+            list: [{name: "Green Life1", data: { func: 'greenery', value: { theme: '0'}}},
+                   {name: "thumbnail", data: {func: 'greenery', value: 'thumbnail'}},
+                   {name: "Green Life2", data: { func: 'greenery', value: { theme: '1'}}},
+                   {name: "Go Health", data: { func: 'health', value: {}}},
+                   {name: "Edit Board", data: { func: 'health', value: 'addBoard'}},
+                   {name: "On Mirroring", data: { func: 'greenery', value: 'on'}},
+                   {name: "Off Mirroring", data: { func: 'greenery', value: 'off'}}
                    ]
         },
         {
@@ -62,9 +63,10 @@ export default {
         {
             category: "fractal",
             list: [
-                    {name: "play/pause", data: { func: 'home', value: {pp : 'pp'}}},
-                    {name: "restart", data: {func: 'home', value: {restart: 'restart'}}},
-                    {name: 'pleatsOpen', data: {func: 'home', value: {pleats: 'pleats'}}}
+                    {name: "play/pause", data: { func: 'greenery', value: {pp : 'pp'}}},
+                    {name: "restart", data: {func: 'greenery', value: {restart: 'restart'}}},
+                    // {name: 'pleatsOpen', data: {func: 'home', value: {pleats: 'pleats'}}}
+                    
                   ]
         },
       ],

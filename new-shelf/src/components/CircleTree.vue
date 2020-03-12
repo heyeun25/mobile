@@ -35,16 +35,23 @@ var leafPath  = "M0,0 Q5,-5 10,0 5,5 0,0z";
 leafPath = "M6.5,1.8c-0.4-0.4-0.7-0.7-1.1-1L4.9,0.4c0,0-0.1-0.1-0.2-0.1L3.3,0H3.2C2.2,0,1.7,0.1,1,0.9C0.8,1.1,0.6,1.3,0.4,1.4c-0.6,0.4-1.1,1-1.3,1.7c-0.2,1.1,0,2.2,0.4,3.3c0.2,0.6,0.6,1.2,1,1.8c0.1,0.1,0.2,0.2,0.2,0.4C1,9.2,1.4,9.9,2.3,10c0.2,0,0.5,0,0.7,0c1.8,0.1,3.6-1,4.3-2.7C8.1,5.5,7.8,3.3,6.5,1.8z";
 var ctx, stems, leaves, svg;
 var leafCount = 20;
-var plants    = 1;
+var plants    = 100;
 var centerX   = 275;
-var offsetX   = 175;
+var offsetX   = 400;
 
-// function getRandomInt(min, max) {
-//   min = Math.ceil(min);
-//   max = Math.floor(max);
-//   var ret = Math.floor(Math.random() * (max - min)) + min; //최댓값은 제외, 최솟값은 포함
-//   return ret;
-// }
+var colorMap = [
+    '104, 116, 63',
+    '106, 187, 139',
+    '25, 82, 42',
+    '172, 186, 120',
+    '75, 143, 72'
+];
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min; //최댓값은 제외, 최솟값은 포함
+}
 
 function solve(data) {
   var size = data.length;
@@ -86,6 +93,7 @@ export default {
     keyDown: function() {
     },
     draw: function() {
+        console.log('draw');
         // this.createBranch();
         stems = this.$refs.stems;
         leaves = this.$refs.leaves;
@@ -126,14 +134,14 @@ export default {
             //attr: { id, d: `M${values.join(" ")}` }
             attr: { id, d: solve(coords) }
         });
-        console.log(points);
+        // console.log(points);
         for (var i = 0; i < leafCount; i++) {
             var point = points[length - 1 - i];    
             var scale = {
             x: 0.8 + 0.00001  * i,
             y: 0.8 + 0.00005 * i
             };
-            console.log(point);
+            // console.log(point);
             this.createLeaf(point, scale, height, id);
         }    
     },
@@ -173,7 +181,7 @@ export default {
                     scaleX: scale.x,
                     scaleY: scale.y,
                     rotation: _.random(180) - 180,
-                    fill: `rgba(0,${_.random(110, 160)},0, ${Math.random().toFixed(1)})`,
+                    fill: `rgba(${getRandomInt(36, 130)}, ${169}, ${50}, ${Math.random().toFixed(1)})`,
                     // fill: "white",
                     attr: { d: leafPath }        
                 });
@@ -183,11 +191,11 @@ export default {
         }
     }
   },
-  mounted: function() {
+  mounted() {
+    console.log('mounted');
     this.draw();
   },
-  unmounted: function() {
-      cancelAnimationFrame(rAF);
+  destroyed() {
   }
 }
 </script>
