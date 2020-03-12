@@ -23,6 +23,7 @@ const PLANT = {
     TREE: 0,
     CIRCLE: 1
 }
+var getMobile;
 export default {
     name: 'Greenery',
     components: {
@@ -42,7 +43,8 @@ export default {
     },
     mounted() {
         this.$refs.home.focus();
-        this.$socket.on('appMsg', this.getMobile);
+        getMobile = this.getMobile.bind(this);
+        this.$socket.on('appMsg', getMobile);
     },
     methods: {
         tooglePleats: function() {
@@ -71,7 +73,7 @@ export default {
         }
     },
     destroyed() {
-        this.$socket.off('appMsg', this.getMobile.bind(this));
+        this.$socket.off('appMsg', getMobile);
     },
 }
 </script>

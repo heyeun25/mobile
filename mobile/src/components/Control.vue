@@ -52,8 +52,8 @@ export default {
                    {name: "Green Life2", data: { func: 'greenery', value: { theme: '1'}}},
                    {name: "Go Health", data: { func: 'health', value: {}}},
                    {name: "Edit Board", data: { func: 'health', value: 'addBoard'}},
-                   {name: "On Mirroring", data: { func: 'greenery', value: 'on'}},
-                   {name: "Off Mirroring", data: { func: 'greenery', value: 'off'}}
+                   {name: "Phone Call", data: { func: 'health', value: 'call'}},
+                   {name: "Wide", data: { func: 'health', value: 'wide'}}
                    ]
         },
         {
