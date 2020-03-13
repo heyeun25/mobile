@@ -8,6 +8,7 @@ import CircleTree from '../components/CircleTree.vue'
 import Pleats from '../components/Pleats.vue'
 import Greenery from '../pages/Greenery.vue'
 import Health from '../pages/Health.vue';
+import Kaws from '../components/Kaws.vue'
 
 Vue.use(Router)
 export default new Router({
@@ -18,5 +19,6 @@ export default new Router({
     { path: '/video', name: 'video', component: Video, props: true},
     { path: '/pleats', name: 'pleats', component: Pleats},
     { path: '/greenery', name: 'greenery', component: Greenery},
-    { path: '/health', name: 'health', component: Health}
+    { path: '/health', name: 'health', component: Health},
+    { path: '/kaws', name: 'kaws', component: Kaws}
   ]});
