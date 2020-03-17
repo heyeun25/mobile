@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" ref="container">
     <span>{{orient}}</span>
     <div v-for="(value, index) in info" v-bind:key="index" class="category">
       <span>{{value.category}}</span>
@@ -13,6 +13,7 @@
       </div>
     </div>
     <video
+      v-bind:class="(orient == 0 ? 'vertical' : 'horizontal')"
       ref="myVideo"
       controls
       muted
@@ -34,7 +35,7 @@ export default {
   },
   data: function() {
     return {
-      orient: 'hi',
+      orient: 0,
       // func : router name of shelf front app
       // category : category on mobile app
       // name : button name on mobile app
@@ -88,18 +89,23 @@ export default {
     },
     send: function(data) {
       console.log(JSON.stringify(data));
-      if (data.value == 'call') {
-        this.$refs.myVideo.style.visibility = "inherit";
-        this.$refs.myVideo.requestFullscreen();
-        this.$refs.myVideo.play();
-        return;
-      }
+      // if (data.value == 'call') {
+      //   this.$refs.myVideo.style.visibility = "inherit";
+      //   // this.$refs.myVideo.requestFullscreen();
+      //   this.$refs.myVideo.play();
+      //   return;
+      // }
       socket.emit('appMsg', data);
     },
     handleOrientation: function() {
       this.orient = JSON.stringify(window.orientation);
       console.log('orientation change');
-      alert('aa');
+      if (this.orient == 90) {
+        this.send({ func: 'health', value: 'wide'}); // toggle
+      } else if (this.orient == 0){
+        this.send({ func: 'health', value: 'wide'}); // toggle
+      }
+      // alert('aa');
     },
     onPlay: function() {
       socket.emit('appMsg', { func: 'health', value: 'call'});
@@ -108,7 +114,7 @@ export default {
       // console.log('pause')
       this.$refs.myVideo.currentTime = 0;
       this.$refs.myVideo.style.visibility = "hidden";
-      this.$refs.myVideo.exitFullscreen();
+      // this.$refs.myVideo.exitFullscreen();
       // alert('aa');
     }
   },
@@ -118,6 +124,7 @@ export default {
     // window.addEventListener("deviceorientation", () => {
     //   alert('device orientation');
     // })
+    this.$refs.container.requestFullscreen();
     this.$refs.myVideo.onpause = this.onPause;
     this.$refs.myVideo.onplay = this.onPlay;
   },
@@ -159,7 +166,16 @@ video {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
   visibility: hidden;
 }
+
+.vertical {
+  height: 100%;
+}
+
+.horizontal {
+  width: 100%;
+}
+
+
 </style>

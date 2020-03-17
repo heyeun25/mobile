@@ -166,7 +166,6 @@ export default {
         }
         var imgData = gradientCtx.getImageData(gradientStartPoint, 0, window.innerWidth, window.innerHeight)
         partCtx.putImageData(imgData, 0, 0);
-
         var colorData = treeCtx.drawImage(that.$refs.partGradient, 0, 0,
             window.innerWidth, window.innerHeight);
 
@@ -267,7 +266,7 @@ canvas {
 
 .tree {
   z-index: 99999;
-  background-color: black;
+  /* background-color: black; */
   position: absolute;
   top: 0;
   left: 0;

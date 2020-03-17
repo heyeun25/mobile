@@ -7,10 +7,12 @@
         </div>
         <video ref="phoneCall"
             v-bind:class="phoneCallClass" controls
-            src="../assets/video/phoneCall.mp4"></video>
+            type="video/ogg; codecs=theora"
+            src="http://127.0.0.1:1234"></video>
         <video ref="wideCall" 
             v-bind:class="wideCallClass" controls
-            src="../assets/video/phoneCall.mp4"></video>
+            type="video/ogg; codecs=theora"
+            src="http://127.0.0.1:1234"></video>
     </div>
 </template>
 <script>
