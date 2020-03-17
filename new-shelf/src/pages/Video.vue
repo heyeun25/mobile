@@ -1,6 +1,7 @@
 <template>
   <div>
-    <video src="../assets/Beige_BG-01.png"/>
+    <video controls ref="myVideo"
+      src="../assets/video/phoneCall.mp4"></video>
   </div>
 </template>
 
@@ -18,6 +19,7 @@ export default {
     }
   },
   mounted: function() {
+    this.$refs.myVideo.play();
   },
   unmounted: function() {
   }
@@ -30,6 +32,6 @@ video {
     left: 0;
     top: 0;
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
 }
 </style>

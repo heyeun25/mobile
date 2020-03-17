@@ -181,8 +181,7 @@ export default {
                     scaleX: scale.x,
                     scaleY: scale.y,
                     rotation: _.random(180) - 180,
-                    fill: `rgba(${getRandomInt(36, 130)}, ${169}, ${50},
-                        ${Math.random().toFixed(1)})`,
+                    fill: `rgba(${getRandomInt(36, 130)}, ${169}, ${50}, ${Math.random().toFixed(1)})`,
                     // fill: "white",
                     attr: { d: leafPath }        
                 });

@@ -1,15 +1,22 @@
 <template>
     <div class="home" ref="home" v-on:click="tooglePleats">
-        <Pleats 
-            ref="pleats"
-            v-bind:show="openPleats" v-bind:color="pleatsColor"></Pleats>
+        <button>hello</button>
+        <Pleats ref="pleats"
+            v-bind:show="openPleats"
+            v-bind:color="pleatsColor"></Pleats>
         <Tree ref="tree" 
             v-if="plantMode == 0"
             v-bind:playpause="playpause"></Tree>
         <CircleTree ref="circle" 
             v-if="plantMode == 1"></CircleTree>
+        <Character ref="pattern"
+            v-if="plantMode >= 2"
+            v-bind:imgSrc="characterImage"
+            v-bind:imgSize="characterSize"></Character>
         <transition name="slide-up">
-            <Thumbnail v-if="thumbnail"></Thumbnail>
+            <Thumbnail v-if="thumbnail" ref="thumbnail"
+            v-bind:items="items"
+            v-bind:change-theme="changeTheme"></Thumbnail>
         </transition>
     </div>
 </template>
@@ -18,11 +25,19 @@ import Pleats from '../components/Pleats.vue'
 import Tree from '../components/Tree.vue'
 import CircleTree from '../components/CircleTree.vue'
 import Thumbnail from '../components/Thumbnail.vue'
-
+import Character from '../components/Character.vue'
+const imageData = [
+    {w: 222, h: 172},
+    {w: 442, h: 906},
+    {w: 910, h: 1073}
+]
 const PLANT = {
     TREE: 0,
-    CIRCLE: 1
-}
+    CIRCLE: 1,
+    PATTERN_K: 2,
+    PATTERN_D: 3,
+    PATTERN_P: 4,
+};
 var getMobile;
 export default {
     name: 'Greenery',
@@ -30,7 +45,8 @@ export default {
         Tree,
         Pleats,
         CircleTree,
-        Thumbnail
+        Thumbnail,
+        Character
     },
     data() {
         return {
@@ -39,6 +55,13 @@ export default {
             playpause: false,
             plantMode: PLANT.TREE,
             thumbnail: false,
+            items: [
+                'green_2.jpg',
+                'kaws.png',
+                'pengsu.png',
+                'donald.png'],
+            characterSize: imageData[0],
+            characterImage: 'kaws.png',
         }
     },
     mounted() {
@@ -47,6 +70,15 @@ export default {
         this.$socket.on('appMsg', getMobile);
     },
     methods: {
+        changeTheme: function(theme) {
+            console.log('changeTheme', theme+1);
+            this.plantMode = theme+1;
+            if (this.plantMode >= PLANT.PATTERN_K) {
+                this.characterSize = imageData[this.plantMode-PLANT.PATTERN_K];
+                this.characterImage = this.items[this.plantMode-1];
+            }
+            this.thumbnail = false;
+        },
         tooglePleats: function() {
             this.openPleats = !this.openPleats;
             if (this.openPleats) {
@@ -56,19 +88,15 @@ export default {
             }
         },
         getMobile: function(data) {
-            console.log('getMobile');
+            console.log('getMobile', data);
             if (data.value.color) this.pleatsColor = data.value.color;
-            if (data.value.pp) this.playpause = !this.playpause;
-            if (data.value.restart) this.$refs.tree.restart();
-            if (data.value.pleats) {
-                this.tooglePleats();
-            }
-            if (data.value.theme) {
-                this.plantMode = parseInt(data.value.theme);
-                console.log('plantMode', this.plantMode);
-            }
-            if (data.value == 'thumbnail') {
-                this.thumbnail = !this.thumbnail;
+            else if (data.value.pp) this.playpause = !this.playpause;
+            else if (data.value.restart) this.$refs.tree.restart();
+            else if (data.value.pleats) this.tooglePleats();
+            else if (data.value.theme) this.plantMode = parseInt(data.value.theme);
+            else if (data.value == 'thumbnail') this.thumbnail = !this.thumbnail;
+            else if (data.value.key) {
+                this.thumbnail ? this.$refs.thumbnail.handleKey(data.value.key): null
             }
         }
     },

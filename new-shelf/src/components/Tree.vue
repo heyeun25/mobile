@@ -21,6 +21,7 @@ var rAF;
 var leaf = [[0, 0], [5, -5], [10, 0], [5, 5], [0, 0]];
 var ADD = 1;
 const IMAGE_SIZE = {w: 8680, h: 2160};
+var VELOCITY = 0.1;
 
 function Tree(x, y, len, angle, depth, parent) {
   this.x = x;
@@ -34,16 +35,16 @@ function Tree(x, y, len, angle, depth, parent) {
   this.done = false;
   this.right = null;
   this.left = null;
-  this.v = 0.1;
+  this.v = 0;
   this.endX = x - parseInt(len * Math.sin(angle * Math.PI/180));
   this.endY = y - parseInt(len * Math.cos(angle * Math.PI/180));
   this.update = function() {
       // update
-      this.v += 0.1;
+      this.v += VELOCITY;
       this.px = this.x;
       this.py = this.y;
-      this.x = this.originX - (this.len * this.v).toFixed(1) * Math.sin(angle * Math.PI/180);
-      this.y = this.originY - (this.len * this.v).toFixed(1) * Math.cos(angle * Math.PI/180);
+      this.x = this.originX - (this.len * this.v) * Math.sin(angle * Math.PI/180);
+      this.y = this.originY - (this.len * this.v) * Math.cos(angle * Math.PI/180);
       if (this.v > 1) this.done = true;
   }
 }
@@ -71,6 +72,15 @@ export default {
   props: {
     msg: String,
     playpause: Boolean,
+  },
+  watch: {
+    playpause: function(val) {
+      if (val == true) {
+        VELOCITY = 0.01;
+      } else {
+        VELOCITY = 0.1;
+      }
+    }
   },
   methods: {
     restart: function() {
@@ -122,10 +132,10 @@ export default {
         }
         then = now;
 
-        if (that.playpause == true) {
-          rAF = requestAnimationFrame(animate);
-          return;
-        }
+        // if (that.playpause == true) {
+        //   rAF = requestAnimationFrame(animate);
+        //   return;
+        // }
         // draw
         // if (branches.length <= 0) {
         //   cancelAnimationFrame(rAF);
@@ -137,6 +147,7 @@ export default {
             tempCtx.moveTo(branches[i].px, branches[i].py);
             tempCtx.lineTo(branches[i].x, branches[i].y);
             tempCtx.lineWidth = 2;
+            tempCtx.strokeStyle = 'white';
             tempCtx.stroke();
             branches[i].update();
         }
@@ -176,7 +187,7 @@ export default {
     makeTree: function() {
       var trees = [];
       const startX = window.innerWidth/2,
-      startY = window.innerHeight + 150,
+      startY = window.innerHeight + 130,
       len = 120,
       angle = 0;
 
@@ -256,6 +267,12 @@ canvas {
 
 .tree {
   z-index: 99999;
+  background-color: black;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .temp {

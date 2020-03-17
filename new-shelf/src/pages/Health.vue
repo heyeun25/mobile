@@ -70,7 +70,7 @@ export default {
                 this.$refs.wideCall.play();
             } else { // hide wide
                 // init video tag
-                // makeFull.reverse(); 
+                makeFull.reverse(); 
                 this.$refs.wideCall.pause();
                 this.$refs.wideCall.currentTime = 0;
             }
@@ -143,7 +143,6 @@ export default {
 }
 
 .wideCall {
-    /* visibility: hidden; */
     outline: 1px solid red;
     position: absolute;
     top: 0;
