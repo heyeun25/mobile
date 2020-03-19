@@ -41,14 +41,14 @@ export default {
       // name : button name on mobile app
       // value : func page will get value as props
       info : [
-        // {
-        //     category: "image",
-        //     list: [{name: "Health", data: { func: 'image', value: "Energetic-01.jpg"}},
-        //           {name: "Family", data: { func: 'image', value: "Family-01.jpg" }},
-        //           {name: "Fandom", data: { func: 'image', value: "Fandom-01.jpg" }},
-        //           {name: "Green", data: { func: 'image', value: "Green-01.jpg" }},
-        //           {name: "Kidult", data: { func: 'image', value: "Kidult.jpg" }}],
-        // },
+        {
+            category: "image",
+            list: [{name: "Health", data: { func: 'image', value: "Energetic-01.jpg"}},
+                  {name: "Family", data: { func: 'image', value: "Family-01.jpg" }},
+                  {name: "Fandom", data: { func: 'image', value: "Fandom-01.jpg" }},
+                  {name: "Green", data: { func: 'image', value: "Green-01.jpg" }},
+                  {name: "Kidult", data: { func: 'image', value: "Kidult.jpg" }}],
+        },
         
         {
             category: "Scenario",
@@ -56,8 +56,7 @@ export default {
                    {name: "thumbnail", data: {func: 'greenery', value: 'thumbnail'}},
                    {name: "Go Health", data: { func: 'health', value: {}}},
                    {name: "Edit Board", data: { func: 'health', value: 'addBoard'}},
-                   {name: "Phone Call", data: { func: 'health', value: 'call'}},
-                   {name: "Wide", data: { func: 'health', value: 'wide'}}
+                   {name: "Phone Call", data: { func: 'health', value: { phoneCall : 'vertical'}}},
                    ]
         },
         {
@@ -89,31 +88,32 @@ export default {
     },
     send: function(data) {
       console.log(JSON.stringify(data));
-      // if (data.value == 'call') {
-      //   this.$refs.myVideo.style.visibility = "inherit";
-      //   // this.$refs.myVideo.requestFullscreen();
-      //   this.$refs.myVideo.play();
-      //   return;
-      // }
+      if (data.value.phoneCall && data.value.phoneCall == 'vertical') {
+        this.$refs.myVideo.style.visibility = "inherit";
+        // this.$refs.myVideo.requestFullscreen();
+        this.$refs.myVideo.play();
+        // return;
+      }
       socket.emit('appMsg', data);
     },
     handleOrientation: function() {
       this.orient = JSON.stringify(window.orientation);
       console.log('orientation change');
       if (this.orient == 90) {
-        this.send({ func: 'health', value: 'wide'}); // toggle
+        this.send({ func: 'health', value: { phoneCall : 'horizontal'}}); // toggle
       } else if (this.orient == 0){
-        this.send({ func: 'health', value: 'wide'}); // toggle
+        this.send({ func: 'health', value: { phoneCall : 'vertical'}}); // toggle
       }
       // alert('aa');
     },
     onPlay: function() {
-      socket.emit('appMsg', { func: 'health', value: 'call'});
+      // socket.emit('appMsg', { func: 'health', value: 'call'});
     },
     onPause: function() { 
       // console.log('pause')
       this.$refs.myVideo.currentTime = 0;
       this.$refs.myVideo.style.visibility = "hidden";
+      this.send({ func: 'health', value : {phoneCall : 'finish'}})
       // this.$refs.myVideo.exitFullscreen();
       // alert('aa');
     }

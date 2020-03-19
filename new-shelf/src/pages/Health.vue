@@ -7,12 +7,10 @@
         </div>
         <video ref="phoneCall"
             v-bind:class="phoneCallClass" controls
-            type="video/ogg; codecs=theora"
-            src="http://127.0.0.1:1234"></video>
+            src="../assets/video/phoneCall.mp4"></video>
         <video ref="wideCall" 
             v-bind:class="wideCallClass" controls
-            type="video/ogg; codecs=theora"
-            src="http://127.0.0.1:1234"></video>
+            src="../assets/video/phoneCall.mp4"></video>
     </div>
 </template>
 <script>
@@ -82,14 +80,18 @@ export default {
         getMobile: function(data) {
             if (data.value == 'addBoard') {
                 this.showBoard = !this.showBoard;
-            }
-            if (data.value == 'call') {
-                this.phoneCall = !this.phoneCall;
-            }
-            if (data.value == 'wide') {
-                this.wide = !this.wide;
-                if (this.wide) {
+            } else if (data.value.phoneCall) {
+                var p = data.value.phoneCall;
+                if (p == 'vertical') {
+                    this.phoneCall = true;
+                    this.wide = false;
+                } else if (p == 'horizontal') {
+                    console.log('horizontal');
+                    this.wide = true;
                     this.phoneCall = false;
+                } else if (p == 'finish') {
+                    this.phoneCall = false;
+                    this.wide = false;
                 }
             }
         }
