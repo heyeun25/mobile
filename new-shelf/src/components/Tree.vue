@@ -265,7 +265,6 @@ canvas {
 }
 
 .tree {
-  z-index: 99999;
   /* background-color: black; */
   position: absolute;
   top: 0;

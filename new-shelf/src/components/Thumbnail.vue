@@ -1,5 +1,9 @@
 <template>
     <div class="thumbnail">
+        <div class="category">
+            <span>Interactive</span>
+            <span>Ambient</span>
+        </div>
         <div v-for="(item, index) in items"
             v-bind:class="itemClass(index)"
             v-bind:key="index">
@@ -59,23 +63,29 @@ export default {
 <style>
 .thumbnail {
     position: absolute;
-    top: 80%;
+    top: 1600px;
     width: 100%;
-    height: 20%;
-    background-color: white;
+    height: 527px;
+    background-color: black;
     display: flex;
+    align-items: center;
 }
 
 .item {
-    width: 300px;
-    height: 100%;
+    /* position: absolute; */
+    top: 30px;
+    width: 688px;
+    height: 388px;
+    /* height: 100%; */
     /* background-color: green; */
-    outline: 1px solid white;
+    outline: 1px solid black;
 }
 
 .item > img {
     /* position: absolute; */
     /* top: 5px; */
+    width: 100%;
+    height: 100%;
     margin-top: 5px;
     /* width: 280px; */
     height: 95%;
@@ -84,5 +94,20 @@ export default {
 .select {
     box-shadow: 0 0 0 5px aqua inset;
     /* outline: 5px solid red; */
+}
+
+.category {
+    width: 300px;
+    height: 388px;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+}
+
+.category > span {
+    color: white;
+    font-size: 48px;
+    font-family: 'SamsungSharpSans';
 }
 </style>

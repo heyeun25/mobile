@@ -9,6 +9,7 @@ import Pleats from '../components/Pleats.vue'
 import Greenery from '../pages/Greenery.vue'
 import Health from '../pages/Health.vue';
 import Character from '../components/Character.vue'
+import Account from '../components/Account.vue'
 
 Vue.use(Router)
 export default new Router({
@@ -20,5 +21,6 @@ export default new Router({
     { path: '/pleats', name: 'pleats', component: Pleats},
     { path: '/greenery', name: 'greenery', component: Greenery},
     { path: '/health', name: 'health', component: Health},
-    { path: '/character', name: 'character', component: Character}
+    { path: '/character', name: 'character', component: Character},
+    { path: '/account', name: 'account', component: Account, props: true}
   ]});

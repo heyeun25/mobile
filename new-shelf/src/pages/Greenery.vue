@@ -9,7 +9,7 @@
             v-bind:playpause="playpause"></Tree>
         <CircleTree ref="circle" 
             v-if="plantMode == 1"></CircleTree>
-        <Character ref="pattern"
+        <Character ref="character"
             v-if="plantMode >= 2"
             v-bind:imgSrc="characterImage"
             v-bind:imgSize="characterSize"></Character>
@@ -29,10 +29,13 @@ import Tree from '../components/Tree.vue'
 import CircleTree from '../components/CircleTree.vue'
 import Thumbnail from '../components/Thumbnail.vue'
 import Character from '../components/Character.vue'
+import * as widgetData from '../assets/widgets.json'
+
 const imageData = [
     {w: 222, h: 172},
     {w: 442, h: 906},
-    {w: 910, h: 1073}
+    {w: 910, h: 1073},
+    {w: 3874, h: 4099}
 ]
 const PLANT = {
     TREE: 0,
@@ -65,6 +68,7 @@ export default {
                 'donald.png'],
             characterSize: imageData[0],
             characterImage: 'kaws.png',
+            // widgetData: widgetData.widgets,
         }
     },
     mounted() {
@@ -98,6 +102,10 @@ export default {
             else if (data.value.pleats) this.tooglePleats();
             else if (data.value.theme) this.plantMode = parseInt(data.value.theme);
             else if (data.value == 'thumbnail') this.thumbnail = !this.thumbnail;
+            else if (data.value == 'account') {
+                // dim and moveTo account
+                this.$refs.character.dim('account');
+            }
             else if (data.value.key) {
                 this.thumbnail ? this.$refs.thumbnail.handleKey(data.value.key): null
             }

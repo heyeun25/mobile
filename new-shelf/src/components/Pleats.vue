@@ -1,5 +1,5 @@
 <template>
-    <div class="container" ref="container" v-bind:style="containerStyle">
+    <div class="pleatsContainer" ref="pleatsContainer" v-bind:style="containerStyle">
         <div class="pleats" ref="pleats"
                 v-bind:key="'p' + index"
                 v-for="index in 140"
@@ -19,7 +19,6 @@
 <script>
 import TweenMax from "gsap"
 import { setTimeout } from 'timers'
-import * as widgetData from '../assets/widgets.json'
 
 const PLEATS_WIDTH = 40;
 const WIDGET_WIDTH = 300;
@@ -31,7 +30,14 @@ var widgetAni = [];
 
 export default {
     name: 'Pleats',
-    props: ['show', 'color'],
+    props: {
+        show: Boolean,
+        color: String,
+        widgets: {
+            type: Array,
+            default: () => [],
+        }
+    },
     watch: {
         show: function(newVal, oldVal) {
             if (newVal) this.open(); 
@@ -44,7 +50,7 @@ export default {
                 left: -PLEATS_WIDTH + 'px',
             },
             pleatsWidth: PLEATS_WIDTH + 'px',
-            widgets: widgetData.widgets,
+            // widgets: widgetData.widgets,
         }
     },
     methods: {
@@ -106,23 +112,24 @@ export default {
         },
         removeMirroring: function() {
             console.log('removeMirroring');
-        }
+        },
+        
     },
     mounted() {
-        // this.$socket.on('appMsg', this.changeColor);
+        console.log('this.widgets',);
         PLEATS_CNT = window.innerWidth / PLEATS_WIDTH * SHIRINK;
         var p = this.$refs.pleats;
         var w = this.$refs.widget;
-        console.log('w', w);
         for(var i =0; i<p.length; i++) {
             p[i].style.left = i * PLEATS_WIDTH * SHIRINK + 'px';
             p[i].style.zIndex = -i*2;
-            w[i] ? w[i].style.zIndex = -i*2-1 : null;
+            (w && w[i]) ? w[i].style.zIndex = -i*2-1 : null;
         }
         
         pleatsAni = TweenMax.to('.pleats', 0.3, {
             boxShadow: "20px 8px 20px rgba(0, 0, 0, 0.5)",
             width: PLEATS_WIDTH * SHIRINK,
+            onComplete: this.widgets.length <=0 ? this.onCompleteShowWidget : null,
         }).reverse();
 
         for(var i=0; i<this.widgets.length; i++) {
@@ -141,7 +148,7 @@ export default {
 }
 </script>
 <style>
-.container {
+.pleatsContainer {
     position: absolute;
     top: 0;
     left: 0;
@@ -160,7 +167,7 @@ export default {
     width: 10px;
     height: 110%;
     background-color: rgb(0, 0, 228);
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    /* box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); */
 }
 
 .widget {

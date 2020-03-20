@@ -19,8 +19,9 @@ export default {
     this.$socket.on('appMsg', function(d) {
       console.log(d);
       // console.log(myRouter.currentRoute);
-      if (myRouter.currentRoute.name !== d.func)
+      if (myRouter.currentRoute.name !== d.func) {
         myRouter.push({name: d.func, params: d.value})
+      }
     });
   }
 }

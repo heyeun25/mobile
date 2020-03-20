@@ -63,9 +63,9 @@ export default {
             el.width = this.imgSize.w;
             el.height = this.imgSize.h;
 
-            var x = _.random(-window.innerWidth/2 - this.imgSize.w/2, window.innerWidth/2);
+            var x = _.random(-window.innerWidth/2 - this.imgSize.w/2, window.innerWidth);
             var y = _.random(-this.imgSize.h/2, window.innerHeight);
-            var scaleX = 150 / (this.imgSize.w * 2) + 0.01 * _.random(10, 20);
+            var scaleX = 200 / (this.imgSize.w) + 0.02 * _.random(1, 20);
             // var scaleY = 0.8 + 0.003 * _.random(3, 10);
             var off = events.on(id, popCharacter);
             var that = this;
@@ -141,6 +141,19 @@ export default {
                 }
             }, 100);
         },
+        dim: function(movePage) {
+            console.log('dim');
+            var myRouter = this.$router;
+            TweenMax.to('.character', 1, {
+                opacity: 0,
+                onComplete: function() {
+                    if (myRouter.currentRoute.name !== movePage) {
+                        myRouter.push({name: movePage, params: {id : 0 }})
+                    }
+                }
+            });
+
+        }
     },
     mounted() {
         console.log('character mounted');
