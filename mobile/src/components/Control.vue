@@ -23,7 +23,7 @@
 
 <script>
 import io from 'socket.io-client'
-var socket = io('http://192.168.0.148:8080')
+var socket = io('http://localhost:8080')
 socket.on('connect', function() {
   console.log('socket');
 })

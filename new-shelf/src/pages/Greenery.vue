@@ -13,6 +13,9 @@
             v-if="plantMode >= 2"
             v-bind:imgSrc="characterImage"
             v-bind:imgSize="characterSize"></Character>
+        <span class="name">Hi, Joanah!</span>
+        <span class="message">Your plants ready for watering today.</span>
+        <span class="musicTitle">▶ Chocolate legs - Eric Bernet</span>
         <transition name="slide-up">
             <Thumbnail v-if="thumbnail" ref="thumbnail"
             v-bind:items="items"
@@ -114,11 +117,36 @@ export default {
     width: 100%;
     height: 100%;
 }
-
 .slide-up { transition: all 0.25s; } 
 .slide-up-enter-active { transition: all 0.25s ease; } 
 .slide-up-leave-active { transition: all 0.25s cubic-bezier(1, 0.5, 0.8, 1); } 
 .slide-up-enter,
 .slide-up-leave-active { opacity: 0; transform: translateY(100%); }
+.name {
+    position: absolute;
+    top: 150px;
+    left: 150px;
+    font-size: 130px;
+    font-family: 'SamsungSharpSans';
+    color: white;
+}
+
+.message {
+    position: absolute;
+    top: 320px;
+    left: 150px;
+    font-size: 50px;
+    font-family: 'SamsungSharpSans';
+    color: white; 
+}
+
+.musicTitle {
+    position: absolute;
+    bottom: 150px;
+    left: 150px;
+    font-size: 41px;
+    font-family: 'SamsungSharpSans';
+    color: white;
+}
 </style>
 
