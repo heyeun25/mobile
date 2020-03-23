@@ -52,7 +52,7 @@ export default {
             return (idx == this.select) ? 'item select' : 'item'
         },
         imageSrc: function(item) {
-            return require(`../assets/${item}`);
+            return item;
         }
     },
     destroyed() {
@@ -79,6 +79,7 @@ export default {
     /* height: 100%; */
     /* background-color: green; */
     outline: 1px solid black;
+    transition: all ease .2s;
 }
 
 .item > img {
@@ -89,20 +90,22 @@ export default {
     margin-top: 5px;
     /* width: 280px; */
     height: 95%;
+
 }
 
 .select {
-    box-shadow: 0 0 0 5px aqua inset;
+    /* box-shadow: 0 0 0 5px aqua inset; */
     /* outline: 5px solid red; */
+    transform: scale(1.2)
 }
 
 .category {
+    margin-left: 10px;
     width: 300px;
     height: 388px;
     display: flex;
     flex-direction: column;
     /* justify-content: center; */
-    align-items: center;
 }
 
 .category > span {

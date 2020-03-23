@@ -1,6 +1,8 @@
 <template>
   <div class="container" ref="container">
-    <span>{{orient}}</span>
+    
+    <input type="color" @change="colorChange($event)"/>
+    <button v-on:click="togglePicker">{{'picker = ' + colorPicker}}</button>
     <div v-for="(value, index) in info" v-bind:key="index" class="category">
       <span>{{value.category}}</span>
       <div class="btnContainer">
@@ -8,7 +10,7 @@
              v-bind:key="index" class="btn"
              v-on:click="send(item.data)">
           {{item.name}}
-          <input type="color" v-if="value.category == 'picker'" @change="colorChange($event)"/>
+          
         </div>
       </div>
     </div>
@@ -35,6 +37,7 @@ export default {
   },
   data: function() {
     return {
+      colorPicker: 'pleatsBg',
       orient: 0,
       // func : router name of shelf front app
       // category : category on mobile app
@@ -53,15 +56,12 @@ export default {
         {
             category: "Scenario",
             list: [{name: "Greenery", data: { func: 'greenery', value: { theme: '0'}}},
-                   {name: "thumbnail", data: {func: 'greenery', value: 'thumbnail'}},
-                   {name: "Go Health", data: { func: 'greenery', value: 'account'}},
+                   {name: "Thumbnail", data: {func: 'greenery', value: 'thumbnail'}},
+                   {name: "Diana Account", data: { func: 'greenery', value: 'account'}},
+                   {name: "change Account", data: { func: 'account', value: 'change'}},
                    {name: "Edit Board", data: { func: 'health', value: 'addBoard'}},
                    {name: "Phone Call", data: { func: 'health', value: { phoneCall : 'vertical'}}},
                    ]
-        },
-        {
-            category: "picker",
-            list: [{name: "picker", data: {}}],
         },
         {
             category: "fractal",
@@ -82,9 +82,15 @@ export default {
     }
   },
   methods: {
+    togglePicker: function() {
+      this.colorPicker = (this.colorPicker == 'pleatsBg' ?
+                          'pleatsItem' : 'pleatsBg');
+    },
     colorChange: function(e) {
       console.log(e.target.value);
-      socket.emit('appMsg', { func: "greenery", value: {color: e.target.value}})
+      socket.emit('appMsg', {
+                  func: this.colorPicker == 'pleatsBg' ? 'greenery' : 'health',
+                  value: {target: this.colorPicker, color: e.target.value}})
     },
     send: function(data) {
       console.log(JSON.stringify(data));
@@ -147,20 +153,20 @@ export default {
 .btnContainer {
   display: flex;
   flex-wrap: wrap;
-  flex-direction: row;
+  flex-direction: column;
 }
 .btn {
   background-color: darkgreen;
   text-align: center;
-  line-height: 100px;
-  width: 100px;
+  line-height: 60px;
   color: white;
   outline: 1px solid white;
 }
 input {
   position: absolute;
   width: 100px;
-  height: 100px;
+  height: 50px;
+  right: 0px;
 }
 video {
   position: fixed;

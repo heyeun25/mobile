@@ -2,16 +2,21 @@
     <div class="pleatsContainer" ref="pleatsContainer" v-bind:style="containerStyle">
         <div class="pleats" ref="pleats"
                 v-bind:key="'p' + index"
-                v-for="index in 140"
+                v-for="(item, index) in items"
                 v-bind:id="'p' + index"
                 v-bind:style="{
                     backgroundColor: color, 
                     width: pleatsWidth}">
             <div class="widget" ref="widget"
-                v-if="showWidget(index)"
-                v-bind:style="getWidgetStyle(index)"
+                v-for="(iitem, index) in item"
+                v-bind:style="iitem.style"
                 v-bind:key="'w' + index"
-                v-bind:id="'w' + index">
+                v-bind:id="'w' + iitem.index + '-' + iitem.subIndex">
+                <img class="widgetImage"
+                    v-bind:style="{'width': iitem.style.width,
+                                'height': iitem.style.height}"
+                    v-if="checkItem(iitem)"
+                    v-bind:src="getImage(iitem.style.backgroundImage)"/>
             </div>
         </div>
     </div>
@@ -51,9 +56,29 @@ export default {
             },
             pleatsWidth: PLEATS_WIDTH + 'px',
             // widgets: widgetData.widgets,
+            items: [],
+            
         }
     },
     methods: {
+        checkItem: function(item) {
+            // console.log('checkitem', item.style.backgroundImage);
+            if (item.style.backgroundImage) 
+                return true;
+        },
+        parseWidgets: function(widgets) {
+            var result = this.items;
+            for(var i =0; i<widgets.length; i++) {
+                var idx = widgets[i].index;
+                result[idx].push(widgets[i]);
+            }
+            this.items = result;
+            // console.log(this.items);
+        },
+        getImage: function(url) {
+            // need to check
+            return require("../assets/health/H_1_b.png");
+        },
         open: function() {
             pleatsAni.play();
             for(var i=0; i<widgetAni.length; i++) {
@@ -83,7 +108,16 @@ export default {
         getWidgetStyle: function(index) {
             for(var i =0; i<this.widgets.length; i++) {
                 if (this.widgets[i].index == index) {
-                    return this.widgets[i].style;
+
+                    var s = this.widgets[i].style;
+                    // if (s.backgroundImage) {
+                        s = {...s, ...{
+                            backgroundImage: require('../assets/health/H_1_a.png'),
+                            backgroundSize: 'cover'
+                        }}
+                    // }
+                    console.log(s);
+                    return s;
                 }
             }
             return {};
@@ -115,9 +149,16 @@ export default {
         },
         
     },
+    created() {
+        PLEATS_CNT = parseInt(window.innerWidth / PLEATS_WIDTH * SHIRINK) + 12;
+        console.log('pleatscnt=', PLEATS_CNT);
+        for(var i =0; i<PLEATS_CNT; i++) {
+            this.items[i] = [];
+        }
+        this.parseWidgets(this.widgets);
+    },
     mounted() {
         console.log('this.widgets',);
-        PLEATS_CNT = window.innerWidth / PLEATS_WIDTH * SHIRINK;
         var p = this.$refs.pleats;
         var w = this.$refs.widget;
         for(var i =0; i<p.length; i++) {
@@ -133,11 +174,14 @@ export default {
         }).reverse();
 
         for(var i=0; i<this.widgets.length; i++) {
-            widgetAni.push(TweenMax.to("#w" + this.widgets[i].index, 0.1, {
-                translateX: this.widgets[i].translateX,
+            var w = this.widgets[i];
+            var id = "#w" + w.index + "-" + w.subIndex;
+            console.log(id);
+            widgetAni.push(TweenMax.to(id, 0.1, {
+                translateX: w.translateX,
                 onComplete: (i == 0 ? this.onCompleteShowWidget : null),
                 onReverseComplete: (i == 0 ? this.onCompleteShowWidget : null),
-            }).reverse());
+            }));
         }
         // this.open();
     },

@@ -1,10 +1,9 @@
 <template>
-    <div class="health">
-        <div class="boardContainer">
-            <transition name="slide-right">
-                <div v-if="showBoard" class="board"></div>
-            </transition>
-        </div>
+    <div class="health" v-on:click="togglePleats">
+        <Pleats ref="pleats"
+            v-bind:widgets="widgets"
+            v-bind:show="openPleats"
+            v-bind:color="color"></Pleats>
         <video ref="phoneCall"
             v-bind:class="phoneCallClass" controls
             src="../assets/video/phoneCall.mp4"></video>
@@ -14,17 +13,31 @@
     </div>
 </template>
 <script>
-import "../utils/TweenMax.js";
+import "../utils/TweenMax.js"
+import Pleats from "../components/Pleats.vue"
+import * as widgetData from '../assets/healthWidgets.json'
 var moveToLeft;
 var makeFull;
 var getMobile;
 export default {
     name: 'Health',
+    components: {
+        Pleats
+    },
+    props: {
+        color: {
+            type: String,
+            default: "navy"
+        }
+    },
     data() {
         return {
             showBoard: false,
             phoneCall: false,
             wide: false,
+            openPleats: false,
+            widgets: widgetData.widgets,
+            // pleatsColor,
         }
     },
     computed: {
@@ -77,6 +90,9 @@ export default {
         }
     },
     methods: {
+        togglePleats: function() {
+            this.openPleats = !this.openPleats;
+        },
         getMobile: function(data) {
             if (data.value == 'addBoard') {
                 this.showBoard = !this.showBoard;
@@ -112,8 +128,6 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('../assets/concept/Energetic-01.jpg');
-    background-size: cover;
     overflow: hidden;
 }
 

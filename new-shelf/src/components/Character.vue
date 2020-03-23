@@ -141,16 +141,11 @@ export default {
                 }
             }, 100);
         },
-        dim: function(movePage) {
+        dim: function(cb) {
             console.log('dim');
-            var myRouter = this.$router;
             TweenMax.to('.character', 1, {
                 opacity: 0,
-                onComplete: function() {
-                    if (myRouter.currentRoute.name !== movePage) {
-                        myRouter.push({name: movePage, params: {id : 0 }})
-                    }
-                }
+                onComplete: cb
             });
 
         }

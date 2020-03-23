@@ -43,6 +43,7 @@ const PLANT = {
     PATTERN_K: 2,
     PATTERN_D: 3,
     PATTERN_P: 4,
+    PATTERN_C: 5,
 };
 var getMobile;
 export default {
@@ -62,10 +63,12 @@ export default {
             plantMode: PLANT.TREE,
             thumbnail: false,
             items: [
-                'green_2.jpg',
-                'kaws.png',
-                'pengsu.png',
-                'donald.png'],
+                require('../assets/thumbnail/01.png'),
+                require('../assets/thumbnail/02.png'),
+                require('../assets/thumbnail/03.png'),
+                require('../assets/thumbnail/04.png'),
+                require('../assets/thumbnail/05.png'),
+                require('../assets/thumbnail/06.png')],
             characterSize: imageData[0],
             characterImage: 'kaws.png',
             // widgetData: widgetData.widgets,
@@ -104,7 +107,14 @@ export default {
             else if (data.value == 'thumbnail') this.thumbnail = !this.thumbnail;
             else if (data.value == 'account') {
                 // dim and moveTo account
-                this.$refs.character.dim('account');
+                var myRouter = this.$router;
+                if (this.$refs.character) {
+                    this.$refs.character.dim(function() {
+                        myRouter.push({name: 'account', params: {id : 0, bgColor: this.pleatsColor}});
+                    });
+                } else {
+                    myRouter.push({name: 'account', params: {id : 0, bgColor: this.pleatsColor}})
+                }
             }
             else if (data.value.key) {
                 this.thumbnail ? this.$refs.thumbnail.handleKey(data.value.key): null

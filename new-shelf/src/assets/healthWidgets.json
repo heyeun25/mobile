@@ -1,0 +1,45 @@
+{ "widgets" : [{
+    "index": 4,
+    "subIndex": 0,
+    "style": {
+        "top": "1000px",
+        "width": "405px",
+        "height": "406px",
+        "left": "-405px",
+        "backgroundImage": "../assets/health/H_1_a.png"
+    },
+    "translateX": 415
+}, {
+    "index": 4,
+    "subIndex": 1,
+    "style": {
+        "top": "30px",
+        "width": "405px",
+        "height": "406px",
+        "left": "-405px",
+        "backgroundImage": "../assets/health/H_1_a.png"
+    },
+    "translateX": 415
+}, {
+    "index": 16,
+    "subIndex": 0,
+    "style": {
+        "top": "1000px",
+        "width": "405px",
+        "height": "406px",
+        "left": "-405px",
+        "backgroundImage": "../assets/health/H_1_b.png"
+    },
+    "translateX": 415
+}, {
+    "index": 28,
+    "subIndex": 1,
+    "style": {
+        "top": "1000px",
+        "width": "405px",
+        "height": "406px",
+        "left": "-405px",
+        "backgroundImage": "../assets/health/H_1_c.png"
+    },
+    "translateX": 415
+}]}
