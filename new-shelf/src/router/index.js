@@ -9,7 +9,7 @@ import Pleats from '../components/Pleats.vue'
 import Greenery from '../pages/Greenery.vue'
 import Health from '../pages/Health.vue';
 import Character from '../components/Character.vue'
-import Account from '../components/Account.vue'
+import Account from '../pages/Account.vue'
 
 Vue.use(Router)
 export default new Router({
