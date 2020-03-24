@@ -5,7 +5,7 @@
             v-bind:widgets="widgets"
             v-bind:show="openPleats"
             v-bind:color="color"
-            blackBoard="true"
+            v-bind:blackBoard="true"
             v-bind:showBlackBoard="showBlackBoard">
         </Pleats>
     </div>

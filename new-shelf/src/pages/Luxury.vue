@@ -4,6 +4,8 @@
             dir="luxury"
             v-bind:widgets="widgets"
             v-bind:show="openPleats"
+            v-bind:blackBoard="true"
+            v-bind:showBlackBoard="showBlackBoard"
             v-bind:color="color">
         </Pleats>
     </div>
@@ -31,15 +33,6 @@ export default {
             openPleats: false,
             showImageBoard: false,
             blackBoardClass: 'blackBoard',
-        }
-    },
-    watch: {
-        showBlackBoard: function(newVal) {
-            if (newVal) {
-                this.blackBoardClass = 'blackBoard blackBoardIn';
-            } else {
-                this.blackBoardClass = 'blackBoard blackBoardOut';
-            }
         }
     },
     methods: {

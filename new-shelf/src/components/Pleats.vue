@@ -1,35 +1,39 @@
 <template>
     <div class="pleatsContainer" ref="pleatsContainer" v-bind:style="containerStyle">
-        <div class="pleats" ref="pleats"
+        <div v-bind:class="'pleats ' + (stayPleats ? 'stayPleats' : '')" ref="pleats"
                 v-bind:key="'p' + index"
-                v-for="(item, index) in items"
+                v-for="(item, index) in pleatsCnt"
                 v-bind:id="'p' + index"
                 v-bind:style="{
                     backgroundColor: color, 
                     width: pleatsWidth}">
-            <div class="widget" ref="widget"
-                v-for="(iitem, index) in item"
-                v-bind:style="iitem.style"
-                v-bind:key="'w' + index"
-                v-bind:id="'w' + iitem.index + '-' + iitem.subIndex">
-                <img class="widgetImage"
-                    v-if="iitem.style.backgroundImage"
-                    v-bind:style="{'width': iitem.style.width,
-                                'height': iitem.style.height}"
-                    v-bind:src="getImage(iitem.style.backgroundImage)"/>
-                <video class="widgetVideo"
+        </div>
+        <div v-if="blackBoard" 
+            v-bind:class="'blackBoard '+(showBlackBoard ? 'blackBoardIn' : 'blackBoardOut')"
+            ref="blackBoard"></div>
+        <div class="topUI" ref="topUI">
+            <div class="widgetContainer"
+                v-for="(item, index) in widgets"
+                v-bind:key="'wc'+index"
+                v-bind:id="'wc'+index"
+                v-bind:style="item.style">
+                <img class="widget"
+                    v-bind:id="'w'+index"
+                    v-if="item.style.backgroundImage"
+                    v-bind:style="{'width': item.style.width,
+                                'height': item.style.height,
+                                'transform': 'translateX(-100%)'}"
+                    v-bind:src="getImage(item.style.backgroundImage)"/>
+                <video class="widget"
                     controls
                     ref="widgetVideo"
-                    v-if="iitem.video"
-                    v-bind:width="iitem.style.width"
-                    v-bind:src="getVideo(iitem.video)"
+                    v-if="item.video"
+                    v-bind:id="'w'+index"
+                    v-bind:width="item.style.width"
+                    v-bind:src="getVideo(item.video)"
                     type="video/webm"/>
             </div>
         </div>
-        <div v-if="blackBoard" 
-            v-bind:class="'blackBoard'+(showBlackBoard ? blackBoardIn : blackBoardOut)"
-            ref="blackBoard"></div>
-        <div v-if="blackBoard" class="topUI" ref="topUI"></div>
         
     </div>
 </template>
@@ -47,6 +51,7 @@ var widgetAni = [];
 export default {
     name: 'Pleats',
     props: {
+        stayPleats: Boolean,
         show: Boolean,
         color: String,
         widgets: {
@@ -91,93 +96,15 @@ export default {
                 left: -PLEATS_WIDTH + 'px',
             },
             pleatsWidth: PLEATS_WIDTH + 'px',
-            // widgets: widgetData.widgets,
             items: [],
+            pleatsCnt: PLEATS_CNT
             
         }
     },
     methods: {
-        moveWidgetToTop: function() {
-            console.log("MOVE WIDGET TO TOP")
-            var pleatsEls = document.getElementsByClassName('pleats');
-            var parent = [];
-            for(var i =0; i<pleatsEls.length; i++) {
-                if (pleatsEls[i].children.length > 0) {
-                    parent.push(pleatsEls[i]);
-                }
-            }
-            // console.log(parent);
-            // for(var i =0; i<parent.length; i++) {
-            //     for(var j =0; j<parent[i].childNodes.length; j++) {
-            //         var c = parent[i].childNodes[j]
-            //         console.log('style ', c.style.cssText);
-            //         console.log('static ', c.getBoundingClientRect());
-            //     }
-            // }
-            var moveEls = [];
-            for(var i =0; i<parent.length; i++) {
-                for(var j=0; j<parent[i].childNodes.length; j++) {
-                    var c = parent[i].childNodes[j];
-                    if (!this.checkHide(c.id)) {
-                        moveEls.push(c);
-                    }
-                }
-            }
-
-            for(var i =0; i<moveEls.length; i++) {
-                var c = moveEls[i];
-                var staticVal = c.getBoundingClientRect();
-                // this.$refs.topUI.appendChild(c);
-                // c.style.left = staticVal.x + 'px';
-            }
-        },
-        checkHide: function(id) { /// id is like w2-1
-            var re = /w(\d+)-(\d+)/;
-            for(var i =0; i<this.widgets.length; i++) {
-                console.log(id.match(re)[1], id.match(re)[2]);
-                var result = id.match(re);
-                var index = result[1];
-                var subIndex = result[2];
-                if ((this.widgets[i].index == index) &&
-                    (this.widgets[i].subIndex == subIndex) &&
-                    (this.widgets[i].hide == true)) {
-                        console.log('widgets', this.widgets[i]);
-                        return true;
-                    }
-            }
-            return false;
-        },
-        moveBackToParent: function() {
-            var re = /[w](.*?)[-]/;
-            var topUI = this.$refs.topUI;
-            while(topUI.childNodes.length > 0) {
-                var c = topUI.childNodes[0];
-                var parentId = 'p' + c.id.match(re)[1];
-                var parent = document.getElementById(parentId);
-                parent.appendChild(c);
-                c.style.left = "";
-            }
-            // var widgets = document.getElementsByClassName('widget');
-            // var re = /[w](.*?)[-]/;
-            // for(var i =0; i<widgets.length; i++) {
-            //     var parentId = 'p' + widgets[i].id.match(re)[1];
-            //     console.log(parentId);
-            //     widgets[i].left = "";
-            //     document.getElementById(parentId).appendChild(widgets[i]);
-            // }
-        },
         checkItem: function(item, property) {
             // console.log('checkitem', item.style.backgroundImage);
             return item.style[property]
-        },
-        parseWidgets: function(widgets) {
-            var result = this.items;
-            for(var i =0; i<widgets.length; i++) {
-                var idx = widgets[i].index;
-                result[idx].push(widgets[i]);
-            }
-            this.items = result;
-            // console.log(this.items);
         },
         getVideo: function(filename) {
             return require(`../assets/video/${filename}`);
@@ -190,15 +117,15 @@ export default {
             if (this.$refs.widgetVideo)
                 this.$refs.widgetVideo[0].play();
             for(var i=0; i<widgetAni.length; i++) {
-                widgetAni[i].play();
-                if (widgetAni[i]._targets[0].id == "w50-1") {
-                    widgetAni[i].reverse();
+                // widgetAni[i].play();
+                console.log(i, this.widgets[i].hide);
+                if (!this.widgets[i].hide) {
+                    widgetAni[i].play();
                 }
             }
             
         },
         close: function() {
-            if (this.blackBoard) this.moveBackToParent();
             pleatsAni.play();
             if (this.$refs.widgetVideo)
                 this.$refs.widgetVideo[0].pause();
@@ -223,7 +150,6 @@ export default {
         getWidgetStyle: function(index) {
             for(var i =0; i<this.widgets.length; i++) {
                 if (this.widgets[i].index == index) {
-
                     var s = this.widgets[i].style;
                     // if (s.backgroundImage) {
                         s = {...s, ...{
@@ -239,7 +165,6 @@ export default {
         },
         onCompleteShowWidget: function() {
             console.log('onCompleteShowWidget')
-            if (this.blackBoard) this.moveWidgetToTop();
             setTimeout(() => {
                 pleatsAni.reverse();
             }, 500)
@@ -251,22 +176,17 @@ export default {
         }, 
         addWidget: function() {
             console.log('addWidget', widgetAni);
-            var el = document.getElementById("w50-1");
-            // el.style.backgroundImage = "memo_b.png";
-            for(var i =0; i<widgetAni.length; i++) {
-                if (widgetAni[i]._targets[0].id == "w50-1") {
-                    widgetAni[i].play();
-                }
-            }
+            widgetAni[9].play();
+            this.widgets[9].hide = false;
         }
     },
     created() {
         PLEATS_CNT = parseInt(window.innerWidth / PLEATS_WIDTH * SHIRINK) + 12;
-        console.log('pleatscnt=', PLEATS_CNT);
-        for(var i =0; i<PLEATS_CNT; i++) {
-            this.items[i] = [];
-        }
-        this.parseWidgets(this.widgets);
+        // console.log('pleatscnt=', PLEATS_CNT);
+        // for(var i =0; i<PLEATS_CNT; i++) {
+        //     this.items[i] = [];
+        // }
+        // this.parseWidgets(this.widgets);
     },
     mounted() {
         console.log('this.widgets', this.widgets);
@@ -274,7 +194,7 @@ export default {
         var w = this.$refs.widget;
         for(var i =0; i<p.length; i++) {
             p[i].style.left = i * PLEATS_WIDTH * SHIRINK + 'px';
-            p[i].style.zIndex = -i*2;
+            p[i].style.zIndex = -i;
             // (w && w[i]) ? w[i].style.zIndex = -i*2-1 : null;
         }
         
@@ -284,13 +204,22 @@ export default {
             onComplete: this.widgets.length <=0 ? this.onCompleteShowWidget : null,
         }).reverse();
 
-        for(var i=0; i<this.widgets.length; i++) {
-            var w = this.widgets[i];
-            var id = "#w" + w.index + "-" + w.subIndex;
-            widgetAni.push(TweenMax.to(id, 0.1, {
-                translateX: w.translateX,
-                onComplete: ((i == 0 || this.checkHide(id)) ? this.onCompleteShowWidget : null),
-                onReverseComplete: (i == 0 ? this.onCompleteReverse : null),
+        // for(var i=0; i<this.widgets.length; i++) {
+        //     var w = this.widgets[i];
+        //     var id = "#w" + w.index + "-" + w.subIndex;
+        //     widgetAni.push(TweenMax.to(id, 0.1, {
+        //         translateX: w.translateX,
+        //         onComplete: ((i == 0 || this.checkHide(id)) ? this.onCompleteShowWidget : null),
+        //         onReverseComplete: (i == 0 ? this.onCompleteReverse : null),
+        //     }).reverse());
+        // }
+
+        var w = document.getElementsByClassName('widget');
+        for(var i=0; i<w.length; i++) {
+            widgetAni.push(TweenMax.to(w[i], 0.5, {
+                translateX: 0,
+                onComplete: ((i == 0 || this.widgets[i].hide)) ? this.onCompleteShowWidget : null,
+                onReverseComplete: ((i == 0 || this.widgets[i].hide)) ? this.onCompleteReverse : null,
             }).reverse());
         }
     },
@@ -319,12 +248,20 @@ export default {
     height: 110%;
     background-color: rgb(0, 0, 228);
     /* overflow: hidden; */
-    /* box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); */
+}
+
+.stayPleats {
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .pleatsMask {
     position: absolute;
     top: 0;
+}
+
+.widgetContainer {
+    position: absolute;
+    overflow: hidden;
 }
 
 .widget {
@@ -334,15 +271,16 @@ export default {
 
 .topUI {
     position: absolute;
-    left: 0;
+    left: 40px;
     top: 0;
     width: 100%;
     height: 100%;
+    z-Index: 999;
 }
 
 .blackBoard {
     position: relative;
-    left: 0;
+    left: 40px;
     top: 0;
     width: 100%;
     height: 100%;
@@ -359,19 +297,19 @@ export default {
 
 @keyframes moveLeft {
     from {
-        transform: translateX(0);
+        transform: translateX(100%);
     }
     to {
-        transform: translateX(-100%);
+        transform: translateX(0);
     }
 }
 
 @keyframes moveRight {
     from {
-        transform: translateX(-100%);
+        transform: translateX(0%);
     }
     to {
-        transform: translateX(0);
+        transform: translateX(100%);
     }
 }
 </style>

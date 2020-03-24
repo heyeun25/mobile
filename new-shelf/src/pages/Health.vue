@@ -2,6 +2,7 @@
     <div class="health" v-on:click="togglePleats">
         <Pleats ref="pleats"
             dir="health"
+            v-bind:stayPleats="true"
             v-bind:widgets="widgets"
             v-bind:show="openPleats"
             v-bind:stopWidgetVideo="stopWidgetVideo"
@@ -178,7 +179,6 @@ export default {
     position: absolute;
     top: 0;
     left: 67%;
-    width: 34%;
     height: 100%;
     transform: translateX(100%);
 }

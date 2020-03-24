@@ -1,33 +1,43 @@
 { "widgets" : [{
-    "index": 4,
-    "subIndex": 0,
+    "style": {
+        "top": "150px",
+        "left": "150px",
+        "width": "628px",
+        "height": "150px",
+        "backgroundImage": "hi.png"
+    }
+}, {
+    "style": {
+        "top": "320px",
+        "left": "150px",
+        "width": "775px",
+        "height": "82px",
+        "backgroundImage": "time.png"
+    }
+}, {
     "style": {
         "top": "570px",
+        "left": "150px",
         "width": "405px",
         "height": "406px",
-        "transform": "translateX(-100%)",
         "backgroundImage": "H_1_a.png"
     },
     "translateX": 0
 }, {
-    "index": 16,
-    "subIndex": 0,
     "style": {
         "top": "570px",
+        "left": "630px",
         "width": "405px",
         "height": "406px",
-        "transform": "translateX(-100%)",
         "backgroundImage": "H_1_b.png"
     },
     "translateX": 0
 }, {
-    "index": 28,
-    "subIndex": 0,
     "style": {
         "top": "570px",
         "width": "405px",
+        "left": "1110px",
         "height": "406px",
-        "transform": "translateX(-100%)",
         "backgroundImage": "H_1_c.png"
     },
     "translateX": 0
@@ -36,9 +46,9 @@
     "subIndex": 0,
     "style": {
         "top": "1378px",
+        "left": "230px",
         "width": "154px",
         "height": "244px",
-        "transform": "translateX(-100%)",
         "backgroundImage": "H_2_a.png"
     },
     "translateX": 0
@@ -47,9 +57,9 @@
     "subIndex": 1,
     "style": {
         "top": "1378px",
+        "left": "556px",
         "width": "337px",
         "height": "244px",
-        "transform": "translateX(-100%)",
         "backgroundImage": "H_2_b.png"
     },
     "translateX": 0
@@ -58,9 +68,9 @@
     "subIndex": 1,
     "style": {
         "top": "1780px",
+        "left": "150px",
         "width": "334px",
         "height": "236px",
-        "transform": "translateX(-100%)",
         "backgroundImage": "H_3_a.png"
     },
     "translateX": 0
@@ -69,9 +79,9 @@
     "subIndex": 2,
     "style": {
         "top": "1780px",
+        "left": "556px",
         "width": "350px",
         "height": "236px",
-        "transform": "translateX(-100%)",
         "backgroundImage": "H_3_b.png"
     },
     "translateX": 0
@@ -80,9 +90,9 @@
     "subIndex": 1,
     "style": {
         "top": "1780px",
+        "left": "1033px",
         "width": "361px",
         "height": "246px",
-        "transform": "translateX(-100%)",
         "backgroundImage": "H_3_c.png"
     },
     "translateX": 0
@@ -91,9 +101,9 @@
     "subIndex": 0,
     "style": {
         "top": "1780px",
+        "left": "1510px",
         "width": "339px",
         "height": "246px",
-        "transform": "translateX(-100%)",
         "backgroundImage": "H_3_d.png"
     },
     "translateX": 0
@@ -102,9 +112,9 @@
     "subIndex": 1,
     "style": {
         "top": "1780px",
+        "left": "1987px",
         "width": "368px",
         "height": "246px",
-        "transform": "translateX(-100%)",
         "backgroundImage": "H_3_e.png"
     },
     "translateX": 0
@@ -113,9 +123,9 @@
     "subIndex": 0,
     "style": {
         "top": "1100px",
+        "left": "2610px",
         "width": "397px",
-        "height": "82px",
-        "transform": "translateX(-100%)",
+        "height": "77px",
         "backgroundImage": "yoga_heading.png"
     },
     "translateX": 0
@@ -123,10 +133,10 @@
     "index": 70,
     "subIndex": 1,
     "style": {
-        "top": "1190px",
+        "top": "1200px",
+        "left": "2610px",
         "width": "1080px",
-        "height": "167px",
-        "transform": "translateX(-100%)",
+        "height": "605px",
         "backgroundColor": "white"
     },
     "video": "yoga.webm",
@@ -136,33 +146,12 @@
     "subIndex": 2,
     "style": {
         "top": "1845px",
+        "left": "2610px",
         "width": "1080px",
         "height": "167px",
-        "transform": "translateX(-100%)",
         "backgroundImage": "H_musicplay.png"
     },
     "translateX": 0
-}, {
-    "index": 6,
-    "subIndex": 2,
-    "style": {
-        "top": "150px",
-        "width": "628px",
-        "height": "150px",
-        "transform": "translateX(-100%)",
-        "backgroundImage": "hi.png"
-    },
-    "translateX": 0
-}, {
-    "index": 6,
-    "subIndex": 3,
-    "style": {
-        "top": "320px",
-        "width": "775px",
-        "height": "82px",
-        "transform": "translateX(-100%)",
-        "backgroundImage": "time.png"
-    },
-    "translateX": 0
 }
+
 ]}

@@ -47,7 +47,7 @@ export default {
                     if (myRouter.currentRoute.name !== movePage) {
                         myRouter.push({name: movePage})
                     }
-                }, 3000)
+                }, 2000)
             }
         }
     },

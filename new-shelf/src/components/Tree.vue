@@ -76,7 +76,7 @@ export default {
   watch: {
     playpause: function(val) {
       if (val == true) {
-        VELOCITY = 0.01;
+        VELOCITY = 0.05;
       } else {
         VELOCITY = 0.1;
       }
@@ -109,7 +109,7 @@ export default {
     draw: function() {
       console.log('draw');
       var ret = this.makeTree();
-      while(ret.count < 6000) {
+      while(ret.count < 100000) {
         ret = this.makeTree();
       }
 
@@ -146,7 +146,7 @@ export default {
             tempCtx.beginPath();
             tempCtx.moveTo(branches[i].px, branches[i].py);
             tempCtx.lineTo(branches[i].x, branches[i].y);
-            tempCtx.lineWidth = 2;
+            tempCtx.lineWidth = 1;
             tempCtx.strokeStyle = 'white';
             tempCtx.stroke();
             branches[i].update();

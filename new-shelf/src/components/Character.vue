@@ -7,7 +7,7 @@ import _ from "lodash";
 import { setTimeout, setInterval, clearInterval } from 'timers';
 import "../utils/TweenMax.js";
 import EventManager from "../utils/Event.js";
-const CNT = 50;
+const CNT = 300;
 var events = new EventManager();
 var timer;
 var floatEls = [];
@@ -64,7 +64,7 @@ export default {
 
             var x = _.random(-window.innerWidth/2 - this.imgSize.w/2, window.innerWidth);
             var y = _.random(-this.imgSize.h/2, window.innerHeight);
-            var scaleX = 700 / (this.imgSize.w) + 0.02 * 10
+            var scaleX = 250 / (this.imgSize.w) + 0.002 * _.random(3, 10)
             // var scaleY = 0.8 + 0.003 * _.random(3, 10);
             var off = events.on(id, popCharacter);
             var that = this;
@@ -77,7 +77,7 @@ export default {
                     y,
                     scaleX,
                     scaleY: scaleX,
-                    rotation: _.random(180) - 180,
+                    // rotation: _.random(180) - 180,
                 });
                 TweenMax.from(el, 1, {
                     scale: 0,
@@ -161,6 +161,7 @@ export default {
     top: 0;
     width: 100%;
     height: 100%;
+    opacity: 0.99;
     /* background-color: navy; */
 }
 </style>

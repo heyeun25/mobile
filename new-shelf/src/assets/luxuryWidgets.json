@@ -1,112 +1,82 @@
 { "widgets" : [{
-    "index": 4,
-    "subIndex": 0,
     "style": {
         "top": "150px",
         "width": "622px",
         "height": "141px",
-        "left": "-622px",
+        "left": "150px",
         "backgroundImage": "hi.png"
-    },
-    "translateX": 622
+    }
 }, {
-    "index": 4,
-    "subIndex": 1,
     "style": {
         "top": "320px",
         "width": "1181px",
         "height": "82px",
-        "left": "-1181px",
+        "left": "150px",
         "backgroundImage": "time.png"
-    },
-    "translateX": 1181
+    }
 }, {
-    "index": 4,
-    "subIndex": 2,
     "style": {
-        "top": "1587px",
+        "top": "1580px",
         "width": "352px",
         "height": "79px",
-        "left": "-352px",
+        "left": "150px",
         "backgroundImage": "Daily to do.png"
-    },
-    "translateX": 352
+    }
 }, {
-    "index": 4,
-    "subIndex": 3,
     "style": {
         "top": "1670px",
         "width": "432px",
         "height": "344px",
-        "left": "-432px",
+        "left": "150px",
         "backgroundImage": "Daily to do_01.png"
-    },
-    "translateX": 432
+    }
 }, {
-    "index": 17,
-    "subIndex": 0,
     "style": {
         "top": "1670px",
         "width": "432px",
         "height": "344px",
-        "left": "-432px",
+        "left": "627px",
         "backgroundImage": "Daily to do_02.png"
-    },
-    "translateX": 432
+    }
 }, {
-    "index": 30,
-    "subIndex": 0,
     "style": {
         "top": "1670px",
         "width": "441px",
         "height": "344px",
-        "left": "-441px",
+        "left": "1104px",
         "backgroundImage": "Daily to do_03.png"
-    },
-    "translateX": 441
+    }
 }, {
-    "index": 43,
-    "subIndex": 0,
     "style": {
         "top": "1670px",
         "width": "446px",
         "height": "344px",
-        "left": "-446px",
+        "left": "1586px",
         "backgroundImage": "Daily to do_04.png"
-    },
-    "translateX": 446
+    }
 }, {
-    "index": 70,
-    "subIndex": 0,
     "style": {
         "top": "1100px",
         "width": "753px",
         "height": "82px",
-        "left": "-753px",
+        "left": "2600px",
         "backgroundImage": "burburry.png"
-    },
-    "translateX": 753
+    }
 }, {
-    "index": 70,
-    "subIndex": 1,
     "style": {
         "top": "1190px",
         "width": "1080px",
-        "height": "167px",
-        "left": "-1080px"
+        "height": "600px",
+        "left": "2600px"
     },
-    "video": "The burburry.mp4",
-    "translateX": 1080
+    "video": "The burburry.mp4"
 }, {
-    "index": 70,
-    "subIndex": 2,
     "style": {
         "top": "1845px",
         "width": "1080px",
         "height": "167px",
-        "left": "-1080px", 
+        "left": "2600px", 
         "backgroundImage": "Music.png"
-    },
-    "translateX": 1080
+    }
 }
 ]}

@@ -51,23 +51,28 @@ export default {
         //           {name: "Green", data: { func: 'image', value: "Green-01.jpg" }},
         //           {name: "Kidult", data: { func: 'image', value: "Kidult.jpg" }}],
         // },
-        
         {
             category: "Scenario",
             list: [{name: "Greenery", data: { func: 'greenery', value: { theme: '0'}}},
                    {name: "Thumbnail", data: {func: 'greenery', value: 'thumbnail'}},
-                   {name: "Walker Account", data: { func: 'greenery', value: 'account'}},
-                   {name: "change Account", data: { func: 'account', value: 'change'}},
                   //  {name: "Edit Board", data: { func: 'health', value: 'addBoard'}},
                    {name: "Phone Call", data: { func: 'health', value: { phoneCall : 'vertical'}}},
-                   {name: "Dunffy Account", data: { func: 'health', value: 'account'}},
-                   {name: "Black Board", data: { func: 'family', value: 'blackBoard'}},
-                   {name: "add Memo", data: { func: 'family', value: 'addMemo'}},
-                   {name: "Diana Account", data: { func: 'family', value: 'account'}},
+                   {name: "Board", data: { func: 'family', value: 'blackBoard'}},
+                   {name: "Memo", data: { func: 'family', value: 'addMemo'}},
+                   {name: "Pattern", data: { func: 'luxury', value: 'blackBoard'}},
                    ]
         },
         {
-            category: "fractal",
+          category: "Account",
+          list: [
+            {name: "Walker", data: { func: 'greenery', value: 'account'}},
+            {name: "Dunffy", data: { func: 'health', value: 'account'}},
+            {name: "Diana", data: { func: 'family', value: 'account'}},
+            {name: "change", data: { func: 'account', value: 'change'}},
+          ]
+        },
+        {
+            category: "Greenery",
             list: [
                     {name: "play/pause", data: { func: 'greenery', value: {pp : 'pp'}}},
                     {name: "restart", data: {func: 'greenery', value: {restart: 'restart'}}},
@@ -76,10 +81,10 @@ export default {
                     {name: "enter", data: {func: 'greenery', value: {key: 'enter'}}}
                   ]
         },
-        {
-            category: "video",
-            list: [{name: "video0", data: { func: 'video', value: "video0.mp4"}}],
-        },
+        // {
+        //     category: "video",
+        //     list: [{name: "video0", data: { func: 'video', value: "video0.mp4"}}],
+        // },
       ],
       
     }
@@ -156,11 +161,12 @@ export default {
 .btnContainer {
   display: flex;
   flex-wrap: wrap;
-  flex-direction: column;
 }
 .btn {
   background-color: beige;
   text-align: center;
+  width: 100px;
+  height: 60px;
   line-height: 60px;
   color: black;
   outline: 1px solid white;
