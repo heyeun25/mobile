@@ -1,0 +1,135 @@
+{ "widgets" : [{
+    "index": 4,
+    "subIndex": 0,
+    "style": {
+        "top": "226px",
+        "width": "622px",
+        "height": "141px",
+        "left": "-622px",
+        "backgroundImage": "hi.png"
+    },
+    "translateX": 622
+}, {
+    "index": 4,
+    "subIndex": 1,
+    "style": {
+        "top": "362px",
+        "width": "627px",
+        "height": "82px",
+        "left": "-627px",
+        "backgroundImage": "time.png"
+    },
+    "translateX": 627
+}, {
+    "index": 4,
+    "subIndex": 2,
+    "style": {
+        "top": "1167px",
+        "width": "438px",
+        "height": "79px",
+        "left": "-438px",
+        "backgroundImage": "weekly to do.png"
+    },
+    "translateX": 450
+}, {
+    "index": 4,
+    "subIndex": 3,
+    "style": {
+        "top": "1261px",
+        "width": "452px",
+        "height": "344px",
+        "left": "-452px",
+        "backgroundImage": "Dad_01.png"
+    },
+    "translateX": 452
+}, {
+    "index": 4,
+    "subIndex": 4,
+    "style": {
+        "top": "1670px",
+        "width": "451px",
+        "height": "344px",
+        "left": "-451px",
+        "backgroundImage": "Haley_03.png"
+    },
+    "translateX": 452
+}, {
+    "index": 17,
+    "subIndex": 0,
+    "style": {
+        "top": "1261px",
+        "width": "451px",
+        "height": "395px",
+        "left": "-451px",
+        "backgroundImage": "Mom_02.png"
+    },
+    "translateX": 451
+}, {
+    "index": 17,
+    "subIndex": 1,
+    "style": {
+        "top": "1670px",
+        "width": "450px",
+        "height": "344px",
+        "left": "-450px",
+        "backgroundImage": "Alex_04.png"
+    },
+    "translateX": 450
+}, {
+    "index": 30,
+    "subIndex": 0,
+    "style": {
+        "top": "1670px",
+        "width": "449px",
+        "height": "344px",
+        "left": "-449px",
+        "backgroundImage": "luke_04.png"
+    },
+    "translateX": 449
+}, {
+    "index": 50,
+    "subIndex": 0,
+    "style": {
+        "top": "226px",
+        "width": "869px",
+        "height": "606px",
+        "left": "-869px",
+        "backgroundImage": "memo_a.png"
+    },
+    "translateX": 869
+}, {
+    "index": 50,
+    "subIndex": 1,
+    "style": {
+        "top": "852px",
+        "width": "840px",
+        "height": "1232px",
+        "left": "-840px",
+        "backgroundImage": "memo_b.png",
+        "outline": "1px solid red"
+    },
+    "translateX": 842
+}, {
+    "index": 74,
+    "subIndex": 1,
+    "style": {
+        "top": "226px",
+        "width": "831px",
+        "height": "1234px",
+        "left": "-831px",
+        "backgroundImage": "memo_c.png"
+    },
+    "translateX": 832
+}, {
+    "index": 74,
+    "subIndex": 2,
+    "style": {
+        "top": "1480px",
+        "width": "828px",
+        "height": "569px",
+        "left": "-869px",
+        "backgroundImage": "memo_d.png"
+    },
+    "translateX": 870
+}
+]}

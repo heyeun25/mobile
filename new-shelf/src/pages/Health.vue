@@ -1,9 +1,11 @@
 <template>
     <div class="health" v-on:click="togglePleats">
         <Pleats ref="pleats"
+            dir="health"
             v-bind:widgets="widgets"
             v-bind:show="openPleats"
-            v-bind:color="color"></Pleats>
+            v-bind:stopWidgetVideo="stopWidgetVideo"
+            v-bind:color="bgColor"></Pleats>
         <video ref="phoneCall"
             v-bind:class="phoneCallClass" controls
             src="../assets/video/phoneCall.mp4"></video>
@@ -16,28 +18,30 @@
 import "../utils/TweenMax.js"
 import Pleats from "../components/Pleats.vue"
 import * as widgetData from '../assets/healthWidgets.json'
-var moveToLeft;
-var makeFull;
-var getMobile;
+import { clearTimeout } from 'timers';
+var moveToLeft,
+    makeFull,
+    getMobile,
+    showTimer, hideTimer;
+
 export default {
     name: 'Health',
     components: {
         Pleats
     },
     props: {
-        color: {
+        bgColor: {
             type: String,
             default: "navy"
         }
     },
     data() {
         return {
-            showBoard: false,
             phoneCall: false,
             wide: false,
             openPleats: false,
             widgets: widgetData.widgets,
-            // pleatsColor,
+            stopWidgetVideo: false,
         }
     },
     computed: {
@@ -63,9 +67,14 @@ export default {
                 } else {
                     moveToLeft.play();
                 }
+                if (this.wide == false)
+                    this.stopWidgetVideo = true;
             } else {
                 moveToLeft.reverse();
                 this.$refs.phoneCall.pause();
+                if (this.wide == false) {
+                    this.stopWidgetVideo = false;
+                }
             }
         },
         wide: function(val) {
@@ -94,9 +103,7 @@ export default {
             this.openPleats = !this.openPleats;
         },
         getMobile: function(data) {
-            if (data.value == 'addBoard') {
-                this.showBoard = !this.showBoard;
-            } else if (data.value.phoneCall) {
+            if (data.value.phoneCall) {
                 var p = data.value.phoneCall;
                 if (p == 'vertical') {
                     this.phoneCall = true;
@@ -109,15 +116,31 @@ export default {
                     this.phoneCall = false;
                     this.wide = false;
                 }
+            } else if (data.value == 'account') {
+                var myRouter = this.$router;
+                hideTimer = setTimeout(() => {
+                    myRouter.push({name: 'account',
+                    params: {id : 1, bgColor: this.color}});
+                }, 500);
             }
         }
     },
     mounted() {
         getMobile = this.getMobile.bind(this);
         this.$socket.on('appMsg', getMobile);
+        if (showTimer) {
+            clearTimeout(showTimer);
+            showTimer = null;
+        }
+        var that = this;
+        showTimer = setTimeout(() => {
+            that.togglePleats();
+        }, 500);
     },
     destroyed() {
         this.$socket.off('appMsg', getMobile);
+        // clearTimeout(hideTimer);
+        // clearTimeout(showTimer);
     },
 }
 </script>

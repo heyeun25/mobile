@@ -2,44 +2,167 @@
     "index": 4,
     "subIndex": 0,
     "style": {
-        "top": "1000px",
+        "top": "570px",
         "width": "405px",
         "height": "406px",
         "left": "-405px",
-        "backgroundImage": "../assets/health/H_1_a.png"
+        "backgroundImage": "H_1_a.png"
     },
-    "translateX": 415
-}, {
-    "index": 4,
-    "subIndex": 1,
-    "style": {
-        "top": "30px",
-        "width": "405px",
-        "height": "406px",
-        "left": "-405px",
-        "backgroundImage": "../assets/health/H_1_a.png"
-    },
-    "translateX": 415
+    "translateX": 407
 }, {
     "index": 16,
     "subIndex": 0,
     "style": {
-        "top": "1000px",
+        "top": "570px",
         "width": "405px",
         "height": "406px",
         "left": "-405px",
-        "backgroundImage": "../assets/health/H_1_b.png"
+        "backgroundImage": "H_1_b.png"
     },
-    "translateX": 415
+    "translateX": 407
+}, {
+    "index": 28,
+    "subIndex": 0,
+    "style": {
+        "top": "570px",
+        "width": "405px",
+        "height": "406px",
+        "left": "-405px",
+        "backgroundImage": "H_1_c.png"
+    },
+    "translateX": 407
+}, {
+    "index": 6,
+    "subIndex": 0,
+    "style": {
+        "top": "1378px",
+        "width": "154px",
+        "height": "244px",
+        "left": "-154px",
+        "backgroundImage": "H_2_a.png"
+    },
+    "translateX": 154
+}, {
+    "index": 16,
+    "subIndex": 1,
+    "style": {
+        "top": "1378px",
+        "width": "337px",
+        "height": "244px",
+        "left": "-337px",
+        "backgroundImage": "H_2_b.png"
+    },
+    "translateX": 339
+}, {
+    "index": 4,
+    "subIndex": 1,
+    "style": {
+        "top": "1780px",
+        "width": "334px",
+        "height": "236px",
+        "left": "-334px",
+        "backgroundImage": "H_3_a.png"
+    },
+    "translateX": 334
+}, {
+    "index": 16,
+    "subIndex": 2,
+    "style": {
+        "top": "1780px",
+        "width": "350px",
+        "height": "236px",
+        "left": "-350px",
+        "backgroundImage": "H_3_b.png"
+    },
+    "translateX": 352
 }, {
     "index": 28,
     "subIndex": 1,
     "style": {
-        "top": "1000px",
-        "width": "405px",
-        "height": "406px",
-        "left": "-405px",
-        "backgroundImage": "../assets/health/H_1_c.png"
+        "top": "1780px",
+        "width": "361px",
+        "height": "246px",
+        "left": "-361px",
+        "backgroundImage": "H_3_c.png"
     },
-    "translateX": 415
-}]}
+    "translateX": 363
+}, {
+    "index": 40,
+    "subIndex": 0,
+    "style": {
+        "top": "1780px",
+        "width": "339px",
+        "height": "246px",
+        "left": "-339px",
+        "backgroundImage": "H_3_d.png"
+    },
+    "translateX": 341
+}, {
+    "index": 52,
+    "subIndex": 1,
+    "style": {
+        "top": "1780px",
+        "width": "368px",
+        "height": "246px",
+        "left": "-368px",
+        "backgroundImage": "H_3_e.png"
+    },
+    "translateX": 370
+}, {
+    "index": 70,
+    "subIndex": 0,
+    "style": {
+        "top": "1100px",
+        "width": "397px",
+        "height": "82px",
+        "left": "-397px",
+        "backgroundImage": "yoga_heading.png"
+    },
+    "translateX": 397
+}, {
+    "index": 70,
+    "subIndex": 1,
+    "style": {
+        "top": "1190px",
+        "width": "1080px",
+        "height": "167px",
+        "left": "-1080px",
+        "backgroundColor": "white"
+    },
+    "video": "yoga.webm",
+    "translateX": 1080
+}, {
+    "index": 70,
+    "subIndex": 2,
+    "style": {
+        "top": "1845px",
+        "width": "1080px",
+        "height": "167px",
+        "left": "-1080px",
+        "backgroundImage": "H_musicplay.png"
+    },
+    "translateX": 1080
+}, {
+    "index": 6,
+    "subIndex": 2,
+    "style": {
+        "top": "150px",
+        "width": "628px",
+        "height": "150px",
+        "left": "-628px",
+        "backgroundImage": "hi.png"
+    },
+    "translateX": 628
+}, {
+    "index": 6,
+    "subIndex": 3,
+    "style": {
+        "top": "320px",
+        "width": "775px",
+        "height": "82px",
+        "left": "-775px",
+        "backgroundImage": "time.png"
+    },
+    "translateX": 775
+}
+]}

@@ -1,7 +1,9 @@
 <template>
-    <div class="home" ref="home" v-on:click="tooglePleats">
+    <div class="home" ref="home" v-on:click="togglePleats">
         <button>hello</button>
         <Pleats ref="pleats"
+            dir="greenery"
+            v-bind:widgets="widgets"
             v-bind:show="openPleats"
             v-bind:color="pleatsColor"></Pleats>
         <Tree ref="tree" 
@@ -13,12 +15,9 @@
             v-if="plantMode >= 2"
             v-bind:imgSrc="characterImage"
             v-bind:imgSize="characterSize"></Character>
-        <span class="name">Hi, Joanah!</span>
-        <span class="message">Your plants ready for watering today.</span>
-        <span class="musicTitle">▶ Chocolate legs - Eric Bernet</span>
         <transition name="slide-up">
             <Thumbnail v-if="thumbnail" ref="thumbnail"
-            v-bind:items="items"
+            v-bind:items="thumbItems"
             v-bind:change-theme="changeTheme"></Thumbnail>
         </transition>
     </div>
@@ -29,14 +28,9 @@ import Tree from '../components/Tree.vue'
 import CircleTree from '../components/CircleTree.vue'
 import Thumbnail from '../components/Thumbnail.vue'
 import Character from '../components/Character.vue'
-import * as widgetData from '../assets/widgets.json'
+import * as widgetData from '../assets/greeneryWidgets.json'
+import { setTimeout, clearTimeout } from 'timers';
 
-const imageData = [
-    {w: 222, h: 172},
-    {w: 442, h: 906},
-    {w: 910, h: 1073},
-    {w: 3874, h: 4099}
-]
 const PLANT = {
     TREE: 0,
     CIRCLE: 1,
@@ -45,7 +39,21 @@ const PLANT = {
     PATTERN_P: 4,
     PATTERN_C: 5,
 };
-var getMobile;
+var getMobile, showTimer, hideTimer;
+const characterItems = [
+    'kaws.png',
+    'Fractal_square.png',
+    'pengsu.png',
+    'dog.png'
+];
+const imageData = [
+    {w: 222, h: 172},
+    {w: 1073, h: 644},
+    {w: 442, h: 906},
+    {w: 3874, h: 4099}
+]
+
+
 export default {
     name: 'Greenery',
     components: {
@@ -62,15 +70,16 @@ export default {
             playpause: false,
             plantMode: PLANT.TREE,
             thumbnail: false,
-            items: [
-                require('../assets/thumbnail/01.png'),
-                require('../assets/thumbnail/02.png'),
-                require('../assets/thumbnail/03.png'),
-                require('../assets/thumbnail/04.png'),
-                require('../assets/thumbnail/05.png'),
-                require('../assets/thumbnail/06.png')],
+            thumbItems: [
+                '01.png',
+                '02.png',
+                '03.png',
+                '04.png',
+                '05.png',
+                '06.png'],
             characterSize: imageData[0],
             characterImage: 'kaws.png',
+            widgets: widgetData.widgets
             // widgetData: widgetData.widgets,
         }
     },
@@ -78,50 +87,69 @@ export default {
         this.$refs.home.focus();
         getMobile = this.getMobile.bind(this);
         this.$socket.on('appMsg', getMobile);
+        if (showTimer) {
+            clearTimeout(showTimer);
+            showTimer = null;
+        }
+        var that = this;
+        showTimer = setTimeout(() => {
+            that.togglePleats();
+        }, 500);
     },
     methods: {
         changeTheme: function(theme) {
-            console.log('changeTheme', theme+1);
-            this.plantMode = theme+1;
+            console.log('changeTheme', theme);
+            this.plantMode = theme;
             if (this.plantMode >= PLANT.PATTERN_K) {
                 this.characterSize = imageData[this.plantMode-PLANT.PATTERN_K];
-                this.characterImage = this.items[this.plantMode-1];
+                this.characterImage = characterItems[this.plantMode-PLANT.PATTERN_K];
             }
             this.thumbnail = false;
         },
-        tooglePleats: function() {
+        togglePleats: function() {
             this.openPleats = !this.openPleats;
-            if (this.openPleats) {
-                this.$refs.tree.erase();
-            } else {
-                this.$refs.tree.restart();
-            }
         },
         getMobile: function(data) {
             console.log('getMobile', data);
             if (data.value.color) this.pleatsColor = data.value.color;
             else if (data.value.pp) this.playpause = !this.playpause;
             else if (data.value.restart) this.$refs.tree.restart();
-            else if (data.value.pleats) this.tooglePleats();
+            else if (data.value.pleats) this.togglePleats();
             else if (data.value.theme) this.plantMode = parseInt(data.value.theme);
             else if (data.value == 'thumbnail') this.thumbnail = !this.thumbnail;
             else if (data.value == 'account') {
                 // dim and moveTo account
                 var myRouter = this.$router;
+                this.togglePleats();
                 if (this.$refs.character) {
                     this.$refs.character.dim(function() {
-                        myRouter.push({name: 'account', params: {id : 0, bgColor: this.pleatsColor}});
+                        myRouter.push({name: 'account',
+                            params: {id : 0, bgColor: this.pleatsColor}});
                     });
                 } else {
-                    myRouter.push({name: 'account', params: {id : 0, bgColor: this.pleatsColor}})
+                    if (hideTimer) {
+                        clearTimeout(hideTimer);
+                        hideTimer = null;
+                    }
+                    hideTimer = setTimeout(() => {
+                        myRouter.push({name: 'account',
+                        params: {id : 0, bgColor: this.pleatsColor}});
+                    }, 500);
                 }
-            }
-            else if (data.value.key) {
+            } else if (data.value.key) {
                 this.thumbnail ? this.$refs.thumbnail.handleKey(data.value.key): null
             }
         }
     },
     destroyed() {
+        if (showTimer) {
+            clearTimeout(showTimer);
+            showTimer = null;
+        }
+        if (hideTimer) {
+            clearTimeout(hideTimer);
+            hideTimer = null;
+        }
         this.$socket.off('appMsg', getMobile);
     },
 }

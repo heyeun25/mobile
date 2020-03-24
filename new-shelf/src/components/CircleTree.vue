@@ -9,11 +9,7 @@
             <!-- </mask> -->
         <!-- </defs> -->
 
-        <!-- <image
-            mask="url(#photo-mask)"
-            xlink:href="../assets/Beige_BG-01.png"
-            x="0" y="0"
-            width="1920" height="1080" /> -->
+        
     </svg>
   </div>
 </template>

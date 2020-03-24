@@ -57,10 +57,14 @@ export default {
             category: "Scenario",
             list: [{name: "Greenery", data: { func: 'greenery', value: { theme: '0'}}},
                    {name: "Thumbnail", data: {func: 'greenery', value: 'thumbnail'}},
-                   {name: "Diana Account", data: { func: 'greenery', value: 'account'}},
+                   {name: "Walker Account", data: { func: 'greenery', value: 'account'}},
                    {name: "change Account", data: { func: 'account', value: 'change'}},
-                   {name: "Edit Board", data: { func: 'health', value: 'addBoard'}},
+                  //  {name: "Edit Board", data: { func: 'health', value: 'addBoard'}},
                    {name: "Phone Call", data: { func: 'health', value: { phoneCall : 'vertical'}}},
+                   {name: "Dunffy Account", data: { func: 'health', value: 'account'}},
+                   {name: "Black Board", data: { func: 'family', value: 'blackBoard'}},
+                   {name: "add Memo", data: { func: 'family', value: 'addMemo'}},
+                   {name: "Diana Account", data: { func: 'family', value: 'account'}},
                    ]
         },
         {
@@ -156,10 +160,10 @@ export default {
   flex-direction: column;
 }
 .btn {
-  background-color: darkgreen;
+  background-color: beige;
   text-align: center;
   line-height: 60px;
-  color: white;
+  color: black;
   outline: 1px solid white;
 }
 input {

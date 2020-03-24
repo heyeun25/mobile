@@ -30,19 +30,20 @@ export default {
             imgClass: 'accountImg',
             movePage: [
                 'health',
-                'memo',
-                'magnet'
+                'family',
+                'luxury'
             ]
         }
     },
     methods: {
         getMobile: function(data) {
             if (data.value == "change") {
-                this.imgClass= "accountImg out";
+                this.imgClass= "accountImg accountOut";
                 var myRouter = this.$router;
                 var movePage = this.movePage[this.id];
                 (timer ? clearTimeout(timer) : null);
                 timer = setTimeout(() => {
+                    console.log('movePage', movePage);
                     if (myRouter.currentRoute.name !== movePage) {
                         myRouter.push({name: movePage})
                     }
@@ -56,11 +57,12 @@ export default {
         this.$socket.on('appMsg', getMobile);
         var that = this;
         this.$refs.myImage.onload = function() {
-            that.imgClass = "accountImg in";
+            that.imgClass = "accountImg accountIn";
         }
     },
     destroyed() {
         clearTimeout(timer);
+        this.$socket.off('appMsg', getMobile);
     },
 }
 </script>
@@ -72,6 +74,7 @@ export default {
     top: 0;
     width: 100%;
     height: 100%;
+    overflow: hidden;
 }
 
 .accountImg {
@@ -83,11 +86,11 @@ export default {
     
 }
 
-.in {
+.accountIn {
     animation: 3s slidein forwards;
 }
 
-.out {
+.accountOut {
     animation: 3s slideOut forwards;
 }
 

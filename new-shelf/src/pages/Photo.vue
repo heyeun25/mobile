@@ -1,6 +1,5 @@
 <template>
   <div>
-    <img ref="myImg" src="../assets/Beige_BG-01.png"/>
   </div>
 </template>
 

@@ -26,7 +26,6 @@ export default {
         }
     },
     mounted() {
-        
     },
     methods: {
         handleKey: function(dir) {
@@ -52,7 +51,7 @@ export default {
             return (idx == this.select) ? 'item select' : 'item'
         },
         imageSrc: function(item) {
-            return item;
+            return require(`../assets/thumbnail/${item}`);
         }
     },
     destroyed() {
