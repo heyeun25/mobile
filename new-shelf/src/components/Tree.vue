@@ -109,7 +109,7 @@ export default {
     draw: function() {
       console.log('draw');
       var ret = this.makeTree();
-      while(ret.count < 3000) {
+      while(ret.count < 6000) {
         ret = this.makeTree();
       }
 

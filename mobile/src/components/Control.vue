@@ -1,6 +1,5 @@
 <template>
   <div class="container" ref="container">
-    
     <input type="color" @change="colorChange($event)"/>
     <button v-on:click="togglePicker">{{'picker = ' + colorPicker}}</button>
     <div v-for="(value, index) in info" v-bind:key="index" class="category">
@@ -10,7 +9,6 @@
              v-bind:key="index" class="btn"
              v-on:click="send(item.data)">
           {{item.name}}
-          
         </div>
       </div>
     </div>
@@ -19,7 +17,8 @@
       ref="myVideo"
       controls
       muted
-      src="../assets/phoneCall.mp4"></video>
+      loop
+      src="../assets/mobile_sero.mp4"></video>
   </div>
 </template>
 

@@ -4,9 +4,10 @@
             dir="family"
             v-bind:widgets="widgets"
             v-bind:show="openPleats"
-            v-bind:color="color">
+            v-bind:color="color"
+            blackBoard="true"
+            v-bind:showBlackBoard="showBlackBoard">
         </Pleats>
-        
     </div>
 </template>
 <script>
@@ -31,16 +32,6 @@ export default {
             widgets: WidgetsData.widgets,
             openPleats: false,
             showBlackBoard: false,
-            blackBoardClass: 'blackBoard',
-        }
-    },
-    watch: {
-        showBlackBoard: function(newVal) {
-            if (newVal) {
-                this.blackBoardClass = 'blackBoard blackBoardIn';
-            } else {
-                this.blackBoardClass = 'blackBoard blackBoardOut';
-            }
         }
     },
     methods: {

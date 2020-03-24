@@ -26,35 +26,24 @@
                     type="video/webm"/>
             </div>
         </div>
-        <div class="topUI" ref="topUI"></div>
-        <div v-bind:class="'blackBoard'+(blackBoard ? blackBoardIn : blackBoardOut)"
-            ref="blackBoard">
-        </div>
+        <div v-if="blackBoard" 
+            v-bind:class="'blackBoard'+(showBlackBoard ? blackBoardIn : blackBoardOut)"
+            ref="blackBoard"></div>
+        <div v-if="blackBoard" class="topUI" ref="topUI"></div>
+        
     </div>
 </template>
 <script>
 import TweenMax from "gsap"
-import { setTimeout } from 'timers'
+import {setTimeout} from 'timers'
 
-const PLEATS_WIDTH = 39;
+const PLEATS_WIDTH = 40;
 const WIDGET_WIDTH = 300;
 const SHIRINK = 0.95;
 var PLEATS_CNT = 140;
 
 var pleatsAni;
 var widgetAni = [];
-function findPos(obj)
-{
-    var curLeft=0, curTop=0;
-    console.log(obj.offsetParnet);
-    if (obj.offsetParent) {
-        do {
-            curLeft += obj.offsetLeft;
-            curTop += obj.offsetTop;
-        } while (obj = obj.offsetParent);
-    }
-    return {'left': curLeft, 'top': curTop};
-}
 export default {
     name: 'Pleats',
     props: {
@@ -69,7 +58,14 @@ export default {
             default: false
         },
         dir: String,
-        blackBoard: Boolean,
+        blackBoard: {
+            type: Boolean,
+            default: false,
+        },
+        showBlackBoard: {
+            type: Boolean,
+            default: false,
+        }
     },
     watch: {
         show: function(newVal, oldVal) {
@@ -102,6 +98,7 @@ export default {
     },
     methods: {
         moveWidgetToTop: function() {
+            console.log("MOVE WIDGET TO TOP")
             var pleatsEls = document.getElementsByClassName('pleats');
             var parent = [];
             for(var i =0; i<pleatsEls.length; i++) {
@@ -109,27 +106,65 @@ export default {
                     parent.push(pleatsEls[i]);
                 }
             }
-            console.log(parent);
+            // console.log(parent);
+            // for(var i =0; i<parent.length; i++) {
+            //     for(var j =0; j<parent[i].childNodes.length; j++) {
+            //         var c = parent[i].childNodes[j]
+            //         console.log('style ', c.style.cssText);
+            //         console.log('static ', c.getBoundingClientRect());
+            //     }
+            // }
+            var moveEls = [];
             for(var i =0; i<parent.length; i++) {
-                for(var j =0; j<parent[i].childNodes.length; j++) {
-                    var c = parent[i].childNodes[j]
-                    // console.log(c.offsetLeft, c.offsetTop);
-                    console.log('style ', c.style.cssText);
-                    console.log('static ', c.getBoundingClientRect());
-                // }
+                for(var j=0; j<parent[i].childNodes.length; j++) {
+                    var c = parent[i].childNodes[j];
+                    if (!this.checkHide(c.id)) {
+                        moveEls.push(c);
+                    }
                 }
             }
 
-            for(var i =0; i<parent.length; i++) {
-                while(parent[i].childNodes.length > 0) {
-                    var c = parent[i].childNodes[0];
-                    var staticValue = c.getBoundingClientRect();
-                    this.$refs.topUI.appendChild(c);
-                    var staticValue2 = c.getBoundingClientRect();
-                    console.log(staticValue, staticValue2);
-                }
+            for(var i =0; i<moveEls.length; i++) {
+                var c = moveEls[i];
+                var staticVal = c.getBoundingClientRect();
+                // this.$refs.topUI.appendChild(c);
+                // c.style.left = staticVal.x + 'px';
             }
-
+        },
+        checkHide: function(id) { /// id is like w2-1
+            var re = /w(\d+)-(\d+)/;
+            for(var i =0; i<this.widgets.length; i++) {
+                console.log(id.match(re)[1], id.match(re)[2]);
+                var result = id.match(re);
+                var index = result[1];
+                var subIndex = result[2];
+                if ((this.widgets[i].index == index) &&
+                    (this.widgets[i].subIndex == subIndex) &&
+                    (this.widgets[i].hide == true)) {
+                        console.log('widgets', this.widgets[i]);
+                        return true;
+                    }
+            }
+            return false;
+        },
+        moveBackToParent: function() {
+            var re = /[w](.*?)[-]/;
+            var topUI = this.$refs.topUI;
+            while(topUI.childNodes.length > 0) {
+                var c = topUI.childNodes[0];
+                var parentId = 'p' + c.id.match(re)[1];
+                var parent = document.getElementById(parentId);
+                parent.appendChild(c);
+                c.style.left = "";
+            }
+            // var widgets = document.getElementsByClassName('widget');
+            // var re = /[w](.*?)[-]/;
+            // for(var i =0; i<widgets.length; i++) {
+            //     var parentId = 'p' + widgets[i].id.match(re)[1];
+            //     console.log(parentId);
+            //     widgets[i].left = "";
+            //     document.getElementById(parentId).appendChild(widgets[i]);
+            // }
         },
         checkItem: function(item, property) {
             // console.log('checkitem', item.style.backgroundImage);
@@ -163,6 +198,7 @@ export default {
             
         },
         close: function() {
+            if (this.blackBoard) this.moveBackToParent();
             pleatsAni.play();
             if (this.$refs.widgetVideo)
                 this.$refs.widgetVideo[0].pause();
@@ -202,16 +238,21 @@ export default {
             return {};
         },
         onCompleteShowWidget: function() {
-            console.log('complete');;
-            this.moveWidgetToTop();
+            console.log('onCompleteShowWidget')
+            if (this.blackBoard) this.moveWidgetToTop();
             setTimeout(() => {
                 pleatsAni.reverse();
             }, 500)
         },
+        onCompleteReverse: function() {
+            setTimeout(() => {
+                pleatsAni.reverse();
+            }, 500)
+        }, 
         addWidget: function() {
             console.log('addWidget', widgetAni);
             var el = document.getElementById("w50-1");
-            el.style.backgroundImage = "memo_b.png";
+            // el.style.backgroundImage = "memo_b.png";
             for(var i =0; i<widgetAni.length; i++) {
                 if (widgetAni[i]._targets[0].id == "w50-1") {
                     widgetAni[i].play();
@@ -248,8 +289,8 @@ export default {
             var id = "#w" + w.index + "-" + w.subIndex;
             widgetAni.push(TweenMax.to(id, 0.1, {
                 translateX: w.translateX,
-                onComplete: (i == 0 ? this.onCompleteShowWidget : null),
-                onReverseComplete: (i == 0 ? this.onCompleteShowWidget : null),
+                onComplete: ((i == 0 || this.checkHide(id)) ? this.onCompleteShowWidget : null),
+                onReverseComplete: (i == 0 ? this.onCompleteReverse : null),
             }).reverse());
         }
     },
@@ -274,11 +315,16 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
-    /* outline: 1px solid red; */
     width: 10px;
     height: 110%;
     background-color: rgb(0, 0, 228);
+    /* overflow: hidden; */
     /* box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); */
+}
+
+.pleatsMask {
+    position: absolute;
+    top: 0;
 }
 
 .widget {
@@ -301,7 +347,6 @@ export default {
     width: 100%;
     height: 100%;
     background: #17382b;
-    z-index: -50;
 }
 
 .blackBoardIn {

@@ -7,11 +7,11 @@
             v-bind:stopWidgetVideo="stopWidgetVideo"
             v-bind:color="bgColor"></Pleats>
         <video ref="phoneCall"
-            v-bind:class="phoneCallClass" controls
-            src="../assets/video/phoneCall.mp4"></video>
+            v-bind:class="phoneCallClass" controls loop
+            src="../assets/video/TV_sero_cut.mp4"></video>
         <video ref="wideCall" 
-            v-bind:class="wideCallClass" controls
-            src="../assets/video/phoneCall.mp4"></video>
+            v-bind:class="wideCallClass" controls loop
+            src="../assets/video/TV_garo.mp4"></video>
     </div>
 </template>
 <script>
