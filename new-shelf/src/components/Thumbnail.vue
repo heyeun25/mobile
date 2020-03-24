@@ -1,5 +1,5 @@
 <template>
-    <div class="thumbnail">
+    <div class="thumbnail" v-bind:style="{'backgroundImage' : require('../assets/thumbnail/bg.png')}">
         <div class="category">
             <span>Interactive</span>
             <span>Ambient</span>
@@ -8,7 +8,8 @@
             v-bind:class="itemClass(index)"
             v-bind:key="index">
             <img v-bind:key="'img' + index"
-                v-bind:src="imageSrc(item)"/>
+                v-bind:src="imageSrc(item.img)"/>
+            <span>{{item.title}}</span>
         </div>
     </div>
 </template>
@@ -62,23 +63,27 @@ export default {
 <style>
 .thumbnail {
     position: absolute;
-    top: 1600px;
+    top: 1541px;
     width: 100%;
-    height: 527px;
+    height: 619px;
     background-color: black;
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
+
 
 .item {
     /* position: absolute; */
     top: 30px;
-    width: 688px;
+    width: 388px;
     height: 388px;
     /* height: 100%; */
     /* background-color: green; */
     outline: 1px solid black;
     transition: all ease .2s;
+    margin-left: 36px;
+    margin-right: 36px;
 }
 
 .item > img {
@@ -90,6 +95,13 @@ export default {
     /* width: 280px; */
     height: 95%;
 
+}
+
+.item > span {
+    margin-left: 10px;
+    color: white;
+    font-family: 'SamsungSharpSans';
+    font-size: 48px;
 }
 
 .select {
@@ -108,6 +120,9 @@ export default {
 }
 
 .category > span {
+    /* position: absolute; */
+    margin-left: 85px;
+    margin-right: 85px;
     color: white;
     font-size: 48px;
     font-family: 'SamsungSharpSans';

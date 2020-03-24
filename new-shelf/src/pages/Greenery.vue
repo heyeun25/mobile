@@ -15,6 +15,11 @@
             v-if="plantMode >= 2"
             v-bind:imgSrc="characterImage"
             v-bind:imgSize="characterSize"></Character>
+        <Info ref="info"
+            dir="greenery"
+            v-bind:show="openPleats"
+            v-bind:widgets="widgets"
+            v-bind:stopWidgetVideo="stopWidgetVideo"></Info>
         <transition name="slide-up">
             <Thumbnail v-if="thumbnail" ref="thumbnail"
             v-bind:items="thumbItems"
@@ -30,29 +35,33 @@ import Thumbnail from '../components/Thumbnail.vue'
 import Character from '../components/Character.vue'
 import * as widgetData from '../assets/greeneryWidgets.json'
 import { setTimeout, clearTimeout } from 'timers';
+import Info from "../components/Info";
+
 
 const PLANT = {
     TREE: 0,
     CIRCLE: 1,
     PATTERN_K: 2,
-    PATTERN_D: 3,
-    PATTERN_P: 4,
-    PATTERN_C: 5,
+    PATTERN_S: 3,
+    PATTERN_C: 4,
+    PATTERN_P: 5,
+    PATTERN_M: 6,
 };
 var getMobile, showTimer, hideTimer;
 const characterItems = [
     'kaws.png',
-    'Fractal_square.png',
+    'fractal_square.png',
+    'fractal_circle.png',
     'pengsu.png',
     'dog.png'
 ];
 const imageData = [
     {w: 222, h: 172},
-    {w: 1073, h: 644},
+    {w: 816, h: 857},
+    {w: 251, h: 251},
     {w: 442, h: 906},
     {w: 3874, h: 4099}
-]
-
+];
 
 export default {
     name: 'Greenery',
@@ -61,7 +70,8 @@ export default {
         Pleats,
         CircleTree,
         Thumbnail,
-        Character
+        Character,
+        Info
     },
     data() {
         return {
@@ -71,12 +81,13 @@ export default {
             plantMode: PLANT.TREE,
             thumbnail: false,
             thumbItems: [
-                '01.png',
-                '02.png',
-                '03.png',
-                '04.png',
-                '05.png',
-                '06.png'],
+                {title: 'Bushes', img: '01.png'},
+                {title: 'Vines', img: '02.png'},
+                {title: 'Kaws', img: '03.png'},
+                {title: 'Square', img: '04.png'},
+                {title: 'Circle', img: '05.png'},
+                {title: 'Pengsu', img: '06.png'},
+                {title: 'Make your own', img: '07.png'}],
             characterSize: imageData[0],
             characterImage: 'kaws.png',
             widgets: widgetData.widgets
