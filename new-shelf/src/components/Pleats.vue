@@ -13,7 +13,7 @@
 </template>
 <script>
 import {setTimeout} from 'timers'
-
+import TweenMax from "gsap"
 const PLEATS_WIDTH = 40;
 const WIDGET_WIDTH = 300;
 const SHIRINK = 0.95;
@@ -76,25 +76,11 @@ export default {
         open: function() {
             pleatsAni.play();
             this.onCompleteShowWidget();
-            // if (this.$refs.widgetVideo)
-            //     this.$refs.widgetVideo[0].play();
-            // for(var i=0; i<widgetAni.length; i++) {
-            //     // widgetAni[i].play();
-            //     console.log(i, this.widgets[i].hide);
-            //     if (!this.widgets[i].hide) {
-            //         widgetAni[i].play();
-            //     }
-            // }
             
         },
         close: function() {
             pleatsAni.play();
             this.onCompleteShowWidget();
-            // if (this.$refs.widgetVideo)
-            //     this.$refs.widgetVideo[0].pause();
-            // for(var i=0; i<widgetAni.length; i++) {
-            //     widgetAni[i].reverse();
-            // }
         },
         changeColor: function(data) {
             var p = this.$refs.pleats;
@@ -157,7 +143,7 @@ export default {
     left: 0;
     width: 10px;
     height: 110%;
-    background-color: rgb(0, 0, 228);
+    box-shadow: 0px 0px 0px black;    
     /* overflow: hidden; */
 }
 

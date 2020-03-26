@@ -4,8 +4,7 @@
             dir="family"
             v-bind:widgets="widgets"
             v-bind:show="openPleats"
-            v-bind:color="color">
-        </Pleats>
+            v-bind:color="color"></Pleats>
         <div v-bind:class="blackBoardClass"
             ref="blackBoard"></div>
         <Info ref="info"

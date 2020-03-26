@@ -4,7 +4,7 @@ var serveIndex = require('serve-index');
 var path = require('path');
 const readline = require('readline');
 
-var homeDir = path.join(__dirname, '../..');
+var homeDir = path.join(__dirname, '../');
 var app = express();
 app.use(express.static(homeDir));
 app.use(serveIndex(homeDir));
@@ -46,13 +46,33 @@ io.sockets.on('connection', function (socket) {
 	socket.on('nfc55',function(){
 	    console.log('nfc1');
 	    io && io.sockets.emit('nfc55');
-	  
 	});
 	socket.on('nfc75',function(){
 	    console.log('nfc2');
 	    io && io.sockets.emit('nfc75');
-	  
 	});
+	// socket.on('controller', function(data) {
+	// 	console.log('controller', data);
+	// 	if (!socketNameMap['mobile']) {
+	// 		console.log('no mobile');
+	// 		return;
+	// 	}
+	// 	if (!socketNameMap['shelf']) {
+	// 		console.log('no shelf');
+	// 		return;
+	// 	}
+	// 	var mobile = socketNameMap['mobile'];
+	// 	var shelf = socketNameMap['shelf'];
+	// 	if (data.rotate){
+	// 		mobile.emit('appMsg', data);
+	// 		shelf.emit('appMsg', { func: 'health', value: { phoneCall : 'horizontal'}});
+	// 	}
+	// 	if (data.stop) {
+	// 		mobile.emit('appMsg', data);
+	// 		shelf.emit('appMsg', { func: 'health', value: { phoneCall : 'horizontal'}});
+	// 	}
+		
+	// })
 });
 
 function prepareSync() {
@@ -86,3 +106,4 @@ function emitToAll(eventName, eventData) {
 function log (msg) {
 	console.log('[' + Date.now() + '] ' + msg);
 }
+

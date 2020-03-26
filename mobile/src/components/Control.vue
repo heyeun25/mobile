@@ -1,5 +1,6 @@
 <template>
   <div class="container" ref="container">
+    {{JSON.stringify(this.orient)}}
     <input type="color" @change="colorChange($event)"/>
     <button v-on:click="togglePicker">{{'picker = ' + colorPicker}}</button>
     <div v-for="(value, index) in info" v-bind:key="index" class="category">
@@ -33,10 +34,11 @@
 
 <script>
 import io from 'socket.io-client'
-var socket = io('http://192.168.0.118:8080')
+var getMobile;
+var socket = io('http://192.168.0.150:8080')
 socket.on('connect', function() {
-  console.log('socket');
-})
+  socket.emit('identify', 'mobile');
+});
 var handle;
 export default {
   name: 'Control',
@@ -118,46 +120,33 @@ export default {
       }
       socket.emit('appMsg', data);
     },
-    handleOrientation: function() {
-      this.orient = JSON.stringify(window.orientation);
-      console.log('orientation change');
-      
-      if (this.orient == 90) {
-        if (this.phoneCall == false) {
-          alert('not phone call mode');
-          return;
-        }
-        this.$refs.verticalVideo.pause();
-        this.$refs.horizontalVideo.requestFullscreen();
-        this.$refs.horizontalVideo.play();
-        this.send({ func: 'health', value: { phoneCall : 'horizontal'}}); // toggle
-      } else if (this.orient == 0){
-        // this.send({ func: 'health', value: { phoneCall : 'vertical'}}); // toggle
-      }
-      // alert('aa');
-    },
-    onPlay: function() {
-      // socket.emit('appMsg', { func: 'health', value: 'call'});
-    },
     onPause: function() { 
       console.log('pause')
       this.phoneCall = false;
+      this.orient = 0;
       this.$refs.verticalVideo.currentTime = 0;
       this.$refs.horizontalVideo.currentTime = 0;
-      this.send({ func: 'health', value : {phoneCall : 'finish'}})
-      // this.$refs.verticalVideo.exitFullscreen();
-      // alert('aa');
+      socket.emit('appMsg', { func: 'health', value: { phoneCall : 'finish'}});
+    },
+    handle: function() {
+      if ((window.orientation == 90 ||
+          window.orientation == -90) &&
+          this.phoneCall == true) {
+        this.orient = 90;
+        this.$refs.horizontalVideo.requestFullscreen();
+        this.$refs.horizontalVideo.play();
+        socket.emit('appMsg', { func: 'health', value: { phoneCall : 'horizontal'}});
+      }
+      if (window.orientation == 0 && this.phonCall == true) {
+        this.orient = 0;
+        this.$refs.horizontalVideo.currentTime = 0;
+      }
     }
   },
   mounted() {
-    handle = this.handleOrientation.bind(this);
+    socket.on('appMsg', getMobile);
+    handle = this.handle.bind(this);
     window.addEventListener("orientationchange", handle);
-    // window.addEventListener("deviceorientation", () => {
-    //   alert('device orientation');
-    // })
-    // this.$refs.container.requestFullscreen();
-    // this.$refs.verticalVideo.onpause = this.onPause;
-    // this.$refs.verticalVideo.onplay = this.onPlay;
     this.$refs.horizontalVideo.onpause = this.onPause;
   },
   destroyed() {
@@ -165,7 +154,6 @@ export default {
   },
 }
 </script>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .container {
@@ -203,7 +191,8 @@ video {
 }
 
 .vertical {
-  height: 100%;
+  /* height: 100%; */
+  top: -10%;
   width: 100%;
 }
 

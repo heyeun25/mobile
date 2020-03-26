@@ -1,3 +1,4 @@
+import TweenMax from "gsap"
 class EventManager {
 
   constructor() {      

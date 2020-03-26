@@ -5,7 +5,7 @@
 <script>
 import _ from "lodash";
 import { setTimeout, setInterval, clearInterval } from 'timers';
-import "../utils/TweenMax.js";
+import TweenMax from "gsap";
 import EventManager from "../utils/Event.js";
 var CNT = 70;
 var SCALE_X = 150;

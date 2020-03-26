@@ -10,13 +10,15 @@
             dir="health"
             v-bind:show="openPleats"
             v-bind:stopWidgetVideo="stopWidgetVideo"
+            videoStartTime="31.8"
             v-bind:widgets="widgets"></Info>
+        <video ref="wideCall"
+            v-bind:class="wideCallClass"
+            controls loop
+            src="../assets/video/TV_garo.mp4"></video>
         <video ref="phoneCall"
             v-bind:class="phoneCallClass" controls loop
             src="../assets/video/TV_sero_cut.mp4"></video>
-        <video ref="wideCall" 
-            v-bind:class="wideCallClass" controls loop
-            src="../assets/video/TV_garo.mp4"></video>
     </div>
 </template>
 <script>
@@ -50,14 +52,12 @@ export default {
             widgets: widgetData.widgets,
             stopWidgetVideo: false,
             pleatsItemColor: '#6b7d62',
+            wideCallClass: 'wideCall'
         }
     },
     computed: {
         phoneCallClass: function() {
             return (this.wide ? 'hide ' : '') + 'phoneCall'
-        },
-        wideCallClass: function() {
-            return (this.wide ? '' : 'hide ') + 'wideCall'
         }
     },
     watch: {
@@ -69,6 +69,9 @@ export default {
                     var that = this;
                     moveToLeft = TweenMax.to('.phoneCall', 1, {
                         transform: 'tranlsateX(-100%)',
+                        onComplete: function() {
+                            that.wideCallClass = "wideCall wideShow";
+                        },
                         onReverseComplete: () => {
                             that.$refs.phoneCall.currentTime = 0;
                         }
@@ -89,19 +92,13 @@ export default {
         wide: function(val) {
             if (val) { // show wide
                 // make full screen
-                if (!makeFull) {
-                    makeFull = TweenMax.to('.wideCall', 1, {
-                        left: 0,
-                    });
-                } else {
-                    makeFull.play();
-                }
                 // set same currentTime width phonCall
+                this.wideCallClass = "wideCall wideFullScreen"
                 this.$refs.wideCall.currentTime = this.$refs.phoneCall.currentTime;
                 this.$refs.wideCall.play();
             } else { // hide wide
                 // init video tag
-                makeFull.reverse(); 
+                this.wideCallClass = "wideCall wideHide"
                 this.$refs.wideCall.pause();
                 this.$refs.wideCall.currentTime = 0;
             }
@@ -195,9 +192,37 @@ export default {
     position: absolute;
     top: 0;
     width: 100%;
+    left: 100%;
+}
+
+.wideShow {
     left: 67%;
-    /* height: 100%; */
-    /* transform: translateX(100%); */
+}
+
+.wideFullScreen {
+    animation: 1s toLeft forwards;
+}
+
+.wideHide {
+    animation: 1s toRight forwards;
+}
+
+@keyframes toLeft {
+    from {
+        left: 67%;
+    }
+    to {
+        left: 0;
+    }
+}
+
+@keyframes toRight {
+    from {
+        left: 0;
+    }
+    to {
+        left: 100%;
+    }
 }
 
 .hide {

@@ -25,7 +25,7 @@
     </div>
 </template>
 <script>
-import TweenMax from "gsap"
+import {TweenMax, Power0} from "gsap"
 
 var widgetAni = [];
 export default {
@@ -38,6 +38,7 @@ export default {
         widgets: Array,
         dir: String,
         show: Boolean,
+        videoStartTime: String,
     },
     watch: {
         stopWidgetVideo: function(newVal) {
@@ -89,12 +90,13 @@ export default {
     },
     mounted() {
         var w = document.getElementsByClassName('widget');
+        if (this.videoStartTime)
+            this.$refs.widgetVideo[0].currentTime = Number(this.videoStartTime);
         console.log(w);
         for(var i=0; i<w.length; i++) {
             widgetAni.push(TweenMax.to(w[i], 0.5, {
                 translateX: 0,
-                onComplete: ((i == 0 || this.widgets[i].hide)) ? this.onCompleteShowWidget : null,
-                onReverseComplete: ((i == 0 || this.widgets[i].hide)) ? this.onCompleteReverse : null,
+                ease: Power0.easeInOut,
             }).reverse());
         }
     },
