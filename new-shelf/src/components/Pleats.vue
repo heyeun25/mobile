@@ -8,9 +8,7 @@
                     backgroundColor: color, 
                     width: pleatsWidth}">
         </div>
-        <div v-if="blackBoard" 
-            v-bind:class="'blackBoard '+(showBlackBoard ? 'blackBoardIn' : 'blackBoardOut')"
-            ref="blackBoard"></div>
+        
     </div>
 </template>
 <script>
@@ -23,6 +21,7 @@ var PLEATS_CNT = 140;
 
 var pleatsAni;
 var widgetAni = [];
+const lines = [76, 77, 78, 79, 83, 84, 85, 86, 90, 91, 92, 93];
 export default {
     name: 'Pleats',
     props: {
@@ -41,7 +40,8 @@ export default {
         showBlackBoard: {
             type: Boolean,
             default: false,
-        }
+        },
+        pleatsItemColor: String,
     },
     watch: {
         show: function(newVal, oldVal) {
@@ -51,6 +51,16 @@ export default {
                 this.close();
             }
         },
+        pleatsItemColor: function(newVal) {
+            if (newVal.length <= 0) {
+                console.log('error');
+                return;
+            }
+            for(var i =0; i<lines.length; i++) {
+                var p = document.getElementById(`p${lines[i]}`);
+                p.style.backgroundColor = newVal;
+            }
+        }
     },
     data: function () {
         return {
@@ -111,11 +121,19 @@ export default {
             p[i].style.zIndex = -i;
         }
         
-        pleatsAni = TweenMax.to('.pleats', 0.3, {
-            boxShadow: "20px 8px 20px rgba(0, 0, 0, 0.5)",
+        pleatsAni = TweenMax.to('.pleats', 1, {
+            boxShadow: "20px 8px 20px rgba(0, 0, 0, 0.8)",
             width: PLEATS_WIDTH * SHIRINK,
             onComplete: this.widgets.length <=0 ? this.onCompleteShowWidget : null,
         }).reverse();
+
+        if (this.pleatsItemColor &&
+            this.pleatsItemColor.length >= 0) {
+            for(var i =0; i<lines.length; i++) {
+                var p = document.getElementById(`p${lines[i]}`);
+                p.style.backgroundColor = this.pleatsItemColor;
+            }
+        }
     },
     destroyed() {
     },
@@ -144,7 +162,7 @@ export default {
 }
 
 .stayPleats {
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    box-shadow: 10px 5px 10px rgba(0, 0, 0, 0.5);
 }
 
 .pleatsMask {
@@ -153,38 +171,4 @@ export default {
 }
 
 
-.blackBoard {
-    position: relative;
-    left: 40px;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: #17382b;
-}
-
-.blackBoardIn {
-    animation: 1s moveLeft forwards;
-}
-
-.blackBoardOut {
-    animation: 1s moveRight forwards;
-}
-
-@keyframes moveLeft {
-    from {
-        transform: translateX(100%);
-    }
-    to {
-        transform: translateX(0);
-    }
-}
-
-@keyframes moveRight {
-    from {
-        transform: translateX(0%);
-    }
-    to {
-        transform: translateX(100%);
-    }
-}
 </style>

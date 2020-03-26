@@ -17,7 +17,7 @@ export default {
         },
         bgColor: {
             type: String,
-            default: "navy"
+            default: "#101012"
         }
     },
     data() {

@@ -4,14 +4,19 @@
             dir="family"
             v-bind:widgets="widgets"
             v-bind:show="openPleats"
-            v-bind:color="color"
-            v-bind:blackBoard="true"
-            v-bind:showBlackBoard="showBlackBoard">
+            v-bind:color="color">
         </Pleats>
+        <div v-bind:class="blackBoardClass"
+            ref="blackBoard"></div>
+        <Info ref="info"
+            dir="family"
+            v-bind:show="openPleats"
+            v-bind:widgets="widgets"></Info>
     </div>
 </template>
 <script>
 import Pleats from '../components/Pleats.vue'
+import Info from '../components/Info.vue'
 import * as WidgetsData from '../assets/familyWidgets.json'
 
 var getMobile, showTimer, hideTimer = null;
@@ -19,12 +24,13 @@ var getMobile, showTimer, hideTimer = null;
 export default {
     name: 'Family',
     components: {
-        Pleats
+        Pleats,
+        Info
     },
     props: {
         color: {
             type: String,
-            default: "navy"
+            default: "#101012"
         }
     },
     data() {
@@ -32,6 +38,16 @@ export default {
             widgets: WidgetsData.widgets,
             openPleats: false,
             showBlackBoard: false,
+            blackBoardClass: 'blackBoard',
+        }
+    },
+    watch: {
+        showBlackBoard: function(val) {
+            if (val) {
+                this.blackBoardClass = 'blackBoard blackBoardIn';
+            } else {
+                this.blackBoardClass = 'blackBoard blackBoardOut';
+            }
         }
     },
     methods: {
@@ -55,7 +71,7 @@ export default {
                     params: {id : 2, bgColor: this.color}});
                 }, 500);
             } else if (data.value == 'addMemo') {
-                this.$refs.pleats.addWidget();
+                this.$refs.info.addWidget();
             }
         }
     },
@@ -90,5 +106,38 @@ export default {
     width: 100%;
     height: 100%;
     overflow: hidden;
+}
+.blackBoard {
+    position: relative;
+    left: 0px;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #383322;
+    transform: translateX(100%);
+}
+.blackBoardIn {
+    animation: 1s moveLeft forwards;
+}
+.blackBoardOut {
+    animation: 1s moveRight forwards;
+}
+
+@keyframes moveLeft {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes moveRight {
+    from {
+        transform: translateX(0%);
+    }
+    to {
+        transform: translateX(100%);
+    }
 }
 </style>

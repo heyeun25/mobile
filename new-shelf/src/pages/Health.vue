@@ -3,10 +3,14 @@
         <Pleats ref="pleats"
             dir="health"
             v-bind:stayPleats="true"
-            v-bind:widgets="widgets"
+            v-bind:show="openPleats"
+            v-bind:pleatsItemColor="pleatsItemColor"
+            v-bind:color="bgColor"></Pleats>
+        <Info ref="info"
+            dir="health"
             v-bind:show="openPleats"
             v-bind:stopWidgetVideo="stopWidgetVideo"
-            v-bind:color="bgColor"></Pleats>
+            v-bind:widgets="widgets"></Info>
         <video ref="phoneCall"
             v-bind:class="phoneCallClass" controls loop
             src="../assets/video/TV_sero_cut.mp4"></video>
@@ -18,6 +22,7 @@
 <script>
 import "../utils/TweenMax.js"
 import Pleats from "../components/Pleats.vue"
+import Info from "../components/Info.vue"
 import * as widgetData from '../assets/healthWidgets.json'
 import { clearTimeout } from 'timers';
 var moveToLeft,
@@ -28,12 +33,13 @@ var moveToLeft,
 export default {
     name: 'Health',
     components: {
-        Pleats
+        Pleats,
+        Info
     },
     props: {
         bgColor: {
             type: String,
-            default: "navy"
+            default: "#101012"
         }
     },
     data() {
@@ -43,6 +49,7 @@ export default {
             openPleats: false,
             widgets: widgetData.widgets,
             stopWidgetVideo: false,
+            pleatsItemColor: '#6b7d62',
         }
     },
     computed: {
@@ -59,10 +66,11 @@ export default {
             if (val) {
                 this.$refs.phoneCall.play();
                 if (!moveToLeft) {
+                    var that = this;
                     moveToLeft = TweenMax.to('.phoneCall', 1, {
                         transform: 'tranlsateX(-100%)',
                         onReverseComplete: () => {
-                            this.$refs.phoneCall.currentTime = 0;
+                            that.$refs.phoneCall.currentTime = 0;
                         }
                     });
                 } else {
@@ -123,16 +131,15 @@ export default {
                     myRouter.push({name: 'account',
                     params: {id : 1, bgColor: this.color}});
                 }, 500);
+            } else if (data.value.color) {
+                this.pleatsItemColor = data.value.color;
+                console.log('pleatsItemColor ', this.pleatsItemColor);
             }
         }
     },
     mounted() {
         getMobile = this.getMobile.bind(this);
         this.$socket.on('appMsg', getMobile);
-        if (showTimer) {
-            clearTimeout(showTimer);
-            showTimer = null;
-        }
         var that = this;
         showTimer = setTimeout(() => {
             that.togglePleats();

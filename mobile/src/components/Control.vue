@@ -13,18 +13,27 @@
       </div>
     </div>
     <video
-      v-bind:class="(orient == 0 ? 'vertical' : 'horizontal')"
-      ref="myVideo"
+      class="vertical"
+      v-bind:style="{visibility: ((orient == 0) && phoneCall == true ? 'visible' : 'hidden')}"
+      ref="verticalVideo"
       controls
       muted
       loop
       src="../assets/mobile_sero.mp4"></video>
+    <video
+      class="horizontal"
+      v-bind:style="{visibility: ((orient == 90) && phoneCall == true ? 'visible' : 'hidden')}"
+      ref="horizontalVideo"
+      controls
+      muted
+      loop
+      src="../assets/mobile_garo.mp4"></video>
   </div>
 </template>
 
 <script>
 import io from 'socket.io-client'
-var socket = io('http://localhost:8080')
+var socket = io('http://192.168.0.118:8080')
 socket.on('connect', function() {
   console.log('socket');
 })
@@ -37,6 +46,7 @@ export default {
   data: function() {
     return {
       colorPicker: 'pleatsBg',
+      phoneCall: false,
       orient: 0,
       // func : router name of shelf front app
       // category : category on mobile app
@@ -103,20 +113,26 @@ export default {
     send: function(data) {
       console.log(JSON.stringify(data));
       if (data.value.phoneCall && data.value.phoneCall == 'vertical') {
-        this.$refs.myVideo.style.visibility = "inherit";
-        // this.$refs.myVideo.requestFullscreen();
-        this.$refs.myVideo.play();
-        // return;
+        this.phoneCall = true;
+        this.$refs.verticalVideo.play();
       }
       socket.emit('appMsg', data);
     },
     handleOrientation: function() {
       this.orient = JSON.stringify(window.orientation);
       console.log('orientation change');
+      
       if (this.orient == 90) {
+        if (this.phoneCall == false) {
+          alert('not phone call mode');
+          return;
+        }
+        this.$refs.verticalVideo.pause();
+        this.$refs.horizontalVideo.requestFullscreen();
+        this.$refs.horizontalVideo.play();
         this.send({ func: 'health', value: { phoneCall : 'horizontal'}}); // toggle
       } else if (this.orient == 0){
-        this.send({ func: 'health', value: { phoneCall : 'vertical'}}); // toggle
+        // this.send({ func: 'health', value: { phoneCall : 'vertical'}}); // toggle
       }
       // alert('aa');
     },
@@ -124,11 +140,12 @@ export default {
       // socket.emit('appMsg', { func: 'health', value: 'call'});
     },
     onPause: function() { 
-      // console.log('pause')
-      this.$refs.myVideo.currentTime = 0;
-      this.$refs.myVideo.style.visibility = "hidden";
+      console.log('pause')
+      this.phoneCall = false;
+      this.$refs.verticalVideo.currentTime = 0;
+      this.$refs.horizontalVideo.currentTime = 0;
       this.send({ func: 'health', value : {phoneCall : 'finish'}})
-      // this.$refs.myVideo.exitFullscreen();
+      // this.$refs.verticalVideo.exitFullscreen();
       // alert('aa');
     }
   },
@@ -138,9 +155,10 @@ export default {
     // window.addEventListener("deviceorientation", () => {
     //   alert('device orientation');
     // })
-    this.$refs.container.requestFullscreen();
-    this.$refs.myVideo.onpause = this.onPause;
-    this.$refs.myVideo.onplay = this.onPlay;
+    // this.$refs.container.requestFullscreen();
+    // this.$refs.verticalVideo.onpause = this.onPause;
+    // this.$refs.verticalVideo.onplay = this.onPlay;
+    this.$refs.horizontalVideo.onpause = this.onPause;
   },
   destroyed() {
     window.removeEventListener("orientationchange", handle)
@@ -186,6 +204,7 @@ video {
 
 .vertical {
   height: 100%;
+  width: 100%;
 }
 
 .horizontal {

@@ -1,6 +1,5 @@
 <template>
     <div class="home" ref="home" v-on:click="togglePleats">
-        <button>hello</button>
         <Pleats ref="pleats"
             dir="greenery"
             v-bind:widgets="widgets"
@@ -12,14 +11,12 @@
         <CircleTree ref="circle" 
             v-if="plantMode == 1"></CircleTree>
         <Character ref="character"
-            v-if="plantMode >= 2"
-            v-bind:imgSrc="characterImage"
-            v-bind:imgSize="characterSize"></Character>
+            v-bind:imgInfo="characterItem"
+            v-if="plantMode >= 2"></Character>
         <Info ref="info"
             dir="greenery"
             v-bind:show="openPleats"
-            v-bind:widgets="widgets"
-            v-bind:stopWidgetVideo="stopWidgetVideo"></Info>
+            v-bind:widgets="widgets"></Info>
         <transition name="slide-up">
             <Thumbnail v-if="thumbnail" ref="thumbnail"
             v-bind:items="thumbItems"
@@ -48,20 +45,15 @@ const PLANT = {
     PATTERN_M: 6,
 };
 var getMobile, showTimer, hideTimer;
+
+
 const characterItems = [
-    'kaws.png',
-    'fractal_square.png',
-    'fractal_circle.png',
-    'pengsu.png',
-    'dog.png'
-];
-const imageData = [
-    {w: 222, h: 172},
-    {w: 816, h: 857},
-    {w: 251, h: 251},
-    {w: 442, h: 906},
-    {w: 3874, h: 4099}
-];
+    {img: 'kaws.png', w: 222, h: 172, cnt: 30, scale: 800},
+    {img: 'fractal_square.png', w: 816, h: 857, cnt: 30, scale: 550},
+    {img: 'fractal_circle.png', w: 251, h: 251, cnt: 30, scale: 150},
+    {img: 'pengsu.png', w: 442, h: 906, cnt: 30, scale: 800},
+    {img: 'dog.png', w: 930, h: 985, cnt: 20, scale: 250}
+]
 
 export default {
     name: 'Greenery',
@@ -76,7 +68,7 @@ export default {
     data() {
         return {
             openPleats: false,
-            pleatsColor: "navy",
+            pleatsColor: "#101012",
             playpause: false,
             plantMode: PLANT.TREE,
             thumbnail: false,
@@ -88,8 +80,9 @@ export default {
                 {title: 'Circle', img: '05.png'},
                 {title: 'Pengsu', img: '06.png'},
                 {title: 'Make your own', img: '07.png'}],
-            characterSize: imageData[0],
-            characterImage: 'kaws.png',
+            // characterSize: imageData[0],
+            // characterImage: 'kaws.png',
+            characterItem: characterItems[0],
             widgets: widgetData.widgets
             // widgetData: widgetData.widgets,
         }
@@ -112,8 +105,8 @@ export default {
             console.log('changeTheme', theme);
             this.plantMode = theme;
             if (this.plantMode >= PLANT.PATTERN_K) {
-                this.characterSize = imageData[this.plantMode-PLANT.PATTERN_K];
-                this.characterImage = characterItems[this.plantMode-PLANT.PATTERN_K];
+                var idx = this.plantMode-PLANT.PATTERN_K;
+                this.characterItem = characterItems[idx];
             }
             this.thumbnail = false;
         },

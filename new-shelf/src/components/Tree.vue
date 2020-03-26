@@ -132,16 +132,6 @@ export default {
         }
         then = now;
 
-        // if (that.playpause == true) {
-        //   rAF = requestAnimationFrame(animate);
-        //   return;
-        // }
-        // draw
-        // if (branches.length <= 0) {
-        //   cancelAnimationFrame(rAF);
-        //   return;
-        // }
-
         for(var i =0; i<branches.length; i++) {
             tempCtx.beginPath();
             tempCtx.moveTo(branches[i].px, branches[i].py);

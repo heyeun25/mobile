@@ -7,7 +7,8 @@ import _ from "lodash";
 import { setTimeout, setInterval, clearInterval } from 'timers';
 import "../utils/TweenMax.js";
 import EventManager from "../utils/Event.js";
-const CNT = 300;
+var CNT = 70;
+var SCALE_X = 150;
 var events = new EventManager();
 var timer;
 var floatEls = [];
@@ -35,12 +36,15 @@ export default {
     name: 'Character',
     props: {
         'number': Number,
-        'imgSize': Object,
-        'imgSrc': String,
+        // 'scale': Object,
+        imgInfo: Object,
     },
     watch: {
-        imgSrc: function (newVal) {
+        imgInfo: function (newVal) {
             // Reset Doms
+            CNT = newVal.cnt;
+            SCALE_X = newVal.scale;
+
             var container = this.$refs.container;
             while (container.firstChild) {
                 container.removeChild(container.lastChild);
@@ -58,13 +62,13 @@ export default {
             this.$refs.container.appendChild(el);
             el.style.position = "absolute";
             el.style.visibility = "hidden"
-            el.src = require(`../assets/character/${this.imgSrc}`);
-            el.width = this.imgSize.w;
-            el.height = this.imgSize.h;
+            el.src = require(`../assets/character/${this.imgInfo.img}`);
+            el.width = this.imgInfo.w;
+            el.height = this.imgInfo.h;
 
-            var x = _.random(-window.innerWidth/2 - this.imgSize.w/2, window.innerWidth);
-            var y = _.random(-this.imgSize.h/2, window.innerHeight);
-            var scaleX = 250 / (this.imgSize.w) + 0.002 * _.random(3, 10)
+            var x = _.random(-window.innerWidth/2 + this.imgInfo.w/2, window.innerWidth);
+            var y = _.random(-this.imgInfo.h/2, window.innerHeight);
+            var scaleX = SCALE_X / (this.imgInfo.w) + 0.002 * _.random(3, 10)
             // var scaleY = 0.8 + 0.003 * _.random(3, 10);
             var off = events.on(id, popCharacter);
             var that = this;
@@ -77,7 +81,7 @@ export default {
                     y,
                     scaleX,
                     scaleY: scaleX,
-                    // rotation: _.random(180) - 180,
+                    rotation: _.random(30) - 30,
                 });
                 TweenMax.from(el, 1, {
                     scale: 0,
