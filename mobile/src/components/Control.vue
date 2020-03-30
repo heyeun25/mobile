@@ -23,7 +23,7 @@
         loop
         src="../assets/mobile_sero.mp4"></video>
     <video
-      class="vertical"
+      class="vertical2"
       v-bind:style="{visibility: ((orient == 0) && phoneCall && videoStatus == 2 ? 'visible' : 'hidden')}"
       ref="verticalVideo2"
       controls
@@ -38,8 +38,17 @@
         muted
         loop
         src="../assets/mobile_garo.mp4"></video>
-      <button v-on:click="makeFullScreen" class="fullSize">fullSize</button>
+      <button v-on:click="makeFullScreen" class="fullSize"></button>
+      <img v-if="showImage == 'memo'"
+          class="mobileImage"
+          src="../assets/memo.jpg"
+          v-on:click="this.hideImage"/>
+      <img v-if="showImage == 'dog'"
+          class="mobileImage"
+          src="../assets/dog.jpg"
+          v-on:click="this.hideImage"/>
   </div>
+  
 </template>
 
 <script>
@@ -61,24 +70,16 @@ export default {
       phoneCall: false,
       orient: 0,
       videoStatus: 0,
+      showImage: '',
       // func : router name of shelf front app
       // category : category on mobile app
       // name : button name on mobile app
       // value : func page will get value as props
       info : [
-        // {
-        //     category: "image",
-        //     list: [{name: "Health", data: { func: 'image', value: "Energetic-01.jpg"}},
-        //           {name: "Family", data: { func: 'image', value: "Family-01.jpg" }},+
-        //           {name: "Fandom", data: { func: 'image', value: "Fandom-01.jpg" }},
-        //           {name: "Green", data: { func: 'image', value: "Green-01.jpg" }},
-        //           {name: "Kidult", data: { func: 'image', value: "Kidult.jpg" }}],
-        // },
         {
             category: "Scenario",
             list: [{name: "Greenery", data: { func: 'greenery', value: { theme: '0'}}},
                    {name: "Thumbnail", data: {func: 'greenery', value: 'thumbnail'}},
-                  //  {name: "Edit Board", data: { func: 'health', value: 'addBoard'}},
                    {name: "Phone Call", data: { func: 'health', value: { phoneCall : 'vertical'}}},
                    {name: "Board", data: { func: 'family', value: 'blackBoard'}},
                    {name: "Memo", data: { func: 'family', value: 'addMemo'}},
@@ -106,14 +107,10 @@ export default {
         },{
           category: "mobile",
           list: [
-            {name: "memo", data: {}},
-            {name: "dog", data: {}}
+            {name: "memo", data: {func: 'mobile', value: 'memo'}},
+            {name: "dog", data: {func: 'mobile', value: 'dog'}}
           ]
         }
-        // {
-        //     category: "video",
-        //     list: [{name: "video0", data: { func: 'video', value: "video0.mp4"}}],
-        // },
       ],
       
     }
@@ -131,13 +128,20 @@ export default {
     },
     send: function(data) {
       console.log(JSON.stringify(data));
-      socket.emit('appMsg', data);
+      if (data.func == 'mobile') {
+        this.showImage = data.value;
+        return;
+      }
       if (data.value.phoneCall && data.value.phoneCall == 'vertical') {
         this.phoneCall = true;
         this.videoStatus = 1;
         this.$refs.verticalVideo.play();
       }
+      socket.emit('appMsg', data);
       
+    },
+    hideImage: function() {
+      this.showImage = '';
     },
     onPause: function() { 
       console.log('pause')
@@ -230,8 +234,12 @@ video {
 }
 
 .vertical {
-  /* height: 100%; */
-  top: -10%;
+  top: -5%;
+  width: 100%;
+}
+
+.vertical2 {
+  top: -15%;
   width: 100%;
 }
 
@@ -242,9 +250,19 @@ video {
 .fullSize {
   position: absolute;
   right: 0;
-  width: 100px;
-  height: 100px;
-  color: white;
-  font-size: 50px;
+  width: 100%;
+  height: 30px;
+  /* color: white; */
+  background-color: transparent;
+  border: 0px transparent solid;
+  font-size: 30px;
+}
+
+.mobileImage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 </style>
