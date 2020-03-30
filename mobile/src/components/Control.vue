@@ -14,12 +14,13 @@
       </div>
     </div>
     <video
-      v-bind:class="horizontalClass"
-      ref="horizontalVideo"
+      v-bind:class="verticalClass"
+      ref="verticalVideo"
       controls
       muted
       loop
-      src="../assets/mobile_garo.mp4"></video>
+      src="../assets/mobile_sero.mp4"></video>
+    
     <video
       v-bind:class="vertical2Class"
       ref="verticalVideo2"
@@ -27,13 +28,14 @@
       muted
       loop
       src="../assets/mobile_sero_02.mp4"></video>
+    
     <video
-      v-bind:class="verticalClass"
-      ref="verticalVideo"
+      v-bind:class="horizontalClass"
+      ref="horizontalVideo"
       controls
       muted
       loop
-      src="../assets/mobile_sero.mp4"></video>
+      src="../assets/mobile_garo.mp4"></video>
     
   </div>
 </template>
@@ -61,7 +63,7 @@ export default {
     return {
       videoStatus: VIDEO_STATUS.NONE,
       verticalClass: 'vertical hide',
-      vertical2Class: 'vertical hide',
+      vertical2Class: 'vertical2 hide',
       horizontalClass: 'horizontal hide',
       colorPicker: 'pleatsBg',
       orient: 0,
@@ -130,12 +132,13 @@ export default {
         break;
         case VIDEO_STATUS.VERTICAL2:
         this.verticalClass = "vertical hide";
-        this.vertical2Class = "vertical show"
+        this.vertical2Class = "vertical2 show";
         this.$refs.verticalVideo.pause();
         this.$refs.verticalVideo2.play();
         break;
         case VIDEO_STATUS.HORIZONTAL:
-        this.vertical2Class = "vertical hide";
+        this.vertical2Class = "vertical2 hide";
+        this.$refs.verticalVideo2.pause();
         this.horizontalClass = "horizontal show";
         break;
       }
@@ -168,8 +171,8 @@ export default {
     handle: function() {
       if ((window.orientation == 90 ||
           window.orientation == -90) &&
-          this.vieoStatus !== VIDEO_STATUS.NONE) {
-        this.orient = 90;
+          this.vieoStatus != VIDEO_STATUS.NONE) {
+        this.videoStatus == VIDEO_STATUS.HORIZONTAL;
         this.$refs.horizontalVideo.requestFullscreen();
         this.$refs.horizontalVideo.play();
       }
@@ -237,7 +240,13 @@ video {
 
 .vertical {
   /* height: 100%; */
-  top: -10%;
+  top: 0;
+  width: 100%;
+}
+
+.vertical2 {
+  /* height: 100%; */
+  top: -15%;
   width: 100%;
 }
 
