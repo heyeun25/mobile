@@ -13,47 +13,43 @@
         </div>
       </div>
     </div>
+      <video
+        class="vertical"
+        v-if="videoStatus != 2"
+        v-bind:style="{visibility: ((orient == 0) && phoneCall && videoStatus == 1? 'visible' : 'hidden')}"
+        ref="verticalVideo"
+        controls
+        muted
+        loop
+        src="../assets/mobile_sero.mp4"></video>
     <video
-      v-bind:class="verticalClass"
-      ref="verticalVideo"
-      controls
-      muted
-      loop
-      src="../assets/mobile_sero.mp4"></video>
-    
-    <video
-      v-bind:class="vertical2Class"
+      class="vertical"
+      v-bind:style="{visibility: ((orient == 0) && phoneCall && videoStatus == 2 ? 'visible' : 'hidden')}"
       ref="verticalVideo2"
       controls
       muted
       loop
       src="../assets/mobile_sero_02.mp4"></video>
-    
-    <video
-      v-bind:class="horizontalClass"
-      ref="horizontalVideo"
-      controls
-      muted
-      loop
-      src="../assets/mobile_garo.mp4"></video>
-    
+      <video
+        class="horizontal"
+        v-bind:style="{visibility: ((orient == 90) && phoneCall && videoStatus == 3? 'visible' : 'hidden')}"
+        ref="horizontalVideo"
+        controls
+        muted
+        loop
+        src="../assets/mobile_garo.mp4"></video>
+      <button v-on:click="makeFullScreen" class="fullSize">fullSize</button>
   </div>
 </template>
 
 <script>
 import io from 'socket.io-client'
-var getMobile, handle;
+var getMobile;
 var socket = io('http://192.168.0.151:8080')
 socket.on('connect', function() {
   socket.emit('identify', 'mobile');
 });
-const VIDEO_STATUS = {
-    NONE : 0,
-    VERTICAL : 1,
-    VERTICAL2 : 2,
-    HORIZONTAL : 3,
-};
-// var handle;
+var handle;
 export default {
   name: 'Control',
   props: {
@@ -61,12 +57,10 @@ export default {
   },
   data: function() {
     return {
-      videoStatus: VIDEO_STATUS.NONE,
-      verticalClass: 'vertical hide',
-      vertical2Class: 'vertical2 hide',
-      horizontalClass: 'horizontal hide',
       colorPicker: 'pleatsBg',
+      phoneCall: false,
       orient: 0,
+      videoStatus: 0,
       // func : router name of shelf front app
       // category : category on mobile app
       // name : button name on mobile app
@@ -109,39 +103,19 @@ export default {
                     {name: "right", data: {func: 'greenery', value: {key: 'right'}}},
                     {name: "enter", data: {func: 'greenery', value: {key: 'enter'}}}
                   ]
-        },
+        },{
+          category: "mobile",
+          list: [
+            {name: "memo", data: {}},
+            {name: "dog", data: {}}
+          ]
+        }
         // {
         //     category: "video",
         //     list: [{name: "video0", data: { func: 'video', value: "video0.mp4"}}],
         // },
       ],
       
-    }
-  },
-  watch: {
-    videoStatus: function(val){
-      switch(val) {
-        case VIDEO_STATUS.NONE:
-        this.horizontalClass = "horizontal hide";
-        this.$refs.horizontalVideo.pause();
-        this.init();
-        break;
-        case VIDEO_STATUS.VERTICAL:
-        this.$refs.verticalVideo.play();
-        this.verticalClass = 'vertical show';
-        break;
-        case VIDEO_STATUS.VERTICAL2:
-        this.verticalClass = "vertical hide";
-        this.vertical2Class = "vertical2 show";
-        this.$refs.verticalVideo.pause();
-        this.$refs.verticalVideo2.play();
-        break;
-        case VIDEO_STATUS.HORIZONTAL:
-        this.vertical2Class = "vertical2 hide";
-        this.$refs.verticalVideo2.pause();
-        this.horizontalClass = "horizontal show";
-        break;
-      }
     }
   },
   methods: {
@@ -157,35 +131,53 @@ export default {
     },
     send: function(data) {
       console.log(JSON.stringify(data));
-      if (data.value.phoneCall && data.value.phoneCall == 'vertical') {
-        this.videoStatus = VIDEO_STATUS.VERTICAL;
-      }
       socket.emit('appMsg', data);
+      if (data.value.phoneCall && data.value.phoneCall == 'vertical') {
+        this.phoneCall = true;
+        this.videoStatus = 1;
+        this.$refs.verticalVideo.play();
+      }
+      
     },
-    init: function() { 
+    onPause: function() { 
       console.log('pause')
+      this.phoneCall = false;
+      this.orient = 0;
       this.$refs.verticalVideo2.currentTime = 0;
       this.$refs.verticalVideo.currentTime = 0;
       this.$refs.horizontalVideo.currentTime = 0;
+      socket.emit('appMsg', { func: 'health', value: { phoneCall : 'finish'}});
     },
     handle: function() {
       if ((window.orientation == 90 ||
           window.orientation == -90) &&
-          this.vieoStatus != VIDEO_STATUS.NONE) {
-        this.videoStatus == VIDEO_STATUS.HORIZONTAL;
-        this.$refs.horizontalVideo.requestFullscreen();
+          this.phoneCall == true) {
+        this.orient = 90;
+        this.videoStatus = 3;
+        this.$refs.verticalVideo2.pause();
         this.$refs.horizontalVideo.play();
+        socket.emit('appMsg', { func: 'health', value: { phoneCall : 'horizontal'}});
+      }
+      if (window.orientation == 0 && this.phonCall == true) {
+        this.orient = 0;
+        this.$refs.horizontalVideo.currentTime = 0;
       }
     },
     getMobile: function(data) {
+      console.log(data);
       if (data.video == 'second') {
-        this.videoStatus = VIDEO_STATUS.VERTICAL2;
-      } else if (data.video == 'horizontal') {
-        this.videoStatus = VIDEO_STATUS.HORIZONTAL;
-        
+        this.videoStatus = 2;
+        this.$refs.verticalVideo.pause();
+        this.$refs.verticalVideo2.play();
+          
       } else if (data.video == 'stop') {
-        this.videoStatus = VIDEO_STATUS.NONE;
+          this.videoStatus = 0;
+          this.$refs.horizontalVideo.pause();
+          this.onPause();
       }
+    },
+    makeFullScreen: function() {
+      this.$refs.horizontalVideo.requestFullscreen();
     }
   },
   mounted() {
@@ -193,12 +185,11 @@ export default {
     socket.on('appMsg', getMobile);
     handle = this.handle.bind(this);
     window.addEventListener("orientationchange", handle);
-    // this.$refs.horizontalVideo.onpause = this.onPause;
+    this.$refs.horizontalVideo.onpause = this.onPause;
   },
   destroyed() {
+    window.removeEventListener("orientationchange", handle);
     socket.off('appMsg', getMobile);
-    window.removeEventListener("orientationchange", handle)
-
   },
 }
 </script>
@@ -240,13 +231,7 @@ video {
 
 .vertical {
   /* height: 100%; */
-  top: 0;
-  width: 100%;
-}
-
-.vertical2 {
-  /* height: 100%; */
-  top: -15%;
+  top: -10%;
   width: 100%;
 }
 
@@ -254,13 +239,12 @@ video {
   width: 100%;
 }
 
-.hide {
-  visibility: hidden;
+.fullSize {
+  position: absolute;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  color: white;
+  font-size: 50px;
 }
-
-.show {
-  visibility: visible;
-}
-
-
 </style>
