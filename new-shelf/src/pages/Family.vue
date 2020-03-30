@@ -5,8 +5,9 @@
             v-bind:widgets="widgets"
             v-bind:show="openPleats"
             v-bind:color="color"></Pleats>
-        <div v-bind:class="blackBoardClass"
-            ref="blackBoard"></div>
+        <img v-bind:class="blackBoardClass"
+            v-bind:src="require('../assets/family/background-01.png')"
+            ref="blackBoard" />
         <Info ref="info"
             dir="family"
             v-bind:show="openPleats"

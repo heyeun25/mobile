@@ -51,28 +51,23 @@ io.sockets.on('connection', function (socket) {
 	    console.log('nfc2');
 	    io && io.sockets.emit('nfc75');
 	});
-	// socket.on('controller', function(data) {
-	// 	console.log('controller', data);
-	// 	if (!socketNameMap['mobile']) {
-	// 		console.log('no mobile');
-	// 		return;
-	// 	}
-	// 	if (!socketNameMap['shelf']) {
-	// 		console.log('no shelf');
-	// 		return;
-	// 	}
-	// 	var mobile = socketNameMap['mobile'];
-	// 	var shelf = socketNameMap['shelf'];
-	// 	if (data.rotate){
-	// 		mobile.emit('appMsg', data);
-	// 		shelf.emit('appMsg', { func: 'health', value: { phoneCall : 'horizontal'}});
-	// 	}
-	// 	if (data.stop) {
-	// 		mobile.emit('appMsg', data);
-	// 		shelf.emit('appMsg', { func: 'health', value: { phoneCall : 'horizontal'}});
-	// 	}
-		
-	// })
+	socket.on('controller', function(data) {
+		console.log('controller', data);
+		if (!socketNameMap['mobile']) {
+			console.log('no mobile');
+			return;
+		}
+		if (!socketNameMap['shelf']) {
+			console.log('no shelf');
+			return;
+		}
+		var mobile = socketNameMap['mobile'];
+		var shelf = socketNameMap['shelf'];
+
+		mobile.emit('appMsg', data);
+		shelf.emit('appMsg', { func: 'health', value: { phoneCall : data.video}});
+
+	});
 });
 
 function prepareSync() {
