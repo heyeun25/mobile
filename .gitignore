@@ -1,2 +1,14 @@
 shelf_res/**/*
 **/node_modules/
+
+# video #
+*.wmv
+*.mpg
+*.mpeg
+*.mp4
+*.mov
+*.flv
+*.avi
+*.ogv
+*.ogg
+*.webm
