@@ -105,7 +105,3 @@ function emitToAll(eventName, eventData) {
 function log (msg) {
 	console.log('[' + Date.now() + '] ' + msg);
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> OneVideo
