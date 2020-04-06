@@ -5,7 +5,7 @@
 <script>
 import _ from "lodash";
 import { setTimeout, setInterval, clearInterval } from 'timers';
-import TweenMax from "gsap";
+import "../utils/TweenMax.js";
 import EventManager from "../utils/Event.js";
 var CNT = 70;
 var SCALE_X = 150;
@@ -45,6 +45,8 @@ export default {
             CNT = newVal.cnt;
             SCALE_X = newVal.scale;
 
+            console.log('CNT=', CNT, ' SCALE=', SCALE_X);
+
             var container = this.$refs.container;
             while (container.firstChild) {
                 container.removeChild(container.lastChild);
@@ -66,8 +68,10 @@ export default {
             el.width = this.imgInfo.w;
             el.height = this.imgInfo.h;
 
-            var x = _.random(-window.innerWidth/2 + this.imgInfo.w/2, window.innerWidth);
-            var y = _.random(-this.imgInfo.h/2, window.innerHeight);
+            var x = _.random(-this.imgInfo.w/2,
+                            window.innerWidth - this.imgInfo.w/2);
+            var y = _.random(-this.imgInfo.h/2,
+                            window.innerHeight);
             var scaleX = SCALE_X / (this.imgInfo.w) + 0.002 * _.random(3, 10)
             // var scaleY = 0.8 + 0.003 * _.random(3, 10);
             var off = events.on(id, popCharacter);
@@ -99,8 +103,12 @@ export default {
                 var trans = target.style.transform;
                 var value = trans.match(/-?\d+\.?\d*/g);
                 // console.log(value);
+                var xValue = parseInt(value[4]) + randomX(direction);
+                if (Math.random() < 0.01) {
+                    xValue = parseInt(Math.random() * window.innerWidth);
+                }
                 TweenMax.to(target, randomTime(), {
-                    x: parseInt(value[4]) + randomX(direction),
+                    x: xValue,
                     // y: parseInt(value[5]) + randomY(direction),
                     ease: Sine.easeInOut,
                     onComplete: moveX,
@@ -154,6 +162,8 @@ export default {
     },
     mounted() {
         console.log('character mounted');
+        CNT = this.imgInfo.cnt;
+        SCALE_X = this.imgInfo.scale;
         this.generate();
     },
 }

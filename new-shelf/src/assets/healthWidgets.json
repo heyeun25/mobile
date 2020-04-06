@@ -123,9 +123,9 @@
     "subIndex": 0,
     "style": {
         "top": "1100px",
-        "left": "2610px",
-        "width": "397px",
-        "height": "77px",
+        "left": "2620px",
+        "width": "731px",
+        "height": "82px",
         "backgroundImage": "yoga_heading.png"
     },
     "translateX": 0
@@ -134,7 +134,7 @@
     "subIndex": 1,
     "style": {
         "top": "1200px",
-        "left": "2615px",
+        "left": "2620px",
         "width": "1080px",
         "height": "605px"
     },
@@ -145,7 +145,7 @@
     "subIndex": 2,
     "style": {
         "top": "1845px",
-        "left": "2610px",
+        "left": "2620px",
         "width": "1080px",
         "height": "167px",
         "backgroundImage": "H_musicplay.png"

@@ -66,6 +66,8 @@ export default {
                 this.showBlackBoard = !this.showBlackBoard;
             } else if (data.value == 'account') {
                 this.$router.push({ name: 'account', params: {id: 2, bgColor: this.color}});
+            } else if (data.value == 'gucci') {
+                this.$refs.blackBoard.src = require("../assets/luxury/gucci.png");
             }
         }
     },

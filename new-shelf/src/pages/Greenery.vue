@@ -52,7 +52,7 @@ const characterItems = [
     {img: 'fractal_square.png', w: 816, h: 857, cnt: 30, scale: 550},
     {img: 'fractal_circle.png', w: 251, h: 251, cnt: 30, scale: 150},
     {img: 'pengsu.png', w: 442, h: 906, cnt: 30, scale: 800},
-    {img: 'dog.png', w: 930, h: 985, cnt: 20, scale: 250}
+    {img: 'dog.png', w: 930, h: 985, cnt: 45, scale: 250}
 ]
 
 export default {
@@ -128,7 +128,7 @@ export default {
                 if (this.$refs.character) {
                     this.$refs.character.dim(function() {
                         myRouter.push({name: 'account',
-                            params: {id : 0, bgColor: this.pleatsColor}});
+                            params: {id : 1, bgColor: this.pleatsColor}});
                     });
                 } else {
                     if (hideTimer) {
@@ -137,7 +137,7 @@ export default {
                     }
                     hideTimer = setTimeout(() => {
                         myRouter.push({name: 'account',
-                        params: {id : 0, bgColor: this.pleatsColor}});
+                        params: {id : 1, bgColor: this.pleatsColor}});
                     }, 500);
                 }
             } else if (data.value.key) {

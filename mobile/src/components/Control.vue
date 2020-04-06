@@ -19,7 +19,6 @@
         v-bind:style="{visibility: ((orient == 0) && phoneCall && videoStatus == 1? 'visible' : 'hidden')}"
         ref="verticalVideo"
         controls
-        muted
         loop
         src="../assets/mobile_sero.mp4"></video>
     <video
@@ -54,7 +53,7 @@
 <script>
 import io from 'socket.io-client'
 var getMobile;
-var socket = io('http://192.168.0.151:8080')
+var socket = io(location.protocol + '//' + location.hostname + ':8080')
 socket.on('connect', function() {
   socket.emit('identify', 'mobile');
 });
@@ -78,19 +77,20 @@ export default {
       info : [
         {
             category: "Scenario",
-            list: [{name: "Greenery", data: { func: 'greenery', value: { theme: '0'}}},
+            list: [{name: "Health", data: {func: 'health', value: ''}},
                    {name: "Thumbnail", data: {func: 'greenery', value: 'thumbnail'}},
                    {name: "Phone Call", data: { func: 'health', value: { phoneCall : 'vertical'}}},
                    {name: "Board", data: { func: 'family', value: 'blackBoard'}},
                    {name: "Memo", data: { func: 'family', value: 'addMemo'}},
-                   {name: "Pattern", data: { func: 'luxury', value: 'blackBoard'}},
+                   {name: "buburry", data: { func: 'luxury', value: 'blackBoard'}},
+                   {name: "gucci", data: { func: 'luxury', value: 'gucci'}},
                    ]
         },
         {
           category: "Account",
           list: [
-            {name: "Walker", data: { func: 'greenery', value: 'account'}},
-            {name: "Dunffy", data: { func: 'health', value: 'account'}},
+            {name: "Greenery", data: { func: 'health', value: 'account'}},
+            {name: "Dunffy", data: { func: 'greenery', value: 'account'}},
             {name: "Diana", data: { func: 'family', value: 'account'}},
             {name: "change", data: { func: 'account', value: 'change'}},
           ]

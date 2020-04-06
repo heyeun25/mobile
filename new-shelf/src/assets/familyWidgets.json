@@ -2,13 +2,13 @@
     "style": {
         "top": "150px",
         "left": "150px",
-        "width": "622px",
-        "height": "141px",
+        "width": "934px",
+        "height": "278px",
         "backgroundImage": "hi.png"
     }
 }, {
     "style": {
-        "top": "362px",
+        "top": "400px",
         "left": "150px",
         "width": "627px",
         "height": "82px",

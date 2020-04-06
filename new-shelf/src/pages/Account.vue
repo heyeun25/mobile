@@ -23,13 +23,13 @@ export default {
     data() {
         return {
             imgs: [
-                "walker.png",
+                "greenery.png",
                 "dunphy's.png",
                 "diana.png"
             ],
             imgClass: 'accountImg',
             movePage: [
-                'health',
+                'greenery',
                 'family',
                 'luxury'
             ]

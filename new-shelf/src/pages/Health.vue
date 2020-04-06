@@ -14,13 +14,13 @@
             v-bind:widgets="widgets"></Info>
         <video ref="horizontalVideo"
             v-bind:class="hotizontalVideoClass"
-            controls loop
+            loop
             src="../assets/video/TV_garo.mp4"></video>
         <video ref="verticalVideo2"
-            v-bind:class="verticalVideo2Class" controls loop
+            v-bind:class="verticalVideo2Class" loop
             src="../assets/video/TV_sero_02.mp4"></video>
         <video ref="verticalVideo"
-            v-bind:class="verticalVideoClass" controls loop
+            v-bind:class="verticalVideoClass" loop
             src="../assets/video/TV_sero.mp4"></video>
     </div>
 </template>
@@ -60,7 +60,7 @@ export default {
             openPleats: false,
             widgets: widgetData.widgets,
             stopWidgetVideo: false,
-            pleatsItemColor: '#6b7d62',
+            pleatsItemColor: '#3bd698',
             hotizontalVideoClass: 'hide horizontalVideo',
             verticalVideoClass: 'hide verticalVideo',
             verticalVideo2Class: 'hide verticalVideo2'
@@ -166,7 +166,7 @@ export default {
                 var myRouter = this.$router;
                 hideTimer = setTimeout(() => {
                     myRouter.push({name: 'account',
-                    params: {id : 1, bgColor: this.color}});
+                    params: {id : 0, bgColor: this.color}});
                 }, 500);
             } else if (data.value.color) {
                 this.pleatsItemColor = data.value.color;
@@ -184,6 +184,9 @@ export default {
     },
     destroyed() {
         this.$socket.off('appMsg', getMobile);
+        this.$refs.verticalVideo.pause();
+        this.$refs.verticalVideo2.pause();
+        this.$refs.horizontalVideo.pause();
         // clearTimeout(hideTimer);
         // clearTimeout(showTimer);
     },
@@ -221,19 +224,19 @@ export default {
 
 .verticalVideo {
     position: absolute;
-    right: 0;
+    right: 10px;
     height: 100%;
     transform: translateX(100%);
 }
 
 .verticalVideo2 {
     position: absolute;
-    right: 0;
+    right: 0px;
     height: 100%;
 }
 
 .horizontalVideo {
-    outline: 1px solid red;
+    /* outline: 1px solid red; */
     position: absolute;
     top: 0;
     width: 100%;
@@ -241,7 +244,7 @@ export default {
 }
 
 .horizontalShow {
-    left: 68%;
+    left: 69%;
 }
 
 .hotizontalFullScreen {

@@ -13,7 +13,7 @@
                             'transform': 'translateX(-100%)'}"
                 v-bind:src="getImage(item.style.backgroundImage)"/>
             <video class="widget"
-                controls loop
+                loop
                 ref="widgetVideo"
                 v-if="item.video"
                 v-bind:id="'w'+index"
@@ -94,7 +94,7 @@ export default {
             this.$refs.widgetVideo[0].currentTime = Number(this.videoStartTime);
         console.log(w);
         for(var i=0; i<w.length; i++) {
-            widgetAni.push(TweenMax.to(w[i], 0.5, {
+            widgetAni.push(TweenMax.to(w[i], 0.3, {
                 translateX: 0,
                 ease: Power0.easeInOut,
             }).reverse());
