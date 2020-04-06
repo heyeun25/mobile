@@ -19,25 +19,23 @@ export default {
     this.$socket.on('appMsg', function(d) {
       console.log(d);
       // console.log(myRouter.currentRoute);
-      if (myRouter.currentRoute.name !== d.func)
+      if (myRouter.currentRoute.name !== d.func) {
         myRouter.push({name: d.func, params: d.value})
+      }
     });
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
 body, html {
   left: 0;
   top: 0;
   margin: 0;
+}
+
+@font-face {
+  font-family: 'SamsungSharpSans';
+  src: url('./assets/SamsungSans-Light.ttf');
 }
 </style>

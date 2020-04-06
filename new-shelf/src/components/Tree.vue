@@ -1,63 +1,66 @@
 <template>
   <div class="tree" ref="container">
-    <!-- <img src="../assets/navy_BG-01.jpg"/> -->
-    <!-- <img src="../assets/Beige_BG-01.png"/> -->
+    <canvas class="temp" ref="temp"></canvas> <!-- draw branches !-->
     <canvas class="treeCanvas" ref="treeCanvas"></canvas>
-    <canvas class="treeCanvas" ref="treeCanvas1"></canvas>
-    <canvas class="treeCanvas" ref="treeCanvas2"></canvas>
+    <img id="gradient" ref="gradient" src="../assets/greenery_BG.png" />
+    <canvas id="gradientCanvas" ref="gradientCanvas"></canvas>
+    <canvas id="partGradient" ref="partGradient"></canvas>
   </div>
 </template>
-
 <script>
-// import TweenMax from "gsap";
-// import TimelineMax from "gsap";
 import TweenMax from "../utils/TweenMax.js";
 
 var trash = [];
 var fadeInOut;
-
-var ctx, ctx1, ctx2;
-var ctxs = [];
-var totalCanvas;
-
+var tempCanvas, tempCtx;
+var treeCanvas, treeCtx;
+var gradientCtx;
+var partCanvas, partCtx;
 var branches = [];
-var rAF, fps = 10;
-
+var rAF;
 var leaf = [[0, 0], [5, -5], [10, 0], [5, 5], [0, 0]];
 var ADD = 1;
+const IMAGE_SIZE = {w: 8680, h: 2160};
+var VELOCITY = 0.1;
 
-function Line(x, y, len, angle, width, depth, canvasNumber) {
-    this.originX = x;
-    this.originY = y;
-    this.px = x;
-    this.py = y;
-    this.x = x;
-    this.y = y;
-    this.v = 0.1;
-    this.len = len;
-    this.angle = angle;
-    this.width = width;
-    this.number = canvasNumber;
-    this.endX = x - parseInt(len * Math.sin(angle * Math.PI/180));
-    this.endY = y - parseInt(len * Math.cos(angle * Math.PI/180));
-    this.branch = false;
-    this.done = false;
-    this.depth = depth;
-    this.update = function() {
-        // update
-        this.v += 0.1; // 
-        this.px = this.x;
-        this.py = this.y;
-        this.x = this.originX - (len * this.v).toFixed(1) * Math.sin(angle * Math.PI/180);
-        this.y = this.originY - (len * this.v).toFixed(1) * Math.cos(angle * Math.PI/180);
-        if (this.v > 1) this.done = true;
-    }
-    
+function Tree(x, y, len, angle, depth, parent) {
+  this.x = x;
+  this.y = y;
+  this.originX = x;
+  this.originY = y;
+  this.len = len;
+  this.angle = angle;
+  this.depth = depth;
+  this.parent = parent;
+  this.done = false;
+  this.right = null;
+  this.left = null;
+  this.v = 0;
+  this.endX = x - parseInt(len * Math.sin(angle * Math.PI/180));
+  this.endY = y - parseInt(len * Math.cos(angle * Math.PI/180));
+  this.update = function() {
+      // update
+      this.v += VELOCITY;
+      this.px = this.x;
+      this.py = this.y;
+      this.x = this.originX - (this.len * this.v) * Math.sin(angle * Math.PI/180);
+      this.y = this.originY - (this.len * this.v) * Math.cos(angle * Math.PI/180);
+      if (this.v > 1) this.done = true;
+  }
 }
 
-function getRandom(min, max) {
-  return Math.random() * (max-min) + min;
+function getRandom(depth) {
+    // return Math.random(0.2, 0.7) + 0.2;
+    var r;
+    if (depth < 3)
+      r = Math.random() * (1.1 - 0.4) + 0.4;
+    else if (depth < 10)
+      r = Math.random(0.2, 0.7) + 0.3;
+    else 
+      r = Math.random() * (1.0 - 0.5) + 0.5;
+    return r.toFixed(1);
 }
+
 function selectReversed(query) {   
   var nodes = document.querySelectorAll(query);  
   nodes = Array.prototype.slice.call(nodes, 0);
@@ -69,6 +72,15 @@ export default {
     msg: String,
     playpause: Boolean,
   },
+  watch: {
+    playpause: function(val) {
+      if (val == true) {
+        VELOCITY = 0.05;
+      } else {
+        VELOCITY = 0.1;
+      }
+    }
+  },
   methods: {
     restart: function() {
       console.log('restart');
@@ -78,43 +90,37 @@ export default {
           console.log('reverse');
         }
       }
-      
-      cancelAnimationFrame(rAF);
-      branches = [];
-      for(var i =0; i<ctxs.length; i++) {
-        ctxs[i].clearRect(0, 0, window.innerWidth, window.innerHeight);
-      }
-      
+      this.init();
       this.draw();
     },
+    init: function() {
+      branches = [];
+      tempCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      treeCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      cancelAnimationFrame(rAF);
+    },
     erase: function() {
-      fadeInOut = TweenMax.staggerTo(selectReversed('.treeCanvas'), 1, {
-        opacity: 0,
-      }, 0.5, () => {console.log('complete')});
-      console.log(fadeInOut);
+      // fadeInOut = TweenMax.staggerTo(selectReversed('.treeCanvas'), 1, {
+      //   opacity: 0,
+      // }, 0.5, () => {console.log('complete')});
+      // console.log(fadeInOut);
     },
     draw: function() {
       console.log('draw');
-      const startX = window.innerWidth/2,
-      startY = window.innerHeight,
-      len = 30,
-      angle = 0,
-      branchWidth = 5;
-
-      branches.push(new Line(startX, startY, len, angle, branchWidth, 0, 0));
-      var that = this;
-
-      function getRandom(depth) {
-        // return Math.random(0.2, 0.7) + 0.2;
-        var r;
-        if (depth < 3)
-          r = Math.random() * (1.1 - 0.4) + 0.4;
-        else if (depth < 10)
-          r = Math.random(0.2, 0.7) + 0.3;
-        else 
-          r = Math.random() * (1.0 - 0.5) + 0.5;
-        return r.toFixed(1);
+      var ret = this.makeTree();
+      while(ret.count < 100000) {
+        ret = this.makeTree();
       }
+
+      branches.push(ret.root);
+      var that = this;
+      // start animate first 
+      var fpsInterval = 10,
+          then = Date.now(),
+          now, elapsed;
+
+      var gradientStartPoint = 0;
+      var gradientOffset = 1;
 
       function animate() {
         now = Date.now();
@@ -123,77 +129,107 @@ export default {
           rAF = requestAnimationFrame(animate);
           return;
         }
+        then = now;
 
-        if (that.playpause == true) {
-          rAF = requestAnimationFrame(animate);
-          return;
-        }
-        // draw
         for(var i =0; i<branches.length; i++) {
-            // console.log(branches[i].number);
-            var ctx = ctxs[branches[i].number];
-            ctx.beginPath();
-            // ctx.strokeStyle = "rgba(15, 180, 10)";
-            
-            // ctx.globalCompositeOperation = "destination-in";
-            ctx.moveTo(branches[i].px, branches[i].py);
-            ctx.lineTo(branches[i].x, branches[i].y);
-            ctx.lineWidth = 2;
-            ctx.stroke();
+            tempCtx.beginPath();
+            tempCtx.moveTo(branches[i].px, branches[i].py);
+            tempCtx.lineTo(branches[i].x, branches[i].y);
+            tempCtx.lineWidth = 1;
+            tempCtx.strokeStyle = 'white';
+            tempCtx.stroke();
             branches[i].update();
-          }
+        }
+
+        var treeData = tempCtx.getImageData(0, 0, window.innerWidth, window.innerHeight);
+        treeCtx.putImageData(treeData, 0, 0);
+        treeCtx.globalCompositeOperation = 'source-in';
+        // ready canvas 
+        if (gradientOffset > 0) {
+          gradientStartPoint += 50;
+          if (gradientStartPoint + window.innerWidth >= IMAGE_SIZE.w)
+            gradientOffset = -1;
+        } else {
+          gradientStartPoint -= 50;
+          if (gradientStartPoint <= 0) gradientOffset = 1;
+        }
+        var imgData = gradientCtx.getImageData(gradientStartPoint, 0, window.innerWidth, window.innerHeight)
+        partCtx.putImageData(imgData, 0, 0);
+        var colorData = treeCtx.drawImage(that.$refs.partGradient, 0, 0,
+            window.innerWidth, window.innerHeight);
 
         for(var j=0; j<branches.length; j++) {
           if (branches[j].done == true) {
                 var out = branches.shift();
-                trash.push(out);
-                var num = 0;
-                if (out.len > 10) {
-                    if (out.depth > 10) num = 1;
-                    if (out.depth > 30) num = 2;
-                    var p = getRandom(out.depth)
-                    branches.push(new Line(out.endX, out.endY,
-                        (out.len* getRandom(out.depth)), out.angle+20, out.branchWidth*0.95, out.depth+1, num));
-                    branches.push(new Line(out.endX, out.endY,
-                        (out.len* getRandom(out.depth)), out.angle-20, out.branchWidth*0.95, out.depth+1, num));
-                }
+                (out.left ? branches.push(out.left) : null);
+                (out.right ?  branches.push(out.right) : null);
               }
           }
-        
         rAF = requestAnimationFrame(animate);
       }
-
-      // start animate first 
-      var fpsInterval = 1000 / 50,
-          then = Date.now(),
-          now, elapsed;
       animate();
     },
     getNewItem: function(line) {
 
+    },
+    makeTree: function() {
+      var trees = [];
+      const startX = window.innerWidth/2,
+      startY = window.innerHeight + 130,
+      len = 120,
+      angle = 0;
+
+      var first = new Tree(startX, startY, len, angle, 0, null);
+      var count = 1;
+      function createTree(item) {
+        // console.log(item.len);
+        if (item.len < 10) return;
+        item.right = new Tree(item.endX, item.endY, item.len * getRandom(item.depth), item.angle+20,  item.depth+1, item);
+        item.left = new Tree(item.endX, item.endY, item.len * getRandom(item.depth), item.angle-20, item.depth+1, item);
+        count += 2;
+        createTree(item.right);
+        createTree(item.left);
+      }
+      createTree(first);
+      console.log(first, count);
+      return {root: first, count};
     }
   },
-  mounted: function() {
+  mounted() {
       // this.$refs.container.focus();
-      totalCanvas = document.getElementsByClassName("treeCanvas");
-      // console.log('mounted', totalCanvas);
-      for (var i =0; i<totalCanvas.length; i++) {
-        var c = totalCanvas[i].getContext("2d");
-        totalCanvas[i].width = window.innerWidth;
-        totalCanvas[i].height = window.innerHeight;
-        // c.fillRect(0, 0, window.innerWidth, window.innerHeight);
-        c.fillStyle = "navy";
-        // c.fillRect(0, 0, window.innerWidth, window.innerHeight);
-        ctxs.push(c);
-      }
+      console.log('tree mounted');
+      tempCanvas = this.$refs.temp;
+      tempCtx = tempCanvas.getContext('2d');
+      tempCanvas.width = window.innerWidth;
+      tempCanvas.height = window.innerHeight;
 
+      treeCanvas = this.$refs.treeCanvas;
+      treeCtx = treeCanvas.getContext('2d');
+      treeCanvas.width = window.innerWidth;
+      treeCanvas.height = window.innerHeight;
+
+      partCanvas = this.$refs.partGradient;
+      partCtx = partCanvas.getContext('2d');
+      partCanvas.width = window.innerWidth;
+      partCanvas.height = window.innerHeight;
+      
+      gradientCtx = this.$refs.gradientCanvas.getContext('2d');
+
+      this.$refs.gradientCanvas.width = IMAGE_SIZE.w;
+      this.$refs.gradientCanvas.height = IMAGE_SIZE.h;
+
+      var that = this;
+      this.$refs.gradient.onload = () => {
+        console.log('onload');
+        gradientCtx.drawImage(that.$refs.gradient, 0, 0);
+        var part = gradientCtx.getImageData(0, 0, window.innerWidth, window.innerHeight);
+        partCtx.putImageData(part, 0, 0);
+      }
       this.draw();
-      // fadeInOut = TweenMax.staggerTo('.treeCanvas', 1, {
-      //   opacity: 0
-      // }).reverse();
   },
-  unmounted: function() {
-      cancelAnimationFrame(rAF);
+  destroyed() {
+      console.log('tree destroy');
+      this.init();
   }
 }
 </script>
@@ -203,8 +239,6 @@ img {
     position: fixed;
     left: 0;
     top: 0;
-    width: 100%;
-    height: 100%;
 }
 canvas {
     position: fixed;
@@ -220,6 +254,31 @@ canvas {
 }
 
 .tree {
-  z-index: 99999;
+  /* background-color: black; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.temp {
+  visibility: hidden;
+}
+
+#gradientCanvas {
+  visibility: hidden;
+}
+
+#gradientImage {
+  visibility: hidden;
+}
+
+#gradient {
+  visibility: hidden;
+}
+
+#partGradient {
+  visibility: hidden;
 }
 </style>

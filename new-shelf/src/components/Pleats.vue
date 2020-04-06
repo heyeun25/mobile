@@ -1,26 +1,19 @@
 <template>
-    <div class="container" ref="container" v-bind:style="containerStyle">
-        <div class="pleats" ref="pleats"
+    <div class="pleatsContainer" ref="pleatsContainer" v-bind:style="containerStyle">
+        <div v-bind:class="'pleats ' + (stayPleats ? 'stayPleats' : '')" ref="pleats"
                 v-bind:key="'p' + index"
-                v-for="index in 140"
+                v-for="(item, index) in pleatsCnt"
                 v-bind:id="'p' + index"
                 v-bind:style="{
                     backgroundColor: color, 
                     width: pleatsWidth}">
-            <div class="widget" ref="widget"
-                v-if="showWidget(index)"
-                v-bind:style="getWidgetStyle(index)"
-                v-bind:key="'w' + index"
-                v-bind:id="'w' + index">
-            </div>
         </div>
+        
     </div>
 </template>
 <script>
+import {setTimeout} from 'timers'
 import TweenMax from "gsap"
-import { setTimeout } from 'timers'
-import * as widgetData from '../assets/widgets.json'
-
 const PLEATS_WIDTH = 40;
 const WIDGET_WIDTH = 300;
 const SHIRINK = 0.95;
@@ -28,14 +21,45 @@ var PLEATS_CNT = 140;
 
 var pleatsAni;
 var widgetAni = [];
-
+const lines = [76, 77, 78, 79, 83, 84, 85, 86, 90, 91, 92, 93];
 export default {
     name: 'Pleats',
-    props: ['show', 'color'],
+    props: {
+        stayPleats: Boolean,
+        show: Boolean,
+        color: String,
+        widgets: {
+            type: Array,
+            default: () => [],
+        },
+        dir: String,
+        blackBoard: {
+            type: Boolean,
+            default: false,
+        },
+        showBlackBoard: {
+            type: Boolean,
+            default: false,
+        },
+        pleatsItemColor: String,
+    },
     watch: {
         show: function(newVal, oldVal) {
-            if (newVal) this.open(); 
-            else this.close();
+            if (newVal) {
+                this.open();
+            } else {
+                this.close();
+            }
+        },
+        pleatsItemColor: function(newVal) {
+            if (newVal.length <= 0) {
+                console.log('error');
+                return;
+            }
+            for(var i =0; i<lines.length; i++) {
+                var p = document.getElementById(`p${lines[i]}`);
+                p.style.backgroundColor = newVal;
+            }
         }
     },
     data: function () {
@@ -44,21 +68,19 @@ export default {
                 left: -PLEATS_WIDTH + 'px',
             },
             pleatsWidth: PLEATS_WIDTH + 'px',
-            widgets: widgetData.widgets,
+            pleatsCnt: PLEATS_CNT
+            
         }
     },
     methods: {
         open: function() {
             pleatsAni.play();
-            for(var i=0; i<widgetAni.length; i++) {
-                widgetAni[i].play();
-            }
+            this.onCompleteShowWidget();
+            
         },
         close: function() {
             pleatsAni.play();
-            for(var i=0; i<widgetAni.length; i++) {
-                widgetAni[i].reverse();
-            }
+            this.onCompleteShowWidget();
         },
         changeColor: function(data) {
             var p = this.$refs.pleats;
@@ -66,102 +88,73 @@ export default {
                 p[i].style.backgroundColor = data.value;
             }
         },
-        showWidget: function(index) {
-            for(var i =0; i<this.widgets.length; i++) {
-                if (this.widgets[i].index == index) {
-                    return true;
-                }
-            }
-            return false;
-        },
-        getWidgetStyle: function(index) {
-            for(var i =0; i<this.widgets.length; i++) {
-                if (this.widgets[i].index == index) {
-                    return this.widgets[i].style;
-                }
-            }
-            return {};
-        },
         onCompleteShowWidget: function() {
-            console.log('complete');;
             setTimeout(() => {
                 pleatsAni.reverse();
-            }, 500)
+            }, 700)
         },
-        addWidget: function(widget) {
-            console.log('addWidget');
-            this.widgets.push(widget);
-            this.widgetAni.push(TweenMax.to("#w" + widget.index, 0.1, {
-                translateX: widget.translateX,
-            }).reverse())
-            this.open();
-        },
-        addMirroring: function() {
-            console.log('addMirroring');
-            // move current widgets
-            TweenMax.to('.widget', )
-            this.addWidget({
-                
-            })
-        },
-        removeMirroring: function() {
-            console.log('removeMirroring');
-        }
+
+    },
+    created() {
+        PLEATS_CNT = parseInt(window.innerWidth / PLEATS_WIDTH * SHIRINK) + 12;
     },
     mounted() {
-        // this.$socket.on('appMsg', this.changeColor);
-        PLEATS_CNT = window.innerWidth / PLEATS_WIDTH * SHIRINK;
+        console.log('this.widgets', this.widgets);
         var p = this.$refs.pleats;
         var w = this.$refs.widget;
-        console.log('w', w);
         for(var i =0; i<p.length; i++) {
             p[i].style.left = i * PLEATS_WIDTH * SHIRINK + 'px';
-            p[i].style.zIndex = -i*2;
-            w[i] ? w[i].style.zIndex = -i*2-1 : null;
+            p[i].style.zIndex = -i;
         }
         
-        pleatsAni = TweenMax.to('.pleats', 0.3, {
-            boxShadow: "20px 8px 20px rgba(0, 0, 0, 0.5)",
+        pleatsAni = TweenMax.to('.pleats', 1, {
+            boxShadow: "20px 8px 20px rgba(0, 0, 0, 0.8)",
             width: PLEATS_WIDTH * SHIRINK,
+            onComplete: this.widgets.length <=0 ? this.onCompleteShowWidget : null,
         }).reverse();
 
-        for(var i=0; i<this.widgets.length; i++) {
-            widgetAni.push(TweenMax.to("#w" + this.widgets[i].index, 0.1, {
-                translateX: this.widgets[i].translateX,
-                onComplete: (i == 0 ? this.onCompleteShowWidget : null),
-                onReverseComplete: (i == 0 ? this.onCompleteShowWidget : null),
-            }).reverse());
+        if (this.pleatsItemColor &&
+            this.pleatsItemColor.length >= 0) {
+            for(var i =0; i<lines.length; i++) {
+                var p = document.getElementById(`p${lines[i]}`);
+                p.style.backgroundColor = this.pleatsItemColor;
+            }
         }
-        // this.open();
     },
     destroyed() {
-        widgetAni = [];
-        // this.$socket.off('appMsg', this.changeColor);
     },
 }
 </script>
 <style>
-.container {
+.pleatsContainer {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     /* overflow: hidden; */
+    background-color: red;
+    z-index: -9999;
 }
 
 .pleats {
     position: absolute;
     top: 0;
     left: 0;
-    /* outline: 1px solid red; */
     width: 10px;
     height: 110%;
-    background-color: rgb(0, 0, 228);
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 0px 0px black;    
+    /* overflow: hidden; */
 }
 
-.widget {
-    position: relative;
+.stayPleats {
+    box-shadow: 10px 5px 10px rgba(0, 0, 0, 0.5);
 }
+
+.pleatsMask {
+    position: absolute;
+    top: 0;
+}
+
+
 </style>
