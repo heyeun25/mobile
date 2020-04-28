@@ -1,12 +1,5 @@
 <template>
-<<<<<<< HEAD
   <div class="container">
-=======
-  <div class="container" ref="container">
-    {{JSON.stringify(this.orient)}}
-    <input type="color" @change="colorChange($event)"/>
-    <button v-on:click="togglePicker">{{'picker = ' + colorPicker}}</button>
->>>>>>> OneVideo
     <div v-for="(value, index) in info" v-bind:key="index" class="category">
       <span>{{value.category}}</span>
       <div class="btnContainer">
@@ -14,52 +7,11 @@
              v-bind:key="index" class="btn"
              v-on:click="send(item.data)">
           {{item.name}}
-<<<<<<< HEAD
           <input type="color" v-if="value.category == 'picker'" @change="colorChange($event)"/>
         </div>
       </div>
     </div>
   </div>
-=======
-        </div>
-      </div>
-    </div>
-      <video
-        class="vertical"
-        v-if="videoStatus != 2"
-        v-bind:style="{visibility: ((orient == 0) && phoneCall && videoStatus == 1? 'visible' : 'hidden')}"
-        ref="verticalVideo"
-        controls
-        loop
-        src="../assets/mobile_sero.mp4"></video>
-    <video
-      class="vertical2"
-      v-bind:style="{visibility: ((orient == 0) && phoneCall && videoStatus == 2 ? 'visible' : 'hidden')}"
-      ref="verticalVideo2"
-      controls
-      muted
-      loop
-      src="../assets/mobile_sero_02.mp4"></video>
-      <video
-        class="horizontal"
-        v-bind:style="{visibility: ((orient == 90) && phoneCall && videoStatus == 3? 'visible' : 'hidden')}"
-        ref="horizontalVideo"
-        controls
-        muted
-        loop
-        src="../assets/mobile_garo.mp4"></video>
-      <button v-on:click="makeFullScreen" class="fullSize"></button>
-      <img v-if="showImage == 'memo'"
-          class="mobileImage"
-          src="../assets/memo.jpg"
-          v-on:click="this.hideImage"/>
-      <img v-if="showImage == 'dog'"
-          class="mobileImage"
-          src="../assets/dog.jpg"
-          v-on:click="this.hideImage"/>
-  </div>
-  
->>>>>>> OneVideo
 </template>
 
 <script>

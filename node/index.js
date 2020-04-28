@@ -4,11 +4,7 @@ var serveIndex = require('serve-index');
 var path = require('path');
 const readline = require('readline');
 
-<<<<<<< HEAD
 var homeDir = path.join(__dirname, '../..');
-=======
-var homeDir = path.join(__dirname, '../');
->>>>>>> OneVideo
 var app = express();
 app.use(express.static(homeDir));
 app.use(serveIndex(homeDir));
@@ -95,7 +91,7 @@ function deactivate(socketName) {
 			if(!activatedDevice) {
 				activatedDevice = socketNameMap[name];
 			}
-		}
+		} 
 	}
 }
 
