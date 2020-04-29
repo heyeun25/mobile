@@ -21,7 +21,6 @@ var socket = io(location.protocol + '//' + location.hostname + ':8080')
 socket.on('connect', function() {
   socket.emit('identify', 'mobile');
 });
-var handle;
 export default {
   name: 'Control',
   props: {
