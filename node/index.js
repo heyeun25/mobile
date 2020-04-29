@@ -65,7 +65,9 @@ io.sockets.on('connection', function (socket) {
 		var shelf = socketNameMap['shelf'];
 
 		mobile.emit('appMsg', data);
-		shelf.emit('appMsg', { func: 'health', value: { phoneCall : data.video}});
+		shelf.emit('appMsg', {
+			func: 'displayShelf',
+			value: data.value});
 
 	});
 });

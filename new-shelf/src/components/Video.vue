@@ -1,16 +1,45 @@
 <template>
   <div>
-    <video src="../assets/Beige_BG-01.png"/>
+    <video
+      controls
+      loop
+      ref="myVideo"
+      v-bind:width="width"
+      v-bind:height="height"
+      v-bind:src="source">
+    </video>
   </div>
 </template>
 
 <script>
+import { setInterval, clearInterval } from 'timers';
+var timer;
+
 export default {
   name: 'Video',
-  props: {
-    msg: String
-  },
+  props: ['source', 'width', 'height'],
   methods: {
+    play(start, end) {
+      var videoEl = this.$refs.myVideo;
+      videoEl.currentTime = start;
+      videoEl.play();
+
+      timer = setInterval(()=>{
+        var c = videoEl.currentTime;
+        if (c >= end){
+          videoEl.currentTime = start;
+        }
+        console.log(c, start, end);
+      }, 100);
+    },
+    pause() {
+      clearInterval(timer);
+      this.$refs.myVideo.pause();
+    },
+    stop() {
+      // this.$refs.myVideo.stop();
+      clearInterval(timer);
+    }
   },
   watch: {
     '$route' (to, from) {
@@ -18,9 +47,11 @@ export default {
     }
   },
   mounted: function() {
+    this.$refs.myVideo.play();
   },
-  unmounted: function() {
-  }
+  beforeDestroy() {
+    if (timer) clearInterval(timer);
+  },
 }
 </script>
 
@@ -30,6 +61,6 @@ video {
     left: 0;
     top: 0;
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
 }
 </style>

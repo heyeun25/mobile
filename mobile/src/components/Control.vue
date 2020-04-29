@@ -38,44 +38,26 @@ export default {
       // category : category on mobile app
       // name : button name on mobile app
       // value : func page will get value as props
-      info : [
-        {
-            category: "Scenario",
-            list: [{name: "Health", data: {func: 'health', value: ''}},
-                   {name: "Thumbnail", data: {func: 'greenery', value: 'thumbnail'}},
-                   {name: "Phone Call", data: { func: 'health', value: { phoneCall : 'vertical'}}},
-                   {name: "Board", data: { func: 'family', value: 'blackBoard'}},
-                   {name: "Memo", data: { func: 'family', value: 'addMemo'}},
-                   {name: "buburry", data: { func: 'luxury', value: 'blackBoard'}},
-                   {name: "gucci", data: { func: 'luxury', value: 'gucci'}},
-                   ]
-        },
-        {
-          category: "Account",
-          list: [
-            {name: "Greenery", data: { func: 'health', value: 'account'}},
-            {name: "Dunffy", data: { func: 'greenery', value: 'account'}},
-            {name: "Diana", data: { func: 'family', value: 'account'}},
-            {name: "change", data: { func: 'account', value: 'change'}},
-          ]
-        },
-        {
-            category: "Greenery",
-            list: [
-                    {name: "play/pause", data: { func: 'greenery', value: {pp : 'pp'}}},
-                    {name: "restart", data: {func: 'greenery', value: {restart: 'restart'}}},
-                    {name: "left", data: {func: 'greenery', value: {key: 'left'}}},
-                    {name: "right", data: {func: 'greenery', value: {key: 'right'}}},
-                    {name: "enter", data: {func: 'greenery', value: {key: 'enter'}}}
-                  ]
-        },{
-          category: "mobile",
-          list: [
-            {name: "memo", data: {func: 'mobile', value: 'memo'}},
-            {name: "dog", data: {func: 'mobile', value: 'dog'}}
-          ]
-        }
-      ],
+      info : [{
+              category: "displayShelf",
+              list: [{name: "scene1", data: {func: 'displayShelf', value: {start: 0, end: 4}}},
+                    {name: "scene2", data: {func: 'displayShelf', value: {start: 6, end: 9}}},
+                    {name: "scene3", data: {func: 'displayShelf', value: {start: 10, end: 14}}},
+                    {name: "scene4", data: {func: 'displayShelf', value: {start: 15, end: 19}}},
+                    {name: "pause", data: {func: 'displayShelf', value: {pause: 20}}},
+                    {name: "video-1", data: {func: 'mobile', value: {video: 'vertical'}}},
+                    {name: "video-2", data: {func: 'mobile', value: {video: 'second'}}},
+                    {name: "garoVideo-3", data: {func: 'mobile', value: {video: 'horizontal'}}},
+                    {name: "videoStop", data: {func: 'mobile', value: {video: 'stop'}}}]
+            }, {
+              category: "equalizer",
+              list: [{name: "scene1", data: {func: 'equalizer', value: 1}},
+                    {name: "scene2", data: {func: 'equalizer', value: 2}}]
+            }, {
+              category: "tapestry",
+              list: [{name: "scene1", data: {func: 'tapestry', value: ''}}],
+            }
+        ],
       
     }
   },
@@ -93,70 +75,19 @@ export default {
     send: function(data) {
       console.log(JSON.stringify(data));
       if (data.func == 'mobile') {
-        this.showImage = data.value;
+        socket.emit('controller', data);
         return;
-      }
-      if (data.value.phoneCall && data.value.phoneCall == 'vertical') {
-        this.phoneCall = true;
-        this.videoStatus = 1;
-        this.$refs.verticalVideo.play();
       }
       socket.emit('appMsg', data);
       
     },
     hideImage: function() {
       this.showImage = '';
-    },
-    onPause: function() { 
-      console.log('pause')
-      this.phoneCall = false;
-      this.orient = 0;
-      this.$refs.verticalVideo2.currentTime = 0;
-      this.$refs.verticalVideo.currentTime = 0;
-      this.$refs.horizontalVideo.currentTime = 0;
-      socket.emit('appMsg', { func: 'health', value: { phoneCall : 'finish'}});
-    },
-    handle: function() {
-      if ((window.orientation == 90 ||
-          window.orientation == -90) &&
-          this.phoneCall == true) {
-        this.orient = 90;
-        this.videoStatus = 3;
-        this.$refs.verticalVideo2.pause();
-        this.$refs.horizontalVideo.play();
-        socket.emit('appMsg', { func: 'health', value: { phoneCall : 'horizontal'}});
-      }
-      if (window.orientation == 0 && this.phonCall == true) {
-        this.orient = 0;
-        this.$refs.horizontalVideo.currentTime = 0;
-      }
-    },
-    getMobile: function(data) {
-      console.log(data);
-      if (data.video == 'second') {
-        this.videoStatus = 2;
-        this.$refs.verticalVideo.pause();
-        this.$refs.verticalVideo2.play();
-          
-      } else if (data.video == 'stop') {
-          this.videoStatus = 0;
-          this.$refs.horizontalVideo.pause();
-          this.onPause();
-      }
-    },
-    makeFullScreen: function() {
-      this.$refs.horizontalVideo.requestFullscreen();
     }
   },
   mounted() {
-    getMobile = this.getMobile.bind(this);
-    socket.on('appMsg', getMobile);
-    handle = this.handle.bind(this);
-    window.addEventListener("orientationchange", handle);
-    this.$refs.horizontalVideo.onpause = this.onPause;
   },
   destroyed() {
-    window.removeEventListener("orientationchange", handle);
     socket.off('appMsg', getMobile);
   },
 }

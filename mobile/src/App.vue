@@ -7,8 +7,6 @@
 
 <script>
 import Control from './components/Control.vue'
-
-
 export default {
   name: 'App',
   components: {
