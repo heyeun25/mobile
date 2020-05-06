@@ -3,7 +3,7 @@
         <Video
             width="100%"
             height="100%"
-            v-bind:source="source"
+            v-bind:source="require('@/assets/video/TV_garo.mp4')"
         >
         </Video>
     </div>
@@ -17,7 +17,7 @@ export default {
     },
     data() {
         return {
-            source: "",
+            source: "../assets/video/TV_garo.mp4",
         }
     },
     methods: {

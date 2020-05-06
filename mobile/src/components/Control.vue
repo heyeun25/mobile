@@ -50,8 +50,9 @@ export default {
                     {name: "videoStop", data: {func: 'mobile', value: {video: 'stop'}}}]
             }, {
               category: "equalizer",
-              list: [{name: "scene1", data: {func: 'equalizer', value: 1}},
-                    {name: "scene2", data: {func: 'equalizer', value: 2}}]
+              list: [{name: "scene1", data: {func: 'equalizer0', value: 0}},
+                    {name: "scene2", data: {func: 'equalizer1', value: 1}},
+                    {name: "scene3", data: {func: 'equalizer2', value: 2}}]
             }, {
               category: "tapestry",
               list: [{name: "scene1", data: {func: 'tapestry', value: ''}}],
