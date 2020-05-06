@@ -2,9 +2,7 @@
     <div class="displayShelf">
         <Video
             ref="fullVideo"
-            v-bind:source="require('@/assets/video/TV_garo.mp4')"
-            width="100%"
-            height="100%">
+            v-bind:source="require('@/assets/video/shelfUI.mp4')">
         </Video>
         <video ref="horizontalVideo"
             v-bind:class="horizontalVideoClass"

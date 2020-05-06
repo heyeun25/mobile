@@ -19,7 +19,7 @@ import io from 'socket.io-client'
 var getMobile;
 var socket = io(location.protocol + '//' + location.hostname + ':8080')
 socket.on('connect', function() {
-  socket.emit('identify', 'mobile');
+  socket.emit('identify', 'control');
 });
 export default {
   name: 'Control',
@@ -39,14 +39,14 @@ export default {
       // value : func page will get value as props
       info : [{
               category: "displayShelf",
-              list: [{name: "scene1", data: {func: 'displayShelf', value: {start: 0, end: 4}}},
-                    {name: "scene2", data: {func: 'displayShelf', value: {start: 6, end: 9}}},
-                    {name: "scene3", data: {func: 'displayShelf', value: {start: 10, end: 14}}},
-                    {name: "scene4", data: {func: 'displayShelf', value: {start: 15, end: 19}}},
-                    {name: "pause", data: {func: 'displayShelf', value: {pause: 20}}},
-                    {name: "video-1", data: {func: 'mobile', value: {video: 'vertical'}}},
-                    {name: "video-2", data: {func: 'mobile', value: {video: 'second'}}},
-                    {name: "garoVideo-3", data: {func: 'mobile', value: {video: 'horizontal'}}},
+              list: [{name: "scene1", data: {func: 'displayShelf', value: {start: 5, end: 12}}},
+                    {name: "scene2", data: {func: 'displayShelf', value: {start: 13, end: 20}}},
+                    {name: "scene3", data: {func: 'displayShelf', value: {start: 21, end: 23}}},
+                    {name: "scene4", data: {func: 'displayShelf', value: {start: 24, end: 90}}},
+                    // {name: "pause", data: {func: 'displayShelf', value: {pause: 20}}},
+                    {name: "mirroring", data: {func: 'mobile', value: {video: 'vertical'}}},
+                    {name: "mirroring2", data: {func: 'mobile', value: {video: 'second'}}},
+                    {name: "mirroring-full", data: {func: 'mobile', value: {video: 'horizontal'}}},
                     {name: "videoStop", data: {func: 'mobile', value: {video: 'stop'}}}]
             }, {
               category: "equalizer",

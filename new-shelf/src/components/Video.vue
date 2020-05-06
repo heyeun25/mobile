@@ -3,6 +3,7 @@
     <video
       controls
       loop
+      class="myVideo"
       ref="myVideo"
       v-bind:width="width"
       v-bind:height="height"
@@ -19,15 +20,15 @@ export default {
   name: 'Video',
   props: ['source', 'width', 'height'],
   methods: {
-    play(start, end) {
+    play(start, end, loop) {
       var videoEl = this.$refs.myVideo;
       videoEl.currentTime = start;
       videoEl.play();
-
+      
       timer = setInterval(()=>{
         var c = videoEl.currentTime;
         if (c >= end){
-          videoEl.currentTime = start;
+          (loop ? videoEl.currentTime = start : videoEl.pause());
         }
         console.log(c, start, end);
       }, 100);
@@ -56,11 +57,12 @@ export default {
 </script>
 
 <style scoped>
-video {
+.myVideo {
     position: fixed;
     left: 0;
     top: 0;
-    width: 100%;
+    width: 3840px;
+    height: 2160px;
     /* height: 100%; */
 }
 </style>
