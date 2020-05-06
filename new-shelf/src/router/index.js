@@ -19,7 +19,8 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {path: '/displayShelf', name: 'displayShelf', component: DisplayShelf},
-    {path: '/equalizer', name: 'equalizer', component: Equalizer},
+    {path: '/equalizer/0', name: 'equalizer0', component: Equalizer, props: { eqIdx: 0 }},
+    {path: '/equalizer/1', name: 'equalizer1', component: Equalizer, props: { eqIdx: 1 }},
     {path: '/tapestry', name: 'tapestry', component: Tapestry}
     // { path: '/tree', name: 'tree', component:  Tree},
     // { path: '/circle', name: 'circle', component:  CircleTree},
