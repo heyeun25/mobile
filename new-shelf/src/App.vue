@@ -3,6 +3,8 @@
     <transition name="fade">
       <router-view></router-view>
     </transition>
+    <button class="startBtn" ref="startBtn"
+            v-on:click="start">start</button>
   </div>
 </template>
 
@@ -25,7 +27,14 @@ export default {
         myRouter.push({name: d.func, params: d.value})
       }
     });
-  }
+  },
+  methods: {
+    start: function() {
+            console.log('start');
+            this.$refs.startBtn.style.visibility = "hidden";
+            this.$refs.fullVideo.play();
+        },
+  },
 }
 </script>
 
@@ -46,5 +55,13 @@ body, html {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+.startBtn {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    height: 50%;
+    font-size: 100px;
 }
 </style>

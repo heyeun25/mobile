@@ -6,16 +6,15 @@
         </Video>
         <video ref="horizontalVideo"
             v-bind:class="horizontalVideoClass"
-            loop
+            loop mute
             src="../assets/video/TV_garo.mp4"></video>
         <video ref="verticalVideo2"
-            v-bind:class="verticalVideo2Class" loop
+            v-bind:class="verticalVideo2Class" loop mute
             src="../assets/video/TV_sero_02.mp4"></video>
         <video ref="verticalVideo"
-            v-bind:class="verticalVideoClass" loop
+            v-bind:class="verticalVideoClass" loop mute
             src="../assets/video/TV_sero.mp4"></video>
-        <button class="startBtn" ref="startBtn"
-            v-on:click="start">start</button>
+        
     </div>
 </template>
 <script>
@@ -78,11 +77,7 @@ export default {
         }
     },
     methods: {
-        start: function() {
-            console.log('start');
-            this.$refs.startBtn.style.visibility = "hidden";
-            this.$refs.fullVideo.play();
-        },
+        
         mobile: function(data) {
             console.log('mobile', data);
             var value = data.value;
@@ -117,15 +112,6 @@ export default {
 }
 </script>
 <style>
-.startBtn {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50%;
-    height: 50%;
-    font-size: 100px;
-
-}
 .verticalVideo {
     position: absolute;
     right: 10px;
@@ -167,43 +153,27 @@ export default {
     animation: 1s toVRight forwards;
 }
 
+.hide {
+    visibility: hidden;
+}
+
 @keyframes toLeft {
-    from {
-        left: 67%;
-    }
-    to {
-        left: 0;
-    }
+    from { left: 67%; }
+    to { left: 0; }
 }
 
 @keyframes toRight {
-    from {
-        left: 0;
-    }
-    to {
-        left: 100%;
-    }
+    from { left: 0; }
+    to { left: 100%; }
 }
 
 @keyframes toVLeft {
-    from {
-        transform: translateX(100%);
-    }
-    to {
-        transform: translateX(0);
-    }
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
 }
 
 @keyframes toVRight {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(100%);
-    }
-}
-
-.hide {
-    visibility: hidden;
+    from { transform: translateX(0); }
+    to { transform: translateX(100%); }
 }
 </style>

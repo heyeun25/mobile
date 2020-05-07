@@ -1,6 +1,6 @@
 <template>
     <div class="equalizer2-container">
-        <button class="st" v-on:click="start">{{"start"}}</button>
+        <!-- <button class="st" v-on:click="start">{{"start"}}</button> -->
         <canvas id="equalizer2" ref="equalizer2"></canvas>
         <audio ref="music" src="@/assets/audio/needed.mp3" controls></audio>
     </div>
@@ -37,20 +37,6 @@ export default {
                 this.tool.updateWave();
                 this.tool.updateFrequency();
             }
-
-            // if (this.particles && this.particles.length > 0) {
-            //     try {
-            //         this.flowfield.update();
-            //         for (let i = 0; i < this.particles.length; i++) {
-            //         this.particles[i].follow(this.flowfield);
-            //         this.particles[i].update();
-            //         this.particles[i].edges();
-            //         this.particles[i].draw();
-            //         }
-            //     } catch (error) {
-            //         console.log(error);
-            //     }
-            // }
             requestAnimationFrame(this.draw.bind(this));
         },
         initBoids(max, initPos, r) { // max is circle max count
@@ -125,6 +111,7 @@ export default {
         this.canvas.style.height = this.h = window.innerHeight;
         this.ctx = this.canvas.getContext('2d');
         this.setup();
+        this.start();
     },
 }
 </script>
