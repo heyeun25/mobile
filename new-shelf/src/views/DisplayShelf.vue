@@ -14,6 +14,8 @@
         <video ref="verticalVideo"
             v-bind:class="verticalVideoClass" loop
             src="../assets/video/TV_sero.mp4"></video>
+        <button class="startBtn" ref="startBtn"
+            v-on:click="start">start</button>
     </div>
 </template>
 <script>
@@ -76,6 +78,11 @@ export default {
         }
     },
     methods: {
+        start: function() {
+            console.log('start');
+            this.$refs.startBtn.style.visibility = "hidden";
+            this.$refs.fullVideo.play();
+        },
         mobile: function(data) {
             console.log('mobile', data);
             var value = data.value;
@@ -110,7 +117,15 @@ export default {
 }
 </script>
 <style>
+.startBtn {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    height: 50%;
+    font-size: 100px;
 
+}
 .verticalVideo {
     position: absolute;
     right: 10px;

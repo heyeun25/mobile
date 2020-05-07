@@ -1,10 +1,9 @@
 <template>
   <div>
     <video
-      controls
-      loop
-      class="myVideo"
-      ref="myVideo"
+      
+      class="controlVideo"
+      ref="controlVideo"
       v-bind:width="width"
       v-bind:height="height"
       v-bind:src="source">
@@ -21,7 +20,7 @@ export default {
   props: ['source', 'width', 'height'],
   methods: {
     play(start, end, loop) {
-      var videoEl = this.$refs.myVideo;
+      var videoEl = this.$refs.controlVideo;
       videoEl.currentTime = start;
       videoEl.play();
       
@@ -35,10 +34,10 @@ export default {
     },
     pause() {
       clearInterval(timer);
-      this.$refs.myVideo.pause();
+      this.$refs.controlVideo.pause();
     },
     stop() {
-      // this.$refs.myVideo.stop();
+      // this.$refs.controlVideo.stop();
       clearInterval(timer);
     }
   },
@@ -48,7 +47,7 @@ export default {
     }
   },
   mounted: function() {
-    this.$refs.myVideo.play();
+    this.$refs.controlVideo.play();
   },
   beforeDestroy() {
     if (timer) clearInterval(timer);
@@ -57,7 +56,7 @@ export default {
 </script>
 
 <style scoped>
-.myVideo {
+.controlVideo {
     position: fixed;
     left: 0;
     top: 0;
