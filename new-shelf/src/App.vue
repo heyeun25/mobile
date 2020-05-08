@@ -32,7 +32,7 @@ export default {
     start: function() {
             console.log('start');
             this.$refs.startBtn.style.visibility = "hidden";
-            this.$refs.fullVideo.play();
+            // this.$refs.fullVideo.play();
         },
   },
 }
