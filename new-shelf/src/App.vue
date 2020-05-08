@@ -22,7 +22,6 @@ export default {
     const myRouter = this.$router;
     this.$socket.on('appMsg', function(d) {
       console.log(d);
-      // console.log(myRouter.currentRoute);
       if (myRouter.currentRoute.name !== d.func) {
         myRouter.push({name: d.func, params: d.value})
       }
@@ -32,7 +31,6 @@ export default {
     start: function() {
             console.log('start');
             this.$refs.startBtn.style.visibility = "hidden";
-            // this.$refs.fullVideo.play();
         },
   },
 }
@@ -43,6 +41,10 @@ body, html {
   left: 0;
   top: 0;
   margin: 0;
+}
+
+#app {
+  transform: scale(0.9) translateY(210px);
 }
 
 @font-face {
