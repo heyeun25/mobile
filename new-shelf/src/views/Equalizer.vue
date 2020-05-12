@@ -19,8 +19,8 @@ export default {
     data() {
         return {
             equalizers: [
-                {videoSrc: 'res/music1_4K.mov', loop: {start: 2}},
-                {videoSrc: 'res/music2_4K.mov', loop: {start: 2}}
+                {videoSrc: require('@/assets/video/visualizer_1.mp4'), loop: {start: 0}},
+                {videoSrc: require('@/assets/video/visualizer_2.mp4'), loop: {start: 0}}
             ]
         }
     },
