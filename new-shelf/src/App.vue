@@ -41,10 +41,15 @@ body, html {
   left: 0;
   top: 0;
   margin: 0;
+  background-image: url('./assets/fabric_navy.jpg');
 }
 
 #app {
-  transform: scale(0.9) translateY(210px);
+  transform: scale(0.9) translateY(120px);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 @font-face {

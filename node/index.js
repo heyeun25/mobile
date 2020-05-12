@@ -53,21 +53,20 @@ io.sockets.on('connection', function (socket) {
 	});
 	socket.on('controller', function(data) {
 		console.log('controller', data);
-		if (!socketNameMap['mobile']) {
-			console.log('no mobile');
-			return;
-		}
-		if (!socketNameMap['shelf']) {
-			console.log('no shelf');
-			return;
-		}
 		var mobile = socketNameMap['mobile'];
 		var shelf = socketNameMap['shelf'];
 
-		mobile.emit('appMsg', data);
-		shelf.emit('appMsg', {
-			func: 'displayShelf',
-			value: data.value});
+		if (socketNameMap['mobile'])
+			mobile.emit('appMsg', data);
+		else 
+			console.log('no mobile');
+		
+		if (socketNameMap['shelf'])
+			shelf.emit('appMsg', {
+				func: 'displayShelf',
+				value: data.value});
+		else 
+			console.log('no shelf');
 
 	});
 });
