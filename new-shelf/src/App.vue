@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <transition name="fade">
+    <transition :name="transitionName">
       <router-view></router-view>
     </transition>
     <button class="startBtn" ref="startBtn"
@@ -12,6 +12,21 @@
 export default {
   name: 'app',
   components: {
+  },
+  watch: {
+      '$route' (to, from) {
+          if (to.name.indexOf('equalizer') > -1)
+            this.transitionName = 'slide';
+          else 
+            this.transitionName = 'fade';
+          console.log('transition', this.transitionName);
+
+      }
+  },
+  data() {
+    return {
+      transitionName: 'fade'
+    }
   },
   mounted: function() {
     const socket = this.$socket;
@@ -62,6 +77,17 @@ body, html {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+
+.slide-leave-active,
+.slide-enter-active {
+  transition: 1s;
+}
+.slide-enter {
+  transform: translate(100%, 0);
+}
+.slide-leave-to {
+  transform: translate(-100%, 0);
 }
 .startBtn {
     position: absolute;
