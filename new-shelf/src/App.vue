@@ -10,9 +10,10 @@
 
 <script>
 var demoList = [
+  {name: "init", data: {func: 'displayShelf', value: {start: 0.01, end: 0.1}}},
   {name: "scene1", data: {func: 'displayShelf', value: {start: 5, end: 12}}},
-  {name: "scene2", data: {func: 'displayShelf', value: {start: 13, end: 20}}},
-  {name: "scene3", data: {func: 'displayShelf', value: {start: 21, end: 23}}},
+  {name: "scene2", data: {func: 'displayShelf', value: {start: 13, end: 18.8}}},
+  {name: "scene3", data: {func: 'displayShelf', value: {start: 19, end: 23}}},
   {name: "scene4", data: {func: 'displayShelf', value: {start: 24, end: 90}}},
     // {name: "pause", data: {func: 'displayShelf', value: {pause: 20}}},
   {name: "mirroring", data: {func: 'mobile', value: {video: 'vertical'}}},
