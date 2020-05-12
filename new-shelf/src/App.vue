@@ -9,6 +9,23 @@
 </template>
 
 <script>
+var demoList = [
+  {name: "scene1", data: {func: 'displayShelf', value: {start: 5, end: 12}}},
+  {name: "scene2", data: {func: 'displayShelf', value: {start: 13, end: 20}}},
+  {name: "scene3", data: {func: 'displayShelf', value: {start: 21, end: 23}}},
+  {name: "scene4", data: {func: 'displayShelf', value: {start: 24, end: 90}}},
+    // {name: "pause", data: {func: 'displayShelf', value: {pause: 20}}},
+  {name: "mirroring", data: {func: 'mobile', value: {video: 'vertical'}}},
+  {name: "mirroring2", data: {func: 'mobile', value: {video: 'second'}}},
+  {name: "mirroring-full", data: {func: 'mobile', value: {video: 'horizontal'}}},
+  {name: "videoStop", data: {func: 'mobile', value: {video: 'stop'}}},
+  {name: "scene1", data: {func: 'equalizer0', value: 0}},
+  {name: "scene2", data: {func: 'equalizer1', value: 1}},
+  {name: "scene3", data: {func: 'equalizer2', value: 2}},
+  {name: "scene1", data: {func: 'tapestry', value: ''}}
+];
+var demoIdx = 0;
+
 export default {
   name: 'app',
   components: {
@@ -26,12 +43,47 @@ export default {
         myRouter.push({name: d.func, params: d.value})
       }
     });
+
+    window.addEventListener('keydown', this.onKeyDown);
   },
   methods: {
     start: function() {
-            console.log('start');
-            this.$refs.startBtn.style.visibility = "hidden";
-        },
+      console.log('start');
+      this.$refs.startBtn.style.visibility = "hidden";
+    },
+    onKeyDown(e) {
+      console.log(e.key);
+      switch(e.key) {
+        case 'Escape':
+          demoIdx = 0;
+          this.send(demoList[demoIdx].data);
+          break;
+        case 'ArrowLeft':
+        case 'ArrowUp':
+          var newIdx = Math.max(0, demoIdx-1);
+          if(newIdx !== demoIdx) {
+            demoIdx = newIdx;
+            this.send(demoList[demoIdx].data);
+          }
+          break;
+        case 'ArrowRight':
+        case 'ArrowDown':
+          var newIdx = Math.min(demoList.length-1, demoIdx+1);
+          if(newIdx !== demoIdx) {
+            demoIdx = newIdx;
+            this.send(demoList[demoIdx].data);
+          }
+          break;
+      }
+    },
+    send: function(data) {
+      console.log(JSON.stringify(data));
+      if (data.func == 'mobile') {
+        this.$socket.emit('controller', data);
+        return;
+      }
+      this.$socket.emit('appMsg', data);
+    }
   },
 }
 </script>
