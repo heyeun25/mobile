@@ -6,7 +6,6 @@
             v-bind:src="equalizers[eqIdx].videoSrc"
             v-on:click="play"
             autoplay
-
         ></video>
     </div>
 </template>
@@ -53,7 +52,8 @@ export default {
         position: absolute;
         width: 100%;
         height: 100%;
-        background: black;
+        /* background: black; */
+        background-image: url('../assets/fabric_navy.jpg')
     }
     .container > video {
         width: 100%;
