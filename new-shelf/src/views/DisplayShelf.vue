@@ -35,7 +35,7 @@ export default {
     data() {
         return {
             videoStatus : VIDEO_STATUS.NONE,
-            horizontalVideoClass: 'hide horizontalVideo',
+            horizontalVideoClass: 'hotizontalHide horizontalVideo',
             verticalVideoClass: 'hide verticalVideo',
             verticalVideo2Class: 'hide verticalVideo2'
         }
@@ -45,30 +45,51 @@ export default {
             console.log('val=', val);
             switch(val) {
                 case VIDEO_STATUS.NONE:
-                this.verticalVideo2Class = 'hide verticalVideo2';
-                this.horizontalVideoClass = "horizontalVideo hotizontalHide";
-                this.stopWidgetVideo = false;
-                this.$refs.horizontalVideo.pause();
+                    this.verticalVideoClass = 'hide verticalVideo';
+                    this.verticalVideo2Class = 'hide verticalVideo2';
+                    this.horizontalVideoClass = "horizontalVideo hotizontalHide";
+                    this.stopWidgetVideo = false;
+                    this.$refs.verticalVideo.currentTime = 0;
+                    this.$refs.verticalVideo.pause();
+                    this.$refs.verticalVideo2.currentTime = 0;
+                    this.$refs.verticalVideo2.pause();
+                    this.$refs.horizontalVideo.currentTime = 0;
+                    this.$refs.horizontalVideo.pause();
                 break;
                 case VIDEO_STATUS.VERTICAL:
-                this.verticalVideoClass = 'verticalVideo verticalShow';
-                this.stopWidgetVideo = true;
-                this.$refs.verticalVideo.currentTime = 0;
-                this.$refs.verticalVideo.play();
+                    this.verticalVideoClass = 'verticalVideo verticalShow';
+                    this.verticalVideo2Class = 'hide verticalVideo2';
+                    this.horizontalVideoClass = "horizontalVideo hotizontalHide";
+                    this.stopWidgetVideo = true;
+                    this.$refs.verticalVideo.currentTime = 0;
+                    this.$refs.verticalVideo.play();
+                    this.$refs.verticalVideo2.currentTime = 0;
+                    this.$refs.verticalVideo2.pause();
+                    this.$refs.horizontalVideo.currentTime = 0;
+                    this.$refs.horizontalVideo.pause();
                 break;
                 case VIDEO_STATUS.VERTICAL2:
-                this.verticalVideoClass = 'hide verticalVideo';
-                this.verticalVideo2Class = 'verticalVideo2';
-                this.horizontalVideoClass = 'horizontalVideo horizontalShow';
-                this.$refs.verticalVideo.pause();
-                this.$refs.verticalVideo2.currentTime = 0;
-                this.$refs.verticalVideo2.play();
+                    this.verticalVideoClass = 'hide verticalVideo';
+                    this.verticalVideo2Class = 'verticalVideo2';
+                    this.horizontalVideoClass = 'horizontalVideo hotizontalHide';
+                    this.$refs.verticalVideo.currentTime = 0;
+                    this.$refs.verticalVideo.pause();
+                    this.$refs.verticalVideo2.currentTime = 0;
+                    this.$refs.verticalVideo2.play();
+                    this.$refs.horizontalVideo.currentTime = 0;
+                    this.$refs.horizontalVideo.pause();
                 break;
                 case VIDEO_STATUS.HORIZONTAL:
-                this.verticalVideo2Class = 'hide verticalVideo2';
-                this.horizontalVideoClass = "horizontalVideo hotizontalFullScreen";
-                this.$refs.verticalVideo2.pause();
-                this.$refs.horizontalVideo.play();
+                    this.verticalVideoClass = 'hide verticalVideo';
+                    this.verticalVideo2Class = 'hide verticalVideo2';
+                    this.horizontalVideoClass = "horizontalVideo hotizontalFullScreen";
+
+                    this.$refs.verticalVideo.currentTime = 0;
+                    this.$refs.verticalVideo.pause();
+                    this.$refs.verticalVideo2.currentTime = 0;
+                    this.$refs.verticalVideo2.pause();
+                    this.$refs.horizontalVideo.currentTime = 0;
+                    this.$refs.horizontalVideo.play();
                 // this.$refs.horizontalVideo.currentTime = this.$refs.verticalVideo.currentTime;
                 break;
                 default:
@@ -86,7 +107,8 @@ export default {
                 this.$refs.fullVideo.play(value.start, value.end);
             } else if (value.pause) {
                 this.$refs.fullVideo.pause();
-            } else if (data.value.video) {
+            }
+            if (data.value.video) {
                 var p = data.value.video;
                 if (p == 'vertical') {
                     this.videoStatus = VIDEO_STATUS.VERTICAL;
@@ -97,6 +119,9 @@ export default {
                 } else if (p == 'stop') {
                     this.videoStatus = VIDEO_STATUS.NONE;
                 }
+            }
+            else {
+                this.videoStatus = VIDEO_STATUS.NONE;
             }
             
         }
@@ -114,15 +139,15 @@ export default {
 <style>
 .verticalVideo {
     position: absolute;
-    right: 10px;
-    height: 100%;
+    right: 0px;
+    height: 101%;
     transform: translateX(100%);
 }
 
 .verticalVideo2 {
     position: absolute;
     right: 0px;
-    height: 100%;
+    height: 101%;
 }
 
 .horizontalVideo {

@@ -13,7 +13,7 @@
 
 <script>
 import { setInterval, clearInterval } from 'timers';
-var timer;
+var timer = null;
 
 export default {
   name: 'Video',
@@ -23,7 +23,11 @@ export default {
       var videoEl = this.$refs.controlVideo;
       videoEl.currentTime = start;
       videoEl.play();
-      
+
+      if(timer) {
+        clearInterval(timer);
+        timer = null;
+      }
       timer = setInterval(()=>{
         var c = videoEl.currentTime;
         if (c >= end){
@@ -34,11 +38,13 @@ export default {
     },
     pause() {
       clearInterval(timer);
+      timer = null;
       this.$refs.controlVideo.pause();
     },
     stop() {
       // this.$refs.controlVideo.stop();
       clearInterval(timer);
+      timer = null;
     }
   },
   watch: {
@@ -57,11 +63,12 @@ export default {
 
 <style scoped>
 .controlVideo {
-    position: fixed;
+    position: absolute;
     left: 0;
     top: 0;
-    width: 3840px;
-    height: 2160px;
+    width: 100%;
+    height: 100%;
     /* height: 100%; */
+  object-fit: fill;
 }
 </style>

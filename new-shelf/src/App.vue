@@ -43,7 +43,11 @@ export default {
   },
   data() {
     return {
-      transitionName: 'fade'
+      transitionName: 'fade',
+      bgClasses: [
+          'bg_check', 'bg_paulsmith', 'bg_fabric', 'bg_wall'
+      ],
+      bgIdx: 0
     }
   },
   mounted: function() {
@@ -61,8 +65,12 @@ export default {
     });
 
     window.addEventListener('keydown', this.onKeyDown);
+    this.updateBodyBG();
   },
   methods: {
+    updateBodyBG() {
+      document.body.className = this.bgClasses[this.bgIdx];
+    },
     start: function() {
       console.log('start');
       this.$refs.startBtn.style.visibility = "hidden";
@@ -90,6 +98,10 @@ export default {
             this.send(demoList[demoIdx].data);
           }
           break;
+        case 'b':
+          this.bgIdx = (this.bgIdx+1) % this.bgClasses.length;
+          this.updateBodyBG();
+          break;
       }
     },
     send: function(data) {
@@ -109,14 +121,43 @@ body, html {
   left: 0;
   top: 0;
   margin: 0;
+}
+body {
+  background-color: black;
+}
+
+body.bg_check {
+  background-image: url('./assets/shelf_BG.png');
+  background-position: 269px 254px;
+  background-size: 3319px 1972px;
+  background-color: transparent;
+}
+body.bg_paulsmith {
+  background-image: url('./assets/shelf_BG_paulsmith.png');
+  background-position: 0px 0px;
+  background-size: 4000px 2160px;
+  background-color: transparent;
+}
+body.bg_wall {
+  background-image: url('./assets/shelf_BG_wall.png');
+  background-position: 0px 0px;
+  background-size: 3840px 2160px;
+  background-color: transparent;
+}
+body.bg_fabric {
   background-image: url('./assets/fabric_navy.jpg');
+  background-position: 0px 0px;
+  background-size: 3840px 2160px;
+  background-color: transparent;
 }
 
 #app {
-  transform: scale(0.9) translateY(120px);
-  position: absolute;
-  width: 100%;
-  height: 100%;
+  /*transform: scale(0.9) translateY(120px);*/
+  position: fixed;
+  left: 269px;
+  top: 270px;
+  width: 3321px;
+  height: 1879px;
   overflow: hidden;
 }
 
