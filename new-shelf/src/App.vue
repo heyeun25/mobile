@@ -5,6 +5,7 @@
     </transition>
     <button class="startBtn" ref="startBtn"
             v-on:click="start">start</button>
+    <div class="shadow"></div>
   </div>
 </template>
 
@@ -190,5 +191,15 @@ body.bg_fabric {
     width: 50%;
     height: 50%;
     font-size: 100px;
+}
+.shadow {
+  position: absolute;
+  left: 0;
+  top: -30px;
+  width: 100%;
+  height: 30px;
+  /* background-color: black; */
+  box-shadow: 0px 0px 26px 20px rgba(0,0,0,1);
+
 }
 </style>
