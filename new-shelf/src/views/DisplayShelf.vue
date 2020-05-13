@@ -2,7 +2,7 @@
     <div class="displayShelf">
         <Video
             ref="fullVideo"
-            v-bind:source="require('@/assets/video/shelfUI.mp4')">
+            v-bind:source="require('@/assets/video/Shelf_UI_2-0_final.mp4')">
         </Video>
         <video ref="horizontalVideo"
             v-bind:class="horizontalVideoClass"
@@ -137,6 +137,10 @@ export default {
 }
 </script>
 <style>
+    .displayShelf {
+        width: 100%;
+        height: 100%;
+    }
 .verticalVideo {
     position: absolute;
     right: 0px;
@@ -156,6 +160,8 @@ export default {
     top: 0;
     width: 100%;
     left: 100%;
+    height: 101%;
+    object-fit: fill;
 }
 
 .horizontalShow {
@@ -201,4 +207,5 @@ export default {
     from { transform: translateX(0); }
     to { transform: translateX(100%); }
 }
+
 </style>
