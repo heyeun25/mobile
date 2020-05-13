@@ -60,7 +60,7 @@ export default {
         background-image: url('../assets/shelf_BG_green_final.png');
         /*background-position: 269px 254px;
         background-size: 3319px 1972px;*/
-        background-position: -269px -254px;
+        background-position: -269px -270px;
     }
     .bg_paulsmith .container {
         background-image: url('../assets/shelf_BG_paulsmith.png');

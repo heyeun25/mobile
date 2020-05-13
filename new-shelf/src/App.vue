@@ -22,7 +22,7 @@ var demoList = [
   {name: "mirroring-full", data: {func: 'mobile', value: {video: 'horizontal'}}},
   {name: "videoStop", data: {func: 'mobile', value: {video: 'stop'}}},
   //{name: "scene1", data: {func: 'equalizer0', value: 0}},
-  {name: "scene2", data: {func: 'equalizer1', value: 1}},
+  {name: "scene1", data: {func: 'equalizer0', value: 0}},
   //{name: "scene3", data: {func: 'equalizer2', value: 2}},
   //{name: "scene1", data: {func: 'tapestry', value: ''}}
 ];
@@ -35,7 +35,7 @@ export default {
   watch: {
       '$route' (to, from) {
           if (to.name.indexOf('equalizer') > -1)
-            this.transitionName = 'slide';
+            this.transitionName = 'fade';
           else 
             this.transitionName = 'fade';
           console.log('transition', this.transitionName);
