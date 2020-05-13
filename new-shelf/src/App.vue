@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <transition :name="transitionName">
+    <transition :name="transitionName" :duration="300">
       <router-view></router-view>
     </transition>
     <button class="startBtn" ref="startBtn"
@@ -20,10 +20,10 @@ var demoList = [
   {name: "mirroring2", data: {func: 'mobile', value: {video: 'second'}}},
   {name: "mirroring-full", data: {func: 'mobile', value: {video: 'horizontal'}}},
   {name: "videoStop", data: {func: 'mobile', value: {video: 'stop'}}},
-  {name: "scene1", data: {func: 'equalizer0', value: 0}},
+  //{name: "scene1", data: {func: 'equalizer0', value: 0}},
   {name: "scene2", data: {func: 'equalizer1', value: 1}},
-  {name: "scene3", data: {func: 'equalizer2', value: 2}},
-  {name: "scene1", data: {func: 'tapestry', value: ''}}
+  //{name: "scene3", data: {func: 'equalizer2', value: 2}},
+  //{name: "scene1", data: {func: 'tapestry', value: ''}}
 ];
 var demoIdx = 0;
 
@@ -127,28 +127,36 @@ body {
 }
 
 body.bg_check {
-  background-image: url('./assets/shelf_BG.png');
-  background-position: 269px 254px;
-  background-size: 3319px 1972px;
+  background-image: url('./assets/shelf_BG_green_final.png');
+  /*background-position: 269px 254px;
+  background-size: 3319px 1972px;*/
+  background-position: 0px 0px;
+  background-size: 3840px 2160px;
   background-color: transparent;
+  background-repeat: no-repeat;
 }
 body.bg_paulsmith {
   background-image: url('./assets/shelf_BG_paulsmith.png');
+  /*background-position: 0px 0px;
+  background-size: 4000px 2160px;*/
   background-position: 0px 0px;
-  background-size: 4000px 2160px;
+  background-size: 3840px 2160px;
   background-color: transparent;
+  background-repeat: no-repeat;
 }
 body.bg_wall {
   background-image: url('./assets/shelf_BG_wall.png');
   background-position: 0px 0px;
   background-size: 3840px 2160px;
   background-color: transparent;
+  background-repeat: no-repeat;
 }
 body.bg_fabric {
-  background-image: url('./assets/fabric_navy.jpg');
+  background-image: url('./assets/shelf_BG_navy.png');
   background-position: 0px 0px;
   background-size: 3840px 2160px;
   background-color: transparent;
+  background-repeat: no-repeat;
 }
 
 #app {
@@ -175,7 +183,8 @@ body.bg_fabric {
 
 .slide-leave-active,
 .slide-enter-active {
-  transition: 1s;
+  transition: all 300ms ease-out;
+  opaticy: 0;
 }
 .slide-enter {
   transform: translate(100%, 0);
