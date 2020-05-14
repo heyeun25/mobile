@@ -3,9 +3,10 @@
     <transition :name="transitionName" :duration="300">
       <router-view></router-view>
     </transition>
+    <div class="shadow"></div>
+    <div class="bm"></div>
     <button class="startBtn" ref="startBtn"
             v-on:click="start">start</button>
-    <div class="shadow"></div>
   </div>
 </template>
 
@@ -217,5 +218,13 @@ body.bg_fabric {
   /* background-color: black; */
   box-shadow: 0px 0px 5px 60px rgba(0,0,0,0.3);
 
+}
+.bm {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 0 0 5px rgba(0,0,0,1) inset;
 }
 </style>
