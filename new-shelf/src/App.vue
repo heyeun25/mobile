@@ -24,7 +24,9 @@ var demoList = [
   {name: "mirroring-full", data: {func: 'mobile', value: {video: 'horizontal'}}},
   {name: "videoStop", data: {func: 'mobile', value: {video: 'stop'}}},
   //{name: "scene1", data: {func: 'equalizer0', value: 0}},                                                                                                                                                                                                                                                                                                                                                           cv vvccccv                                                                                                  c             j          5                                                                                                                                                                
-  {name: "scene1", data: {func: 'equalizer0', value: 0}},
+  {name: "scene1", data: {func: 'equalizer0', value: {shown: false}}},
+  {name: "scene1", data: {func: 'equalizer0', value: {shown: true}}},
+  {name: "scene1", data: {func: 'equalizer0', value: {shown: false}}},
   //{name: "scene3", data: {func: 'equalizer2', value: 2}},
   //{name: "scene1", data: {func: 'tapestry', value: ''}}
 ];
