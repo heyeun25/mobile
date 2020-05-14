@@ -6,11 +6,13 @@ import Equalizer from '../views/Equalizer.vue';
 import Tapestry from '../views/Tapestry.vue';
 import Equalizer2 from '../views/Equalizer2.vue';
 import PositionFinder from "../views/PositionFinder";
+import Concept from '../views/Concept';
 
 Vue.use(Router)
 export default new Router({
   routes: [
-    {path: '/', name: 'displayShelf', component: DisplayShelf},
+    {path: '/', name: 'concept', component: Concept},
+    {path: '/displayShelf', name: 'displayShelf', component: DisplayShelf},
     {path: '/equalizer/0', name: 'equalizer0', component: Equalizer, props: { eqIdx: 0 }},
     {path: '/equalizer/1', name: 'equalizer1', component: Equalizer, props: { eqIdx: 1 }},
     {path: '/equalizer2', name: 'equalizer2', component: Equalizer2},

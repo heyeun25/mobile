@@ -56,8 +56,8 @@ export default {
                     {name: "scene2", data: {func: 'equalizer1', value: 1}},
                     {name: "scene3", data: {func: 'equalizer2', value: 2}}]
             }, {
-              category: "tapestry",
-              list: [{name: "scene1", data: {func: 'tapestry', value: ''}}],
+              category: "changeBg",
+              list: [{name: "bg", data: {func: 'displayShelf', value: 'changeBg'}}],
             }
         ],
       

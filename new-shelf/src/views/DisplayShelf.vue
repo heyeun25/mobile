@@ -1,7 +1,7 @@
 <template>
     <div class="displayShelf">
         <Video
-            ref="fullVideo"
+            ref="shelfUI"
             v-bind:source="require('@/assets/video/Shelf_UI_2-0_final.mp4')">
         </Video>
         <video ref="horizontalVideo"
@@ -103,13 +103,13 @@ export default {
             console.log('mobile', data);
             var value = data.value;
             if (value.start) {
-                this.$refs.fullVideo.stop();
-                this.$refs.fullVideo.play(value.start, value.end);
+                this.$refs.shelfUI.stop();
+                this.$refs.shelfUI.play(value.start, value.end);
             } else if (value.pause) {
-                this.$refs.fullVideo.pause();
+                this.$refs.shelfUI.pause();
             }
-            if (data.value.video) {
-                var p = data.value.video;
+            if (value.video) {
+                var p = value.video;
                 if (p == 'vertical') {
                     this.videoStatus = VIDEO_STATUS.VERTICAL;
                 } else if (p == 'second') {
@@ -123,7 +123,6 @@ export default {
             else {
                 this.videoStatus = VIDEO_STATUS.NONE;
             }
-            
         }
     },
     mounted() {

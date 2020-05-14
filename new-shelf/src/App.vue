@@ -11,9 +11,10 @@
 
 <script>
 var demoList = [
+  {name: "concept", data: {func: 'concept', value: {showConcept: true}}},
+  {name: "concept", data: {func: 'concept', value: {playVideo: true}}},
+  {name: "concept", data: {func: 'concept', value: {showConcept: false}}},
   {name: "init", data: {func: 'displayShelf', value: {start: 0.01, end: 0.1}}},
-  {name: "concept", data: {func: 'displayShelf', value: {showConcept: true}}},
-  {name: "concept", data: {func: 'displayShelf', value: {showConcept: false}}},
   {name: "scene1", data: {func: 'displayShelf', value: {start: 5, end: 12}}},
   {name: "scene2", data: {func: 'displayShelf', value: {start: 13, end: 18.8}}},
   {name: "scene3", data: {func: 'displayShelf', value: {start: 19, end: 23}}},
@@ -28,7 +29,7 @@ var demoList = [
   //{name: "scene3", data: {func: 'equalizer2', value: 2}},
   //{name: "scene1", data: {func: 'tapestry', value: ''}}
 ];
-var demoIdx = 0;
+var demoIdx = -1;
 
 export default {
   name: 'app',
@@ -38,7 +39,9 @@ export default {
       '$route' (to, from) {
           if (to.name.indexOf('equalizer') > -1)
             this.transitionName = 'fade';
-          else 
+          else if (to.name.indexOf('displayShelf') > -1) 
+            this.transitionName = '';
+          else
             this.transitionName = 'fade';
           console.log('transition', this.transitionName);
 
@@ -50,7 +53,7 @@ export default {
       bgClasses: [
           'bg_check', 'bg_paulsmith', 'bg_fabric', 'bg_wall'
       ],
-      bgIdx: 0
+      bgIdx: 3
     }
   },
   mounted: function() {
@@ -62,13 +65,9 @@ export default {
     const myRouter = this.$router;
     var that = this;
     this.$socket.on('appMsg', function(d) {
-      console.log(d);
-      if (d.value == 'changeBg') {
-        (that.bgIdx != 2 ? 2 : 3);
-        that.updateBodyBG();
-        return;
-      }
+      console.log(myRouter.currentRoute.name, d.func);
       if (myRouter.currentRoute.name !== d.func) {
+        console.log('change');
         myRouter.push({name: d.func, params: d.value})
       }
     });
@@ -88,7 +87,7 @@ export default {
       console.log(e.key);
       switch(e.key) {
         case 'Escape':
-          demoIdx = 0;
+          demoIdx = -1;
           this.send(demoList[demoIdx].data);
           break;
         case 'ArrowLeft':
