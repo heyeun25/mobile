@@ -5,7 +5,7 @@
             v-if="equalizers[eqIdx] && equalizers[eqIdx].videoSrc"
             v-bind:src="equalizers[eqIdx].videoSrc"
             v-on:click="play"
-            autoplay
+            v-bind:class="{'shown': shown}"
         ></video>
     </div>
 </template>
@@ -14,6 +14,16 @@ export default {
     props: {
         eqIdx: {
             default: 0
+        },
+    },
+    watch: {
+        shown(newVal) {
+            if(newVal) {
+                setTimeout(this.play, 1000);
+            }
+            else {
+                this.video.pause();
+            }
         }
     },
     data() {
@@ -21,14 +31,19 @@ export default {
             equalizers: [
                 {videoSrc: require('@/assets/video/visualizer_1.mp4'), loop: {start: 0}},
                 {videoSrc: require('@/assets/video/visualizer_2.mp4'), loop: {start: 0}}
-            ]
+            ],
+            shown: false
         }
     },
     mounted() {
         this.video = this.$refs.video;
         this.video.addEventListener('timeupdate', this.onTimeUpdate);
         this.video.pause();
-        setTimeout(this.play, 2000);
+        //setTimeout(this.play, 2000);
+        this.$socket.on('appMsg', this.mobile);
+    },
+    beforeDestroy() {
+        this.$socket.off('appMsg', this.mobile);
     },
     methods: {
         play() {
@@ -44,6 +59,16 @@ export default {
                     this.play();
                 }
             }
+        },
+        mobile: function(data) {
+            console.log('mobile', data);
+            var value = data.value;
+            this.shown = !!value.shown;
+        },
+        mounted() {
+            console.log('mounted');
+            getMobile = this.mobile.bind(this);
+            this.$socket.on('appMsg', getMobile);
         }
     }
 }
@@ -81,5 +106,11 @@ export default {
         width: 100%;
         height: 100%;
         object-fit: fill;
+        transition: transform 500ms ease-out;
+        transform: translate(99.9%, 0);
+    }
+
+    .container > video.shown {
+        transform: translate(0, 0);
     }
 </style>
