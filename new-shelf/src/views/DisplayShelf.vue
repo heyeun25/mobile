@@ -101,7 +101,6 @@ export default {
         }
     },
     methods: {
-        
         mobile: function(data) {
             console.log('mobile', data);
             var value = data.value;

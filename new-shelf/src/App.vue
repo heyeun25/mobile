@@ -14,21 +14,25 @@ var demoList = [
   {name: "concept", data: {func: 'concept', value: {playVideo: true}}},
   {name: "concept", data: {func: 'concept', value: {showConcept: false}}},
   {name: "init", data: {func: 'displayShelf', value: {start: 0.01, end: 0.1}}},
-  {name: "scene1", data: {func: 'displayShelf', value: {start: 5, end: 12}}},
-  {name: "scene2", data: {func: 'displayShelf', value: {start: 13, end: 18.8}}},
-  {name: "scene3", data: {func: 'displayShelf', value: {start: 19, end: 23}}},
-  {name: "scene4", data: {func: 'displayShelf', value: {start: 24, end: 90}}},
+  {name: "scene1", data: {func: 'displayShelf', value: {start: 5, end: 12}}}, // shelf
+  {name: "scene2", data: {func: 'displayShelf', value: {start: 13, end: 18.8}}}, // photo, memo
+  {name: "scene4", data: {func: 'displayShelf', value: {start: 24, end: 78}}}, // info
     // {name: "pause", data: {func: 'displayShelf', value: {pause: 20}}},
   {name: "mirroring", data: {func: 'mobile', value: {video: 'vertical'}}},
   {name: "mirroring2", data: {func: 'mobile', value: {video: 'second'}}},
   {name: "mirroring-full", data: {func: 'mobile', value: {video: 'horizontal'}}},
   {name: "videoStop", data: {func: 'mobile', value: {video: 'stop'}}},
   //{name: "scene1", data: {func: 'equalizer0', value: 0}},                                                                                                                                                                                                                                                                                                                                                           cv vvccccv                                                                                                  c             j          5                                                                                                                                                                
+  
+  {name: "skin", data: {func: 'skin', value: 'none'}},
+  {name: "skin", data: {func: 'skin', value: 'green'}},
+  {name: "skin", data: {func: 'skin', value: 'paul'}},
   {name: "scene1", data: {func: 'equalizer0', value: 0}},
+  
   //{name: "scene3", data: {func: 'equalizer2', value: 2}},
   //{name: "scene1", data: {func: 'tapestry', value: ''}}
 ];
-var demoIdx = -1;
+var demoIdx = 0;
 
 export default {
   name: 'app',
@@ -74,6 +78,8 @@ export default {
     window.addEventListener('keydown', this.onKeyDown);
     this.updateBodyBG();
   },
+  beforeDestroy() {
+  },
   methods: {
     updateBodyBG() {
       document.body.className = this.bgClasses[this.bgIdx];
@@ -83,10 +89,11 @@ export default {
       this.$refs.startBtn.style.visibility = "hidden";
     },
     onKeyDown(e) {
-      console.log(e.key);
+      console.log(e.key, typeof(e.key));
+
       switch(e.key) {
         case 'Escape':
-          demoIdx = -1;
+          demoIdx = 0;
           this.send(demoList[demoIdx].data);
           break;
         case 'ArrowLeft':

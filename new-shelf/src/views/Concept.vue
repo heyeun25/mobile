@@ -17,7 +17,7 @@ export default {
         mobile(data) {
             var value = data.value;
             if (value.init == true) {
-                this.wallCalss = '';
+                this.wallClass = '';
                 this.$refs.conceptVideo.currentTime = 0;
             }
             if (value.showConcept == true) {
