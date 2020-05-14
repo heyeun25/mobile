@@ -12,6 +12,8 @@
 <script>
 var demoList = [
   {name: "init", data: {func: 'displayShelf', value: {start: 0.01, end: 0.1}}},
+  {name: "concept", data: {func: 'displayShelf', value: {showConcept: true}}},
+  {name: "concept", data: {func: 'displayShelf', value: {showConcept: false}}},
   {name: "scene1", data: {func: 'displayShelf', value: {start: 5, end: 12}}},
   {name: "scene2", data: {func: 'displayShelf', value: {start: 13, end: 18.8}}},
   {name: "scene3", data: {func: 'displayShelf', value: {start: 19, end: 23}}},
@@ -58,8 +60,14 @@ export default {
     });
 
     const myRouter = this.$router;
+    var that = this;
     this.$socket.on('appMsg', function(d) {
       console.log(d);
+      if (d.value == 'changeBg') {
+        (that.bgIdx != 2 ? 2 : 3);
+        that.updateBodyBG();
+        return;
+      }
       if (myRouter.currentRoute.name !== d.func) {
         myRouter.push({name: d.func, params: d.value})
       }
@@ -195,8 +203,8 @@ body.bg_fabric {
 }
 .startBtn {
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    top: 0;
     width: 50%;
     height: 50%;
     font-size: 100px;
@@ -204,11 +212,11 @@ body.bg_fabric {
 .shadow {
   position: absolute;
   left: 0;
-  top: -30px;
+  top: -33px;
   width: 100%;
   height: 30px;
   /* background-color: black; */
-  box-shadow: 0px 0px 26px 20px rgba(0,0,0,1);
+  box-shadow: 0px 0px 5px 60px rgba(0,0,0,0.3);
 
 }
 </style>
