@@ -5,13 +5,11 @@
     </transition>
     <div class="shadow"></div>
     <div class="bm"></div>
-    <button class="startBtn" ref="startBtn"
-            v-on:click="start">start</button>
   </div>
 </template>
-
 <script>
 var demoList = [
+  {name: "init", data: {func: 'concept', value: {init: true}}},
   {name: "concept", data: {func: 'concept', value: {showConcept: true}}},
   {name: "concept", data: {func: 'concept', value: {playVideo: true}}},
   {name: "concept", data: {func: 'concept', value: {showConcept: false}}},
@@ -25,7 +23,7 @@ var demoList = [
   {name: "mirroring2", data: {func: 'mobile', value: {video: 'second'}}},
   {name: "mirroring-full", data: {func: 'mobile', value: {video: 'horizontal'}}},
   {name: "videoStop", data: {func: 'mobile', value: {video: 'stop'}}},
-  //{name: "scene1", data: {func: 'equalizer0', value: 0}},
+  //{name: "scene1", data: {func: 'equalizer0', value: 0}},                                                                                                                                                                                                                                                                                                                                                           cv vvccccv                                                                                                  c             j          5                                                                                                                                                                
   {name: "scene1", data: {func: 'equalizer0', value: 0}},
   //{name: "scene3", data: {func: 'equalizer2', value: 2}},
   //{name: "scene1", data: {func: 'tapestry', value: ''}}
@@ -171,8 +169,8 @@ body.bg_fabric {
 #app {
   /*transform: scale(0.9) translateY(120px);*/
   position: fixed;
-  left: 269px;
-  top: 270px;
+  left: 262px;
+  top: 276px;
   width: 3321px;
   height: 1879px;
   overflow: hidden;
@@ -225,6 +223,6 @@ body.bg_fabric {
   top: 0;
   width: 100%;
   height: 100%;
-  box-shadow: 0 0 0 5px rgba(0,0,0,1) inset;
+  /* box-shadow: 0 0 0 30px rgba(0,0,0,1) inset; */
 }
 </style>

@@ -9,12 +9,15 @@
             loop mute
             src="../assets/video/TV_garo.mp4"></video>
         <video ref="verticalVideo2"
-            v-bind:class="verticalVideo2Class" loop mute
+            v-bind:class="verticalVideo2Class"
+            loop
+            muted
             src="../assets/video/TV_sero_02.mp4"></video>
         <video ref="verticalVideo"
-            v-bind:class="verticalVideoClass" loop mute
+            v-bind:class="verticalVideoClass"
+            loop
+            muted
             src="../assets/video/TV_sero.mp4"></video>
-        
     </div>
 </template>
 <script>

@@ -1,7 +1,6 @@
 <template>
   <div>
     <video
-      
       class="controlVideo"
       ref="controlVideo"
       v-bind:width="width"
@@ -64,7 +63,7 @@ export default {
 <style scoped>
 .controlVideo {
     position: absolute;
-    left: 0;
+    left: -2px;
     top: 0;
     width: 100%;
     height: 100%;

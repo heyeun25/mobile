@@ -16,6 +16,10 @@ export default {
     methods: {
         mobile(data) {
             var value = data.value;
+            if (value.init == true) {
+                this.wallCalss = '';
+                this.$refs.conceptVideo.currentTime = 0;
+            }
             if (value.showConcept == true) {
                 this.wallClass = 'slide-right';
             } else if (value.playVideo == true) {
