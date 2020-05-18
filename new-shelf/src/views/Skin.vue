@@ -16,8 +16,8 @@ export default {
     data() {
         return {
             skinList: [
-                {img: require('@/assets/shelf_BG_green_final.png'), bodyClass: 'bg_check'},
-                {video: require('@/assets/video/visualizer_1.mp4'), bodyClass: 'bg_paulsmith'},
+                {img: require('@/assets/Green_A.jpg'), bodyClass: 'bg_check'},
+                {video: require('@/assets/video/shelf_paulsmith.mp4'), bodyClass: 'bg_paulsmith'},
                 {img: require('@/assets/shelf_BG_navy.png'), bodyClass: 'bg_fabric'}
             ],
             skinIdx: -1

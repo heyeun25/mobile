@@ -1,7 +1,7 @@
 <template>
     <div class="concept">
         <video ref="conceptVideo"
-               src='@/assets/video/Shelf_Concept_0514.mp4'></video>
+               src='@/assets/video/Shelf_Concept.mp4'></video>
         <img v-bind:class='wallClass' src='@/assets/shelf_BG_wall.png'/>
     </div>
 </template>
