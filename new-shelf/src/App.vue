@@ -3,8 +3,8 @@
     <transition :name="transitionName" :duration="300">
       <router-view></router-view>
     </transition>
-    <div class="shadow"></div>
-    <div class="bm"></div>
+    <!-- <div class="shadow"></div> -->
+    <!-- <div class="bm"></div> -->
   </div>
 </template>
 <script>
@@ -181,7 +181,7 @@ body.bg_fabric {
   top: 276px;
   width: 3321px;
   height: 1879px;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 @font-face {
