@@ -19,5 +19,5 @@ export default new Router({
     {path: '/equalizer2', name: 'equalizer2', component: Equalizer2},
     {path: '/equalizerWall', name: 'equalizerWall', component: EqualizerWall},
     {path: '/skin', name: 'skin', component: Skin},
-    {path: '/posfinder', name: 'posfinder', component: PositionFinder}
+    {path: '/posfinder', name: 'posfinder', component: PositionFinder},
   ]});
