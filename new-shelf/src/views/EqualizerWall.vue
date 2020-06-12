@@ -21,17 +21,36 @@ var analyser,
     audioCtx,
     rAF;
 const FRAME = 256, WALL_WIDTH = 15;
+var shelfPosition = [
+        [1336, 635, 784], // x0, y0, width
+        [150, 1500, 1500],
+        [1850, 1970, 710],
+        [2746, 1756, 1000]
+    ];
+
+    var trapezoidWidth = [
+        [260, 225, 174, 257],
+        [240, 168, 250, 170, 158, 170, 166, 280, 240],
+        [255, 176, 213, 220],
+        [243, 260, 200, 250, 180]
+    ];
+    
 function linear(x,t,b,c,d) {
     return b+c*x;
-}
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min; //최댓값은 제외, 최솟값은 포함
 }
 
 function map(val, minVal, maxVal, minOut, maxOut) {
   return (val-minVal)/(maxVal-minVal) * (maxOut-minOut) + minOut;
+}
+
+function getRandomArbitrary(min, max) {
+    return (Math.random() * (max - min) + min).toFixed(1);
+}
+
+function getRandomIntInclusive(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min; //최댓값도 포함, 최솟값도 포함
 }
 
 export default {
@@ -58,84 +77,162 @@ export default {
             orderArray = new Array(this.itemCount);
             
             for(var i =0; i<orderArray.length; i++) {
-                orderArray[i] = getRandomInt(0, dataArray.length-1);
+                orderArray[i] = getRandomIntInclusive(0, dataArray.length-1);
             }
-            this.start(this.drawTrapezoid);
+            this.start(this.equalizer);
         },
         start: function(equalizer) {
-                var soundItems = this.$refs.wallItem;
-                // const topShadow = '#9d906d',
-                    //   bottomShadow = '#71694f';
-                
-                function animation() {
-                    if (analyser) {
-                        analyser.getByteFrequencyData(dataArray);
-                    }
-
-
-                    equalizer(dataArray[20]);
-
-                    // for(var i =0; i<orderArray.length; i++) {
-                    //     var c = dataArray[orderArray[i]];
-                    //     var shadowVal = Math.round(linear(c/FRAME, c, -8, 28, FRAME));
-                    //     if (shadowVal > 0) {
-                    //         soundItems[i].style.boxShadow = `${shadowVal}px ${shadowVal}px ${shadowVal+5}px ${topShadow},
-                    //                 -${shadowVal}px -${shadowVal}px ${shadowVal+5}px ${bottomShadow}`;
-                    //     } else {
-                    //         shadowVal = Math.abs(shadowVal);
-                    //         soundItems[i].style.boxShadow = `inset ${shadowVal}px ${shadowVal}px ${shadowVal}px ${topShadow},
-                    //                 inset -${shadowVal}px -${shadowVal}px ${shadowVal}px ${bottomShadow}`
-                    //     }
-                    // }
-
-                    rAF = requestAnimationFrame(animation);
+            var soundItems = this.$refs.wallItem;
+            // const topShadow = '#9d906d',
+                //   bottomShadow = '#71694f';
+            
+            function animation() {
+                if (analyser) {
+                    analyser.getByteFrequencyData(dataArray);
                 }
-                animation();
-            },
-            ready() {
 
-            },
-            drawTrapezoid(data) {
-                var d = map(data, 0, 256, 0, 300);
-                console.log(data, parseInt(d));
-                var canvas = this.$refs.shelfView;
-                var ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.beginPath();
 
-                var st = [200, 300]; // static
-                var sideGap = 30; // static
-                var center = 150; // static
+                equalizer(dataArray);
 
-                var topGap = 20; // ramdom
-                var height = d; // ramdom
+                // for(var i =0; i<orderArray.length; i++) {
+                //     var c = dataArray[orderArray[i]];
+                //     var shadowVal = Math.round(linear(c/FRAME, c, -8, 28, FRAME));
+                //     if (shadowVal > 0) {
+                //         soundItems[i].style.boxShadow = `${shadowVal}px ${shadowVal}px ${shadowVal+5}px ${topShadow},
+                //                 -${shadowVal}px -${shadowVal}px ${shadowVal+5}px ${bottomShadow}`;
+                //     } else {
+                //         shadowVal = Math.abs(shadowVal);
+                //         soundItems[i].style.boxShadow = `inset ${shadowVal}px ${shadowVal}px ${shadowVal}px ${topShadow},
+                //                 inset -${shadowVal}px -${shadowVal}px ${shadowVal}px ${bottomShadow}`
+                //     }
+                // }
 
-                ctx.moveTo(st[0], st[1]);
-                ctx.lineTo(st[0] + sideGap, st[1] - height);
-                ctx.lineTo(st[0] + sideGap + center, st[1] - height + topGap);
-                ctx.lineTo(st[0] + sideGap*2 + center, st[1]);
-                ctx.fillStyle = "white";
-                // ctx.stroke();
-                ctx.globalAlpha = 0.3;
-                ctx.fill();
-            },
-            drawShelf(data, resize) {
-                console.log('drawShelf');
-                var shelfs = resize(data);
-                var canvas = this.$refs.shelfViewBg;
-                var ctx = canvas.getContext('2d');
+                rAF = requestAnimationFrame(animation);
+            }
+            animation();
+        },
+        ready() {
 
-                ctx.beginPath();
-                shelfs.map((shelf) => {
-                    ctx.moveTo(shelf[0], shelf[1]);
-                    ctx.lineTo(shelf[0] + shelf[2], shelf[1]);
-                    ctx.strokeStyle = 'white';
-                    ctx.lineWidth = 8;
-                    ctx.stroke();
+        },
+        equalizer(audioData) {
+            var tzCnt = 0;
+            var count = trapezoidWidth.map((tz) => {
+                tzCnt += tz.length;
+            });
+
+            var index = [];
+            for(var i =0; i<tzCnt; i++) {
+                index.push(getRandomIntInclusive(0, audioData.length));
+            };
+
+            var dataTzs = this.mapAudioToTrapezoid(this.allTzs, audioData, index);
+            console.log(dataTzs[0]);
+            this.drawTrapezoid(dataTzs, 0.86, 0.87);
+        },
+        drawTrapezoid(shelfs, x, y) {
+            console.log('dt');
+            const mx = x || 1;
+            const my = y || 1;
+            // console.log(mx, my);
+
+            var canvas = this.$refs.shelfView;
+            var ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            shelfs.map((trapezoids) => {
+                trapezoids.map((t) => {
+                    ctx.beginPath();
+                    ctx.moveTo(t[0].x * mx, t[0].y * my);
+                    ctx.lineTo(t[1].x * mx, t[1].y * my);
+                    ctx.lineTo(t[2].x * mx, t[2].y * my);
+                    ctx.lineTo(t[3].x * mx, t[3].y * my);
+                    ctx.fillStyle = "white";
+                    ctx.globalAlpha = 0.3;
+                    ctx.fill();
                 });
-                
-            },
+            })
+        },
+        drawShelf(data, resize) {
+            console.log('drawShelf');
+            var shelfs = resize(data);
+            var canvas = this.$refs.shelfViewBg;
+            var ctx = canvas.getContext('2d');
 
+            ctx.beginPath();
+            shelfs.map((shelf) => {
+                ctx.moveTo(shelf[0], shelf[1]);
+                ctx.lineTo(shelf[0] + shelf[2], shelf[1]);
+                ctx.strokeStyle = 'white';
+                ctx.lineWidth = 8;
+                ctx.stroke();
+            });
+        },
+        createTrapezoid(shelf, items) { //shelf :[x0, y0, width], items :trapezoidWidth[n], data: sound
+            let totalWidth = 0;
+            const shelfX0 = shelf[0],
+                shelfY0 = shelf[1],
+                shelfWidth = shelf[2],
+                shelfSideGap = 60;
+            items.map((item) => {
+                totalWidth += item;
+            });
+            totalWidth += shelfSideGap;
+
+            let totalOverlap = (shelfWidth < totalWidth ? totalWidth-shelfWidth : 0);
+            var overlap = (totalOverlap / (items.length-1));
+            console.log(parseInt(overlap), totalOverlap);
+
+            var p = 0 + shelfSideGap / 2;
+            var xyPositions = items.map((item, index) => {
+                let x1Gap = getRandomArbitrary(0.1, 0.4),
+                    x2Gap = getRandomArbitrary(0.7, 0.9),
+                    y1Gap = getRandomIntInclusive(30, 400),
+                    y2Gap = getRandomIntInclusive(y1Gap - 10, 300);
+                let ret = [
+                    {x: p + shelfX0, y: shelfY0},
+                    {x: p + shelfX0 + item * x1Gap, y: shelfY0 - y1Gap},
+                    {x: p + shelfX0 + item * x2Gap, y: shelfY0 - y2Gap},
+                    {x: p + shelfX0 + item, y: shelfY0}
+                ];
+                p = p + item - overlap;
+                // console.log('p', p);
+                return ret;
+            });
+            console.log('xyPositions', xyPositions);
+            return xyPositions;
+        },
+        applyData(trapezoid, val) { // trapezoid: 4 arr [x, y];
+            var newTz = JSON.parse(JSON.stringify(trapezoid)); // clone
+            var shelfY = trapezoid[0].y;
+            var y1 = newTz[1].y,
+                y2 = newTz[2].y;
+            var absY1 = Math.abs(shelfY - y1), 
+                absY2 = Math.abs(shelfY - y2);
+            var minIndex = absY1 < absY2 ? 1 : 2,
+                maxIndex = absY1 < absY2 ? 2 : 1;
+
+            var newY = map(val, 0, 256, 0, Math.abs(trapezoid[minIndex].y - shelfY));
+            // console.log('newY', newY);
+
+            newTz[minIndex].y = shelfY - newY;
+            newTz[maxIndex].y = shelfY - newY;
+            // console.log('newTz', newTz);
+            return newTz;
+        },
+        mapAudioToTrapezoid(shelfs, audioData, index) {
+            var i =0;
+            var dataTrapezoids;
+
+            return shelfs.map((trapezoids) => {
+                return trapezoids.map((tz) => {
+                    var d = audioData[index[i]];
+                    var newTz = this.applyData(tz, d);
+                    i++;
+                    return newTz;
+                })
+            });
+
+        }
     },
     destroyed() {
         if (rAF) {
@@ -150,21 +247,7 @@ export default {
         shelfViewBg.width = shelfView.width = shelfViewBg.clientWidth;
         shelfViewBg.height = shelfView.height = shelfViewBg.clientHeight;
 
-        var shelfs = [
-            [1336, 635, 784], // x0, y0, width
-            [150, 1500, 1500],
-            [1850, 1970, 710],
-            [2746, 1756, 1000]
-        ];
-
-        var trapezoidWidth = [
-            [260, 225, 174, 257],
-            [240, 168, 250, 170, 158, 170, 166, 280, 240],
-            [255, 176, 213, 220],
-            [243, 260, 200, 250, 180]
-        ]
-
-        function resize(arr) {
+        function shelfResize(arr) {
             var ret = arr.map((val) => {
                 return [
                     val[0] * 0.86, // x0,  
@@ -175,31 +258,13 @@ export default {
             console.log(ret);
             return ret;
         }
-
-        function createTrapezoid(shelf, items) {
-            let totalWidth = 0;
-            items.map((item) => {
-                // console.log(item);
-                totalWidth += item;
-            });
-            let totalOverlap = (shelf[2] < totalWidth ? totalWidth-shelf[2] : 0);
-            var overlap = (totalOverlap / (items.length-1));
-            console.log(parseInt(overlap), totalOverlap);
-            // console.log('overlap', totalWidth, overlap);
-
-            var p = 0;
-            var xyPositions = items.map((item, index) => {
-                return {
-
-                }
-            });
-
-        }
-        this.drawShelf(shelfs, resize);
-        shelfs.map((shelf, index) => {
-            createTrapezoid(shelf, trapezoidWidth[index]);
+        this.drawShelf(shelfPosition, shelfResize);
+        var allTzs = [];
+        shelfPosition.map((shelf, index) => {
+            allTzs.push(this.createTrapezoid(shelf, trapezoidWidth[index]));
         });
-        this.drawTrapezoid();
+        this.drawTrapezoid(allTzs, 0.86, 0.87);
+        this.allTzs = allTzs;
     }
 }
 </script>

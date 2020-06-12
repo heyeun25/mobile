@@ -1,6 +1,5 @@
 <template>
     <div class="equalizer2-container">
-        <!-- <button class="st" v-on:click="start">{{"start"}}</button> -->
         <canvas id="equalizer2" ref="equalizer2"></canvas>
         <audio ref="music" src="@/assets/audio/needed.mp3" controls></audio>
     </div>
@@ -89,6 +88,7 @@ export default {
                 // cols = 80 / rows = 22
                 for(let i=0; i<max; i++) {
                     const amountByPoint = max / COLS;
+
                     this.random.push({
                         x: Math.floor(i / amountByPoint),
                         y: -1
@@ -96,11 +96,12 @@ export default {
                     this.shuffle(this.random);
                 }
             }
+            console.log(amountByPoint, this.random[x]);
             return this.random[x];
         },
         start() {
             console.log('start');
-            this.initBoids(600, {x: COLS/2, y: ROWS/2}, 8);
+            this.initBoids(100, {x: COLS/2, y: ROWS/2}, 8);
         }
     },
     mounted() {
@@ -111,7 +112,8 @@ export default {
         this.canvas.style.height = this.h = window.innerHeight;
         this.ctx = this.canvas.getContext('2d');
         this.setup();
-        this.start();
+        // this.start();
+        document.addEventListener('keydown', this.start);
     },
 }
 </script>
