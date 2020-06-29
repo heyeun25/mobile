@@ -14,6 +14,7 @@
     </div>
 </template>
 <script>
+import Vector from '../utils/Vector.js';
 var analyser,
     dataArray,
     orderArray,
@@ -53,6 +54,11 @@ function getRandomIntInclusive(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min; //최댓값도 포함, 최솟값도 포함
 }
 
+function getHeight(xPoint, itemWidth) {
+    var maxHeight = 400;
+    return Math.sin(Math.PI / itemWidth * xPoint) * maxHeight;
+}
+
 export default {
     data() {
         return {
@@ -83,30 +89,11 @@ export default {
         },
         start: function(equalizer) {
             var soundItems = this.$refs.wallItem;
-            // const topShadow = '#9d906d',
-                //   bottomShadow = '#71694f';
-            
             function animation() {
                 if (analyser) {
                     analyser.getByteFrequencyData(dataArray);
                 }
-
-
                 equalizer(dataArray);
-
-                // for(var i =0; i<orderArray.length; i++) {
-                //     var c = dataArray[orderArray[i]];
-                //     var shadowVal = Math.round(linear(c/FRAME, c, -8, 28, FRAME));
-                //     if (shadowVal > 0) {
-                //         soundItems[i].style.boxShadow = `${shadowVal}px ${shadowVal}px ${shadowVal+5}px ${topShadow},
-                //                 -${shadowVal}px -${shadowVal}px ${shadowVal+5}px ${bottomShadow}`;
-                //     } else {
-                //         shadowVal = Math.abs(shadowVal);
-                //         soundItems[i].style.boxShadow = `inset ${shadowVal}px ${shadowVal}px ${shadowVal}px ${topShadow},
-                //                 inset -${shadowVal}px -${shadowVal}px ${shadowVal}px ${bottomShadow}`
-                //     }
-                // }
-
                 rAF = requestAnimationFrame(animation);
             }
             animation();
@@ -119,13 +106,14 @@ export default {
             var count = trapezoidWidth.map((tz) => {
                 tzCnt += tz.length;
             });
-
-            var index = [];
-            for(var i =0; i<tzCnt; i++) {
-                index.push(getRandomIntInclusive(0, audioData.length));
-            };
-
-            var dataTzs = this.mapAudioToTrapezoid(this.allTzs, audioData, index);
+            if (!this.index) {
+                this.index = [];
+                for(var i =0; i<tzCnt; i++) {
+                    // this.index.push(getRandomIntInclusive(0, audioData.length));
+                    this.index.push(i);
+                };
+            }
+            var dataTzs = this.mapAudioToTrapezoid(this.allTzs, audioData, this.index);
             console.log(dataTzs[0]);
             this.drawTrapezoid(dataTzs, 0.86, 0.87);
         },
@@ -211,7 +199,7 @@ export default {
             var minIndex = absY1 < absY2 ? 1 : 2,
                 maxIndex = absY1 < absY2 ? 2 : 1;
 
-            var newY = map(val, 0, 256, 0, Math.abs(trapezoid[minIndex].y - shelfY));
+            var newY = map(val, 0, 256, 0, Math.abs(trapezoid[minIndex].y - shelfY) * 0.3);
             // console.log('newY', newY);
 
             newTz[minIndex].y = shelfY - newY;
@@ -229,7 +217,7 @@ export default {
                     var newTz = this.applyData(tz, d);
                     i++;
                     return newTz;
-                })
+                });
             });
 
         }

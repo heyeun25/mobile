@@ -86,17 +86,19 @@ export default {
             if (!this.random) {
                 this.random = [];
                 // cols = 80 / rows = 22
+                console.log(max/COLS);
                 for(let i=0; i<max; i++) {
-                    const amountByPoint = max / COLS;
-
+                    var amountByPoint = max / COLS;
+                    console.log(amountByPoint);
                     this.random.push({
                         x: Math.floor(i / amountByPoint),
                         y: -1
                     });
-                    this.shuffle(this.random);
+                    // this.shuffle(this.random);
+
                 }
+                console.log(this.random);
             }
-            console.log(amountByPoint, this.random[x]);
             return this.random[x];
         },
         start() {

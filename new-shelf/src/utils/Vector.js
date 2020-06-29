@@ -105,6 +105,7 @@ export default class Vector {
 
 	heading() {
 		const h = Math.atan2(this.y, this.x);
+		// console.log(h);
 		return h;
 	}
 

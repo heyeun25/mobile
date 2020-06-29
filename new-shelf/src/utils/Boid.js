@@ -15,7 +15,10 @@ export default class Boid {
             // console.log('r');
 			const range = Math.floor(this.scope.tool.data.length / this.max);
 			const py = this.scope.tool.data[this.id * range] * 8;
-			this.position.y = py;
+            this.position.y = py;
+            // if (this.id==0) {
+            //     console.log('run', py);
+            // }
 		}
 	}
 }

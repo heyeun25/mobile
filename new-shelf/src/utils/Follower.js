@@ -24,42 +24,36 @@ export default class Follower {
 		// check grid Origin
 		// this.outside();
 		let position = Vector.vector_sub(this.master.position, this.gridOrigin);
-		const motion = this.orientation
-			? Math.sin(position.heading()) * position.mag()
-			: Math.cos(position.heading()) * position.mag();
-		this.gridMotion.set(
-			this.orientation ? this.gridOrigin.x : this.gridOrigin.x + motion,
-			this.orientation ? this.gridOrigin.y + motion : this.gridOrigin.y
-		);
-		if ((this.orientation && Math.abs(motion) >= GRID.y) || (!this.orientation && Math.abs(motion) >= GRID.x)) {
-			let diffx = 0;
-			let diffy = 0;
-			if (this.master.velocity.x >= 0) {
-				diffx = GRID.x;
-			} else {
-				diffx = -GRID.x;
-			}
-			if (this.master.velocity.y >= 0) {
-				diffy = GRID.y;
-			} else {
-				diffy = -GRID.y;
-			}
-			this.gridOrigin.add(this.orientation ? 0 : diffx, this.orientation ? diffy : 0);
+		const motion = Math.sin(position.heading()) * position.mag();
+		if (this.master.id == 0) {
+			console.log('motion', position.y, position.mag());
+		}
+		this.gridMotion.set(this.gridOrigin.x , this.gridOrigin.y + DeviceMotionEvent);
+		if (Math.abs(motion)) {
+			// let diffx = 0;
+			// let diffy = 0;
+			// if (this.master.velocity.x >= 0) {
+			// 	diffx = GRID.x;
+			// } else {
+			// 	diffx = GRID.x;
+			// }
+			// if (this.master.velocity.y >= 0) {
+			// 	diffy = 98
+			// } else {
+			// 	diffy = 98
+			// }
+			
+			// this.gridOrigin.add(0, diffy);
 
 			// this.outside();
 			position = Vector.vector_sub(this.master.position, this.gridOrigin);
-			if (
-				Math.abs(Math.cos(position.heading()) * position.mag()) >
-				Math.abs(Math.sin(position.heading()) * position.mag())
-			) {
-				this.orientation = false;
-			} else {
-				this.orientation = true;
-			}
+			
 			this.gridMotion.set(
-				this.orientation ? this.gridOrigin.x : this.gridOrigin.x + motion,
-				this.orientation ? this.gridOrigin.y + motion : this.gridOrigin.y
+				this.gridOrigin.x,
+				this.gridOrigin.y + motion
 			);
+
+			
 		}
 	}
 
@@ -72,7 +66,9 @@ export default class Follower {
         this.ctx.globalAlpha = this.equalizer ? 0.75 : 1;
         this.ctx.translate(
             this.position.lerp(this.gridMotion.x, this.gridMotion.y, 0.1).x,
-            this.position.lerp(this.gridMotion.x, this.gridMotion.y, 0.1).y
+			this.position.lerp(this.gridMotion.x, this.gridMotion.y, 0.1).y
+			// this.gridMotion.x,
+			// this.gridMotion.y
         );
 		
         this.ctx.beginPath();
