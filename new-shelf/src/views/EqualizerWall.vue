@@ -63,6 +63,8 @@ export default {
     data() {
         return {
             itemCount: parseInt(innerWidth / WALL_WIDTH)-20,
+            proceedData: [],
+            upDown: [],
         }
     },
     methods: {
@@ -89,6 +91,7 @@ export default {
         },
         start: function(equalizer) {
             var soundItems = this.$refs.wallItem;
+            this.updateWay(dataArray.length);
             function animation() {
                 if (analyser) {
                     analyser.getByteFrequencyData(dataArray);
@@ -101,6 +104,19 @@ export default {
         ready() {
 
         },
+        updateWay(length, index) {
+            // console.log('updateWay', index);
+            if (!this.way) {
+                this.way = [];
+                for(var i=0; i<length; i++) {
+                    this.way[i] = 1;
+                }
+            }
+
+            if (index) {
+                this.way[index] *= -1;
+            }
+        },
         equalizer(audioData) {
             var tzCnt = 0;
             var count = trapezoidWidth.map((tz) => {
@@ -112,9 +128,33 @@ export default {
                     // this.index.push(getRandomIntInclusive(0, audioData.length));
                     this.index.push(i);
                 };
-            }
-            var dataTzs = this.mapAudioToTrapezoid(this.allTzs, audioData, this.index);
-            // console.log(dataTzs[0]);
+            }   
+            
+            this.proceedData = audioData.map((d, index) => {
+                if (this.proceedData.length <= 0) {
+                    return getRandomIntInclusive(0, 256);
+                }
+                
+                // if (index == 0) {
+                //     console.log(this.proceedData[index]);
+                // }
+
+                var result = 0;
+                if (this.way[index]>0) {
+                    result = this.proceedData[index] += 1;
+                } else {
+                    result = this.proceedData[index] -= 1;
+                }
+
+                if (this.proceedData[index] > 250 ||
+                    this.proceedData[index] <= 0) {
+                    this.updateWay(audioData.length, index);
+                    // console.log('@@@this.way[index', this.way[index]);
+                }
+                return result;
+            });
+            // console.log(this.proceedData);
+            var dataTzs = this.mapAudioToTrapezoid(this.allTzs, this.proceedData, this.index);
             this.drawTrapezoid(dataTzs, 0.86, 0.87);
         },
         drawTrapezoid(shelfs, x, y) {
@@ -197,25 +237,17 @@ export default {
         applyData(trapezoid, val) { // trapezoid: 4 arr [x, y];
             var newTz = JSON.parse(JSON.stringify(trapezoid)); // clone
             var shelfY = trapezoid[0].y;
-            var y1 = newTz[1].y,
-                y2 = newTz[2].y;
-            var absY1 = Math.abs(shelfY - y1), 
-                absY2 = Math.abs(shelfY - y2);
-            var minIndex = absY1 < absY2 ? 1 : 2,
-                maxIndex = absY1 < absY2 ? 2 : 1;
-
-            var newY = map(val, 0, 256, Math.abs(trapezoid[minIndex].y - shelfY) * 0.3, Math.abs(trapezoid[minIndex].y - shelfY) * 1);
-            // console.log('newY', newY);
-
-            newTz[minIndex].y = shelfY - newY;
-            newTz[maxIndex].y = shelfY - newY;
-            // console.log('newTz', newTz);
+            newTz[1].y = shelfY - map(val, 0, 256,
+                parseInt(Math.abs(trapezoid[1].y - shelfY) * 0),
+                parseInt(Math.abs(trapezoid[1].y - shelfY) * 1));
+            newTz[2].y = shelfY - map(val, 0, 256,
+                parseInt(Math.abs(trapezoid[2].y - shelfY) * 0),
+                parseInt(Math.abs(trapezoid[2].y - shelfY) * 1));
             return newTz;
         },
         mapAudioToTrapezoid(shelfs, audioData, index) {
             var i =0;
             var dataTrapezoids;
-
             return shelfs.map((trapezoids) => {
                 return trapezoids.map((tz) => {
                     var d = audioData[index[i]];
@@ -314,6 +346,7 @@ export default {
             return ret;
         }
         this.drawShelf(shelfPosition, shelfResize);
+
         var allTzs = [];
         shelfPosition.map((shelf, index) => {
             allTzs.push(this.createTrapezoid(shelf, trapezoidWidth[index]));
