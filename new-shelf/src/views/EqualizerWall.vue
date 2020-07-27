@@ -92,20 +92,33 @@ export default {
         start: function(equalizer) {
             var soundItems = this.$refs.wallItem;
             this.updateWay(dataArray.length);
+            this.randomNormal = this.createRandomArray(dataArray.length);
+
+            var that = this;
+            var changeConditions = 0;
             function animation() {
                 if (analyser) {
                     analyser.getByteFrequencyData(dataArray);
                 }
                 equalizer(dataArray);
+                changeConditions++;
+                if (changeConditions > 1000) {
+                    changeConditions = 0;
+                    that.randomNormal = that.createRandomArray(dataArray.length);
+                }
                 rAF = requestAnimationFrame(animation);
             }
             animation();
         },
-        ready() {
-
+        createRandomArray(length) {
+            var arr = [];
+            for(var i=0; i<length; i++) {
+                arr[i] = (Math.random() > 0.5) ? 1 : 0
+            }
+            return arr;
         },
         updateWay(length, index) {
-            // console.log('updateWay', index);
+            if (index == 0) console.log('ch');
             if (!this.way) {
                 this.way = [];
                 for(var i=0; i<length; i++) {
@@ -113,52 +126,52 @@ export default {
                 }
             }
 
-            if (index) {
+            if (typeof index !== undefined) {
                 this.way[index] *= -1;
             }
         },
+        normalAnimation(index, length) {
+            var result = 0;
+            if (this.way[index] > 0) {
+                result = this.proceedData[index] += 1;
+            } else {
+                result = this.proceedData[index] -= 1;
+            }
+            if (result > 250 || result <= 0) {
+                this.updateWay(length, index);
+            }
+            return result;
+        },
+        
         equalizer(audioData) {
             var tzCnt = 0;
             var count = trapezoidWidth.map((tz) => {
                 tzCnt += tz.length;
             });
+
             if (!this.index) {
                 this.index = [];
                 for(var i =0; i<tzCnt; i++) {
-                    // this.index.push(getRandomIntInclusive(0, audioData.length));
                     this.index.push(i);
                 };
-            }   
-            
+            }
+
             this.proceedData = audioData.map((d, index) => {
                 if (this.proceedData.length <= 0) {
                     return getRandomIntInclusive(0, 256);
                 }
                 
-                // if (index == 0) {
-                //     console.log(this.proceedData[index]);
-                // }
-
-                var result = 0;
-                if (this.way[index]>0) {
-                    result = this.proceedData[index] += 1;
+                if (this.randomNormal[index]) {
+                    return this.normalAnimation(index, audioData.length);
                 } else {
-                    result = this.proceedData[index] -= 1;
+                    return audioData[index];
                 }
-
-                if (this.proceedData[index] > 250 ||
-                    this.proceedData[index] <= 0) {
-                    this.updateWay(audioData.length, index);
-                    // console.log('@@@this.way[index', this.way[index]);
-                }
-                return result;
+                
             });
-            // console.log(this.proceedData);
             var dataTzs = this.mapAudioToTrapezoid(this.allTzs, this.proceedData, this.index);
             this.drawTrapezoid(dataTzs, 0.86, 0.87);
         },
         drawTrapezoid(shelfs, x, y) {
-            // console.log('dt');
             const mx = x || 1;
             const my = y || 1;
 
