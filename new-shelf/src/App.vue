@@ -3,8 +3,6 @@
     <transition :name="transitionName" :duration="300">
       <router-view></router-view>
     </transition>
-    <!-- <div class="shadow"></div> -->
-    <!-- <div class="bm"></div> -->
   </div>
 </template>
 <script>
@@ -17,12 +15,10 @@ var demoList = [
   {name: "scene1", data: {func: 'displayShelf', value: {start: 5, end: 12}}}, // shelf
   {name: "scene2", data: {func: 'displayShelf', value: {start: 13, end: 18.8}}}, // photo, memo
   {name: "scene4", data: {func: 'displayShelf', value: {start: 24, end: 78}}}, // info
-    // {name: "pause", data: {func: 'displayShelf', value: {pause: 20}}},
   {name: "mirroring", data: {func: 'mobile', value: {video: 'vertical'}}},
   {name: "mirroring2", data: {func: 'mobile', value: {video: 'second'}}},
   {name: "mirroring-full", data: {func: 'mobile', value: {video: 'horizontal'}}},
   {name: "videoStop", data: {func: 'mobile', value: {video: 'stop'}}},
-  //{name: "scene1", data: {func: 'equalizer0', value: 0}},
   {name: "skin", data: {func: 'skin', value: {index: -1}}},
   {name: "skin", data: {func: 'skin', value: {index: 0}}},
   {name: "skin", data: {func: 'skin', value: {index: 1}}},
@@ -30,8 +26,6 @@ var demoList = [
   {name: "scene1", data: {func: 'equalizer0', value: {shown: false}}},
   {name: "scene1", data: {func: 'equalizer0', value: {shown: true}}},
   {name: "scene1", data: {func: 'equalizer0', value: {shown: false}}},
-  //{name: "scene3", data: {func: 'equalizer2', value: 2}},
-  //{name: "scene1", data: {func: 'tapestry', value: ''}}
 ];
 var demoIdx = 0;
 

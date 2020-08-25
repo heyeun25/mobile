@@ -1,9 +1,10 @@
 <template>
     <div class="displayShelf">
-        <Video
+        <!--<Video
             ref="shelfUI"
             v-bind:source="require('@/assets/video/Shelf_UI_2-0_final.mp4')">
-        </Video>
+        </Video>-->
+        <ShelfPlate></ShelfPlate>
         <video ref="horizontalVideo"
             v-bind:class="horizontalVideoClass"
             loop mute
@@ -21,7 +22,9 @@
     </div>
 </template>
 <script>
-import Video from '@/components/Video.vue'
+// import Video from '@/components/Video.vue'
+import ShelfPlate from '@/components/ShelfPlate.vue'
+
 var getMobile;
 const VIDEO_STATUS = {
     NONE : 0,
@@ -33,7 +36,8 @@ const VIDEO_STATUS = {
 export default {
     name: 'displayShelf',
     components: {
-        Video,
+        // Video,
+        ShelfPlate,
     },
     data() {
         return {
