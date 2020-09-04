@@ -169,18 +169,57 @@ body.bg_fabric {
 }
 
 #app {
-  /*transform: scale(0.9) translateY(120px);*/
+  transform: scale(0.86, 0.869) translate(0, 276px);
   position: fixed;
-  left: 262px;
-  top: 276px;
-  width: 3321px;
-  height: 1879px;
+  /* left: 262px; */
+  /* top: 276px; */
+  width: 100%;
+  height: 100%;
+  /* width: 3321px; */
+  /* height: 1879px; */
   /* overflow: hidden; */
 }
 
 @font-face {
   font-family: 'SamsungSharpSans';
   src: url('./assets/SamsungSans-Light.ttf');
+}
+
+/* @font-face {
+  font-family: "SSS-Bold";
+  src:url('./assets/fonts/SamsungSharpSans-Bold.otf');
+}
+@font-face {
+  font-family: "SSS-Medium";
+  src:url('./assets/fonts/SamsungSharpSans-Medium.otf');
+}
+@font-face {
+  font-family: "SSS-Regular";
+  src:url('./assets/fonts/SamsungSharpSans-Regular.otf');
+} */
+@font-face {
+  font-family: "SOU-200";
+  src:url('./assets/fonts/SamsungOneUI-200 V3.0.ttf');
+}
+@font-face {
+  font-family: "SOU-300";
+  src:url('./assets/fonts/SamsungOneUI-300 V3.0.ttf');
+}
+@font-face {
+  font-family: "SOU-400";
+  src:url('./assets/fonts/SamsungOneUI-400 V3.0.ttf');
+}
+@font-face {
+  font-family: "SOU-500";
+  src:url('./assets/fonts/SamsungOneUI-500 V3.0.ttf');
+}
+@font-face {
+  font-family: "SOU-600";
+  src:url('./assets/fonts/SamsungOneUI-600 V3.0.ttf');
+}
+@font-face {
+  font-family: "SOU-700";
+  src:url('./assets/fonts/SamsungOneUI-700 V3.0.ttf');
 }
 
 .fade-enter-active, .fade-leave-active {
@@ -209,13 +248,12 @@ body.bg_fabric {
     height: 50%;
     font-size: 100px;
 }
-.shadow {
+/* .shadow {
   position: absolute;
   left: 0;
   top: -33px;
   width: 100%;
   height: 30px;
-  /* background-color: black; */
   box-shadow: 0px 0px 5px 60px rgba(0,0,0,0.3);
 
 }
@@ -225,6 +263,6 @@ body.bg_fabric {
   top: 0;
   width: 100%;
   height: 100%;
-  /* box-shadow: 0 0 0 30px rgba(0,0,0,1) inset; */
-}
+  box-shadow: 0 0 0 30px rgba(0,0,0,1) inset;
+} */
 </style>
