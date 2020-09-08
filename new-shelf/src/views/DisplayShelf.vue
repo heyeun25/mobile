@@ -133,10 +133,10 @@ export default {
             console.log('mobile', data);
             var value = data.value;
             if (value.start) {
-                this.$refs.shelfUI.stop();
-                this.$refs.shelfUI.play(value.start, value.end);
+                // this.$refs.shelfUI.stop();
+                // this.$refs.shelfUI.play(value.start, value.end);
             } else if (value.pause) {
-                this.$refs.shelfUI.pause();
+                // this.$refs.shelfUI.pause();
             }
             if (value.video) {
                 var p = value.video;
