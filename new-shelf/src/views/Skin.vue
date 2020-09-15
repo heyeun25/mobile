@@ -13,6 +13,17 @@ var getMobile;
 export default {
     components: {
     },
+    props: {
+        skinIdx: {
+            type: Number,
+            default: -1,
+        }
+    },
+    watch: {
+        index: function () {
+            this.getMobile();
+        }
+    },
     data() {
         return {
             skinList: [
@@ -20,17 +31,15 @@ export default {
                 {video: require('@/assets/video/shelf_paulsmith.mp4'), bodyClass: 'bg_paulsmith'},
                 {img: require('@/assets/shelf_BG_navy.png'), bodyClass: 'bg_fabric'}
             ],
-            skinIdx: -1
+            // skinIdx: -1
         }
     },
     mounted() {
         document.body.className = 'bg_wall';
     },
     methods: {
-        getMobile: function(data) {
-            var value = data.value;
-            if(value.index != undefined) {
-                this.skinIdx = value.index;
+        getMobile: function() {
+            if(this.skinIdx != undefined) {
                 if(this.skinIdx == -1) {
                     document.body.className = 'bg_wall';
                 }
@@ -46,7 +55,7 @@ export default {
         }
     },
     mounted() {
-        this.$socket.on('appMsg', this.getMobile);
+        // this.$socket.on('appMsg', this.getMobile);
     }
 }
 </script>
@@ -56,7 +65,9 @@ export default {
     position: absolute;
     left: 0;
     top: 0;
-    transform: translate(3840px, 0);
+    width: 100%;
+    height: 100%;
+    transform: translate(100%, 0);
     transition: transform 500ms ease-out;
 }
 .skinItem.show {
@@ -64,8 +75,13 @@ export default {
 }
 img {
     position: absolute;
-    left: -269px;
-    top: -270px;
+    /* left: -269px; */
+    /* top: -270px; */
+}
+
+.skinItem:nth-child {
+    width: 3840px;
+    height: 2160px;
 }
 
 </style>

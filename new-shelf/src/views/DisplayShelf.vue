@@ -1,31 +1,32 @@
 <template>
     <div class="displayShelf">
+        <Skin v-bind:skinIdx="skinIndex"></Skin>
         <!--<Video
             ref="shelfUI"
             v-bind:source="require('@/assets/video/Shelf_UI_2-0_final.mp4')">
         </Video>-->
-        <Plate id="plate-01" lineWidth=1320>
+        <Plate id="plate-01" v-bind:lineWidth=1320>
             <Info></Info>
         </Plate>
-        <Plate id="plate-02" lineWidth=916 contentHeight=1376>
+        <Plate id="plate-02" v-bind:lineWidth=916 v-bind:contentHeight=1376>
             <ShelfPhoto
             id="photo1"
             class="shelf-photo"
             v-bind:src="require('@/assets/photo1_01.jpg')"></ShelfPhoto>
         </Plate>
-        <Plate id="plate-03" lineWidth=612 contentHeight=815>
+        <Plate id="plate-03" v-bind:lineWidth=612 v-bind:contentHeight=815>
             <ShelfPhoto
                 id="photo2"
                 class="shelf-photo"
                 v-bind:src="require('@/assets/photo2_01.png')"></ShelfPhoto>
         </Plate>
-        <Plate id="plate-04" lineWidth=689 contentHeight=448>
+        <Plate id="plate-04" v-bind:lineWidth=689 v-bind:contentHeight=448>
             <ShelfPhoto
             id="photo3"
             class="shelf-photo"
             v-bind:src="require('@/assets/photo3_01.gif')"></ShelfPhoto>
         </Plate>
-        <video ref="horizontalVideo"
+        <!-- <video ref="horizontalVideo"
             v-bind:class="horizontalVideoClass"
             loop mute
             src="../assets/video/TV_garo.mp4"></video>
@@ -38,7 +39,7 @@
             v-bind:class="verticalVideoClass"
             loop
             muted
-            src="../assets/video/TV_sero.mp4"></video>
+            src="../assets/video/TV_sero.mp4"></video> -->
     </div>
 </template>
 <script>
@@ -46,6 +47,7 @@
 import Plate from '@/components/Plate.vue'
 import Info from '@/components/Info.vue'
 import ShelfPhoto from '@/components/ShelfPhoto.vue'
+import Skin from '@/views/Skin.vue'
 
 var getMobile;
 const VIDEO_STATUS = {
@@ -59,6 +61,7 @@ export default {
     name: 'displayShelf',
     components: {
         // Video,
+        Skin,
         Plate,
         Info,
         ShelfPhoto
@@ -68,7 +71,8 @@ export default {
             videoStatus : VIDEO_STATUS.NONE,
             horizontalVideoClass: 'hotizontalHide horizontalVideo',
             verticalVideoClass: 'hide verticalVideo',
-            verticalVideo2Class: 'hide verticalVideo2'
+            verticalVideo2Class: 'hide verticalVideo2',
+            skinIndex: -1,
         }
     },
     watch: {
@@ -152,6 +156,9 @@ export default {
             }
             else {
                 this.videoStatus = VIDEO_STATUS.NONE;
+            }
+            if (value.skin) { // change skin
+                this.skinIndex = value.index;
             }
         }
     },

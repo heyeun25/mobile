@@ -15,6 +15,9 @@ export default {
     }, 
     methods: {
         mobile(data) {
+            if (data.func !== "concept") {
+                return;
+            }
             var value = data.value;
             if (value.init == true) {
                 this.wallClass = '';
