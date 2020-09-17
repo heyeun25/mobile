@@ -3,7 +3,8 @@
         v-bind:style="{width: lineWidth+'px', height: contentHeight+'px'}">
             <slot></slot>
             <div class="line"
-                v-bind:style="{ width: parseInt(lineWidth) + 60 + 'px' }"></div>
+                v-bind:style="{width: parseInt(lineWidth) + 60 + 'px',
+                backgroundColor: color}"></div>
             <div class="shadow" v-bind:style="{
                                 transform: 'skew(20deg)',
                                 bottom: -shadowHeight + 'px',
@@ -34,6 +35,10 @@ export default {
         contentHeight: {
             type: Number,
             default: 500
+        },
+        color: {
+            type: String,
+            default: 'white'
         }
     },
     data: () => {
@@ -54,7 +59,6 @@ export default {
 
 .shelf-plate > .line {
     position: absolute;
-    background-color: white;
     left: -30px;
     bottom: 0;
     height: 3px;

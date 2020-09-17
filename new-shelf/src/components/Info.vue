@@ -1,14 +1,21 @@
 <template>
     <div class="info">
-        <div class="clock" >
+        <div class="clock">
+            <img v-bind:src="clockImgs[clockIdx]"/>
             <div class="hour">
-                <div ref="hr" class="hr" id="hr"></div>
+                <div ref="hr" class="hr" id="hr">
+                    <img v-bind:src="hourImgs[clockIdx]" />
+                </div>
             </div>
             <div class="min">
-                <div ref="mn" class="mn" id="mn"></div>
+                <div ref="mn" class="mn" id="mn">
+                    <img v-bind:src="minImgs[clockIdx]" />
+                </div>
             </div>
             <div class="sec">
-                <div ref="sc" class="sc" id="sc"></div>
+                <div ref="sc" class="sc" id="sc">
+                    <img v-bind:src="secImgs[clockIdx]" />
+                </div>
             </div>
             <div class="date">
                 <div class="dt">
@@ -19,6 +26,7 @@
             </div>
         </div>
         <div class="air">
+            <img v-bind:src="tempImgs[clockIdx]"/>
             <div class="particle"></div>
                 <div class="letter">
                     <span id="anum">89</span>
@@ -27,6 +35,7 @@
                 </div>
             </div>
             <div class="weather">
+            <img v-bind:src="weatherImgs[clockIdx]"/>
             <div class="letter">
                 <span id="temp-value">27</span>
                 <span id="c">℃</span>
@@ -42,11 +51,37 @@
 let timer = null;
 export default {
     name: 'Info',
+    props: {
+        clockIdx: {
+            type: Number,
+            default: 0,
+        }
+    },
     data() {
         return {
             day: 'Mon',
             date: '00',
             month: '0',
+            clockImgs: [
+                require('../assets/clock/orange.png'),
+                require('../assets/clock/green.png'),
+            ],
+            hourImgs: [
+                require('../assets/clock/hour.png'),
+                require('../assets/clock/hour_2.png'),
+            ],
+            minImgs: [
+                require('../assets/clock/min.png'),
+                require('../assets/clock/min_2.png'),
+            ],
+            secImgs: [
+                require('../assets/clock/sec.png'),
+                require('../assets/clock/sec_2.png'),
+            ],
+            tempImgs: [
+            ],
+            weatherImgs: [
+            ],
         }
     },
     mounted() {
@@ -71,12 +106,6 @@ export default {
 
         let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Oct", "Nov", "Dec"];
         let week = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-
-        
-        // const dname = document.querySelector("#dname");
-        // const dnum = document.querySelector("#dnum");
-
 
         this.day = week[dayname];
         this.date = daynum;
@@ -104,8 +133,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgb(234,230,215);
-  filter: drop-shadow(0px 8px 8px rgba(0,0,0,.3))
+  /* background: rgb(234,230,215); */
+  filter: drop-shadow(0px 8px 8px rgba(0,0,0,.3));
 }
 .date{
   color: black;
@@ -148,32 +177,29 @@ export default {
   position: absolute;
   border-radius: 50%;
 }
-.hr::before
+.hr > img
 {
   content: '';
   position: absolute;
   width: 8px;
   height: 190px;
-  background: black;
-
+  /* background: black; */
 }
-.mn::before
+.mn > img
 {
   content: '';
   position: absolute;
   width: 3px;
   height: 225px;
-  background: black;
-
+  /* background: black; */
 }
-.sc::before
+.sc > img
 {
   content: '';
   position: absolute;
-  width: 1px;
-  height: 210px;
-  background: red;
-
+  /* width: 1px; */
+  /* height: 210px; */
+  /* background: red; */
 }
 .air
 {

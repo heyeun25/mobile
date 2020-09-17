@@ -1,49 +1,37 @@
 <template>
     <div class="displayShelf">
-        <Skin v-bind:skinIdx="skinIndex"></Skin>
-        <!--<Video
-            ref="shelfUI"
-            v-bind:source="require('@/assets/video/Shelf_UI_2-0_final.mp4')">
-        </Video>-->
-        <Plate id="plate-01" v-bind:lineWidth=1320>
-            <Info></Info>
+        <Skin v-bind:skinIdx="skinIdx"></Skin>
+        <Plate id="plate-01" v-bind:lineWidth=1320
+            v-bind:color="shelfColor">
+            <Info v-bind:clockIdx="clockIdx"></Info>
         </Plate>
-        <Plate id="plate-02" v-bind:lineWidth=916 v-bind:contentHeight=1376>
+        <Plate id="plate-02" v-bind:lineWidth=916
+            v-bind:contentHeight=1376
+            v-bind:color="shelfColor">
             <ShelfPhoto
             id="photo1"
             class="shelf-photo"
             v-bind:src="require('@/assets/photo1_01.jpg')"></ShelfPhoto>
         </Plate>
-        <Plate id="plate-03" v-bind:lineWidth=612 v-bind:contentHeight=815>
+        <Plate id="plate-03" v-bind:lineWidth=612
+            v-bind:contentHeight=815
+            v-bind:color="shelfColor">
             <ShelfPhoto
                 id="photo2"
                 class="shelf-photo"
                 v-bind:src="require('@/assets/photo2_01.png')"></ShelfPhoto>
         </Plate>
-        <Plate id="plate-04" v-bind:lineWidth=689 v-bind:contentHeight=448>
+        <Plate id="plate-04" v-bind:lineWidth=689
+            v-bind:contentHeight=448
+            v-bind:color="shelfColor">
             <ShelfPhoto
             id="photo3"
             class="shelf-photo"
             v-bind:src="require('@/assets/photo3_01.gif')"></ShelfPhoto>
         </Plate>
-        <!-- <video ref="horizontalVideo"
-            v-bind:class="horizontalVideoClass"
-            loop mute
-            src="../assets/video/TV_garo.mp4"></video>
-        <video ref="verticalVideo2"
-            v-bind:class="verticalVideo2Class"
-            loop
-            muted
-            src="../assets/video/TV_sero_02.mp4"></video>
-        <video ref="verticalVideo"
-            v-bind:class="verticalVideoClass"
-            loop
-            muted
-            src="../assets/video/TV_sero.mp4"></video> -->
     </div>
 </template>
 <script>
-// import Video from '@/components/Video.vue'
 import Plate from '@/components/Plate.vue'
 import Info from '@/components/Info.vue'
 import ShelfPhoto from '@/components/ShelfPhoto.vue'
@@ -72,7 +60,9 @@ export default {
             horizontalVideoClass: 'hotizontalHide horizontalVideo',
             verticalVideoClass: 'hide verticalVideo',
             verticalVideo2Class: 'hide verticalVideo2',
-            skinIndex: -1,
+            skinIdx: -1,
+            clockIdx: 0,
+            shelfColor: 'white',
         }
     },
     watch: {
@@ -118,7 +108,6 @@ export default {
                     this.verticalVideoClass = 'hide verticalVideo';
                     this.verticalVideo2Class = 'hide verticalVideo2';
                     this.horizontalVideoClass = "horizontalVideo hotizontalFullScreen";
-
                     this.$refs.verticalVideo.currentTime = 0;
                     this.$refs.verticalVideo.pause();
                     this.$refs.verticalVideo2.currentTime = 0;
@@ -136,29 +125,16 @@ export default {
         mobile: function(data) {
             console.log('mobile', data);
             var value = data.value;
-            if (value.start) {
-                // this.$refs.shelfUI.stop();
-                // this.$refs.shelfUI.play(value.start, value.end);
-            } else if (value.pause) {
-                // this.$refs.shelfUI.pause();
-            }
-            if (value.video) {
-                var p = value.video;
-                if (p == 'vertical') {
-                    this.videoStatus = VIDEO_STATUS.VERTICAL;
-                } else if (p == 'second') {
-                    this.videoStatus = VIDEO_STATUS.VERTICAL2;
-                } else if (p == 'horizontal') {
-                    this.videoStatus = VIDEO_STATUS.HORIZONTAL;
-                } else if (p == 'stop') {
-                    this.videoStatus = VIDEO_STATUS.NONE;
-                }
-            }
-            else {
-                this.videoStatus = VIDEO_STATUS.NONE;
-            }
             if (value.skin) { // change skin
-                this.skinIndex = value.index;
+                this.skinIdx = value.index;
+            }
+
+            if (value.clock) {
+                this.clockIdx = value.clockIdx;
+            }
+
+            if (value.shelfColor) {
+                this.shelfColor = value.shelfColor;
             }
         }
     },
