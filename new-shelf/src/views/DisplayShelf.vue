@@ -11,7 +11,7 @@
             <ShelfPhoto
             id="photo1"
             class="shelf-photo"
-            v-bind:src="photoSet[0][0]"></ShelfPhoto>
+            v-bind:src="photoSet[photoIdx][0]"></ShelfPhoto>
         </Plate>
         <Plate id="plate-03" v-bind:lineWidth=612
             v-bind:contentHeight=815
@@ -19,7 +19,7 @@
             <ShelfPhoto
                 id="photo2"
                 class="shelf-photo"
-                v-bind:src="photoSet[0][1]"></ShelfPhoto>
+                v-bind:src="photoSet[photoIdx][1]"></ShelfPhoto>
         </Plate>
         <Plate id="plate-04" v-bind:lineWidth=689
             v-bind:contentHeight=448
@@ -27,7 +27,7 @@
             <ShelfPhoto
             id="photo3"
             class="shelf-photo"
-            v-bind:src="photoSet[0][2]"></ShelfPhoto>
+            v-bind:src="photoSet[photoIdx][2]"></ShelfPhoto>
         </Plate>
     </div>
 </template>
@@ -44,15 +44,6 @@ const VIDEO_STATUS = {
     VERTICAL2 : 2,
     HORIZONTAL : 3,
 };
-
-const photoSet = [
-    [require('@/assets/photo1_01.jpg'),
-     require('@/assets/photo2_01.png'),
-     require('@/assets/photo3_01.gif')],
-    [require('@/assets/photo1_01.jpg'),
-     require('@/assets/photo2_01.png'),
-     require('@/assets/photo3_01.gif')]
-]
 
 export default {
     name: 'displayShelf',
@@ -73,6 +64,12 @@ export default {
             clockIdx: 0,
             shelfColor: 'white',
             photoIdx: 0,
+            photoSet: [[require('@/assets/photo1_01.jpg'),
+                require('@/assets/photo2_01.png'),
+                require('@/assets/photo3_01.gif')],
+                [require('@/assets/photo1_01.jpg'),
+                require('@/assets/photo2_01.png'),
+                require('@/assets/photo3_01.gif')]]
         }
     },
     watch: {
