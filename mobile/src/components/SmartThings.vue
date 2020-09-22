@@ -6,13 +6,13 @@
             <div class="splide__track" v-bind:style="{height: '500px'}">
                <ul class="splide__list">
                     <li class="splide__slide">
+                        <Theme v-bind:num="0"></Theme>
+                    </li>
+                    <li class="splide__slide">
                         <Theme v-bind:num="1"></Theme>
                     </li>
                     <li class="splide__slide">
                         <Theme v-bind:num="2"></Theme>
-                    </li>
-                    <li class="splide__slide">
-                        <Theme v-bind:num="3"></Theme>
                     </li>
                 </ul>
             </div>
@@ -47,6 +47,11 @@ export default {
     height: 100%;
 }
 .splide__slide {
+}
+
+.header {
+    width: 100%;
+    height: 58px;
 }
 
 .header2 {

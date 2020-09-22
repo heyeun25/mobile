@@ -1,7 +1,7 @@
 <template>
     <div class="theme-container">
         <img v-bind:src="bgImgs" />
-        <div class='shelf-btn' id="ontv"></div>
+        <div class='shelf-btn' id="ontv" v-on:click="viewOnTv"></div>
         <div class='shelf-btn' id="style-setting" v-on:click="goStyleSetting"></div>
         <div class='shelf-btn' id="photo" v-on:click="goSelectPhoto"></div>
         <div id="view-detail"></div>
@@ -30,6 +30,16 @@ export default {
     },
     name: 'Theme',
     methods: {
+        viewOnTv() {
+            this.$socket.emit('appMsg', 
+                {func: 'displayShelf', 
+                     value: 
+                     {skin: true,
+                      index: this.num-1,
+                      clock: true,
+                      clockIdx: this.num}});
+            
+        },
         goStyleSetting() {
             console.log('go style setting');
             this.$router.push({
