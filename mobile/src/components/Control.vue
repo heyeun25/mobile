@@ -40,39 +40,29 @@ export default {
       info : [{
               category: "displayShelf",
               list: [
-                    {name: "init", data: {func: 'displayShelf', value: {start: 0.01, end: 0.3}}},
-                    {name: "scene1", data: {func: 'displayShelf', value: {start: 5, end: 12}}},
-                    {name: "scene2", data: {func: 'displayShelf', value: {start: 13, end: 18.8}}},
-                    {name: "scene3", data: {func: 'displayShelf', value: {start: 19, end: 23}}},
-                    {name: "scene4", data: {func: 'displayShelf', value: {start: 24, end: 90}}},
-                    // {name: "pause", data: {func: 'displayShelf', value: {pause: 20}}},
-                    {name: "mirroring", data: {func: 'mobile', value: {video: 'vertical'}}},
-                    {name: "mirroring2", data: {func: 'mobile', value: {video: 'second'}}},
-                    {name: "mirroring-full", data: {func: 'mobile', value: {video: 'horizontal'}}},
-                    {name: "videoStop", data: {func: 'mobile', value: {video: 'stop'}}}]
+                  {name: "init", data: {func: 'concept', value: {init: true}}},
+                  {name: "concept", data: {func: 'concept', value: {showConcept: true}}},
+                  {name: "concept", data: {func: 'concept', value: {playVideo: true}}},
+                  {name: "concept", data: {func: 'concept', value: {showConcept: false}}},
+                  // {name: "changeAppColor", data: {func: 'appColor', value: 'red'}},
+                  {name: "goDisplayShelf", data: {func: 'displayShelf'}},
+                  {name: "skin", data: {func: 'displayShelf', value: {skin: true, index: -1}}},
+                  {name: "skin", data: {func: 'displayShelf', value: {skin: true, index: 0, clock: true, clockIdx: 0}}},
+                  {name: "skin", data: {func: 'displayShelf', value: {skin: true, index: 1, clock: true, clockIdx: 1}}},
+                  {name: "skin", data: {func: 'displayShelf', value: {skin: true, index: 2, clock: true, clockIdx: 2}}},
+                ]
             }, {
-              category: "equalizer",
-              list: [{name: "scene1", data: {func: 'equalizer0', value: 0}},
-                    {name: "scene2", data: {func: 'equalizer1', value: 1}},
-                    {name: "scene3", data: {func: 'equalizer2', value: 2}}]
-            }, {
-              category: "changeBg",
-              list: [{name: "bg", data: {func: 'displayShelf', value: 'changeBg'}}],
+              category: "picker",
+              list: [{name: "changeAppColor", data: {func: 'appColor', value: 'red'}}],
             }
         ],
       
     }
   },
   methods: {
-    togglePicker: function() {
-      this.colorPicker = (this.colorPicker == 'pleatsBg' ?
-                          'pleatsItem' : 'pleatsBg');
-    },
     colorChange: function(e) {
       console.log(e.target.value);
-      socket.emit('appMsg', {
-                  func: this.colorPicker == 'pleatsBg' ? 'greenery' : 'health',
-                  value: {target: this.colorPicker, color: e.target.value}})
+      socket.emit('appMsg', {func: 'appColor', value: e.target.value})
     },
     send: function(data) {
       console.log(JSON.stringify(data));
@@ -83,9 +73,6 @@ export default {
       socket.emit('appMsg', data);
       
     },
-    hideImage: function() {
-      this.showImage = '';
-    }
   },
   mounted() {
   },

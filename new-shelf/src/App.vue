@@ -1,5 +1,6 @@
 <template>
-  <div id="app">
+  <div id="app" v-bind:style="{backgroundColor: appColor}">
+    <img class="bg-pattern"/>
     <transition :name="transitionName" :duration="300">
       <router-view></router-view>
     </transition>
@@ -11,25 +12,14 @@ var demoList = [
   {name: "concept", data: {func: 'concept', value: {showConcept: true}}},
   {name: "concept", data: {func: 'concept', value: {playVideo: true}}},
   {name: "concept", data: {func: 'concept', value: {showConcept: false}}},
+  // {name: "changeAppColor", data: {func: 'appColor', value: 'red'}},
   {name: "goDisplayShelf", data: {func: 'displayShelf'}},
-  // {name: "init", data: {func: 'displayShelf', value: {start: 0.01, end: 0.1}}},
-  // {name: "scene1", data: {func: 'displayShelf', value: {start: 5, end: 12}}}, // shelf
-  // {name: "scene2", data: {func: 'displayShelf', value: {start: 13, end: 18.8}}}, // photo, memo
-  // {name: "scene4", data: {func: 'displayShelf', value: {start: 24, end: 78}}}, // info
-  // {name: "mirroring", data: {func: 'mobile', value: {video: 'vertical'}}},
-  // {name: "mirroring2", data: {func: 'mobile', value: {video: 'second'}}},
-  // {name: "mirroring-full", data: {func: 'mobile', value: {video: 'horizontal'}}},
-  // {name: "videoStop", data: {func: 'mobile', value: {video: 'stop'}}},
   {name: "skin", data: {func: 'displayShelf', value: {skin: true, index: -1}}},
   {name: "skin", data: {func: 'displayShelf', value: {skin: true, index: 0, clock: true, clockIdx: 0}}},
   {name: "skin", data: {func: 'displayShelf', value: {skin: true, index: 1, clock: true, clockIdx: 1}}},
   {name: "skin", data: {func: 'displayShelf', value: {skin: true, index: 2, clock: true, clockIdx: 2}}},
-  // {name: "scene1", data: {func: 'equalizer0', value: {shown: false}}},
-  // {name: "scene1", data: {func: 'equalizer0', value: {shown: true}}},
-  // {name: "scene1", data: {func: 'equalizer0', value: {shown: false}}},
 ];
 var demoIdx = 0;
-
 export default {
   name: 'app',
   components: {
@@ -43,7 +33,6 @@ export default {
           else
             this.transitionName = 'fade';
           console.log('transition', this.transitionName);
-
       }
   },
   data() {
@@ -52,7 +41,8 @@ export default {
       bgClasses: [
           'bg_check', 'bg_paulsmith', 'bg_fabric', 'bg_wall'
       ],
-      bgIdx: 3
+      bgIdx: 3,
+      appColor: 'white',
     }
   },
   mounted: function() {
@@ -64,7 +54,13 @@ export default {
     const myRouter = this.$router;
     var that = this;
     this.$socket.on('appMsg', function(d) {
-      console.log(myRouter.currentRoute.name, d.func);
+      console.log('appMsg', myRouter.currentRoute.name, d.func);
+      if (d.func == 'appColor') {
+        console.log('change appColor');
+        that.appColor = d.value;
+        return;
+      }
+
       if (myRouter.currentRoute.name !== d.func) {
         console.log('change');
         myRouter.push({name: d.func, params: d.value})
@@ -181,6 +177,14 @@ body.bg_fabric {
   height: 1879px; */
   outline: 5px solid red;
   overflow: hidden;
+}
+
+.bg-pattern {
+  width: 100%;
+  height: 100%;
+  
+  background: url('./assets/Shelf_BG.png');
+  mix-blend-mode: multiply;
 }
 
 @font-face {
