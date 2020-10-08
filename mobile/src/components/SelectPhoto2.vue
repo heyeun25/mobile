@@ -1,8 +1,8 @@
 <template>
     <div class="select-photo2">
         <img v-bind:src="require('../assets/photo/Select Photos 2.png')"/>
-        <div class='view-on-tv' v-on:click="viewOnTv">view</div>
-        <div class='go-back' v-on:click="goBack">goBack</div>
+        <div class='view-on-tv' v-on:click="viewOnTv"></div>
+        <div class='go-back' v-on:click="goBack"></div>
     </div>
 </template>
 <script>
@@ -36,7 +36,7 @@ export default {
     bottom: 0;
     width: 100%;
     height: 50px;
-    outline: 1px solid red;
+    /* outline: 1px solid red; */
 }
 
 .select-photo2 > .go-back {
@@ -44,7 +44,7 @@ export default {
     top: 40px;
     width: 100%;
     height: 40px;
-    outline: 1px solid red;
+    /* outline: 1px solid red; */
 }
 </style>
 

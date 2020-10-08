@@ -186,16 +186,11 @@ body.bg_fabric {
 }
 
 #app {
-  transform: scale(0.86, 0.88) translate(262px, 276px);
+  /* transform: scale(0.86, 0.88) translate(262px, 276px); */
   transform-origin: top left;
   width: 100%;
   height: 100%;
   position: fixed;
-  /* left: 262px;
-  top: 276px;
-  width: 3321px;
-  height: 1879px; */
-  outline: 5px solid red;
   overflow: hidden;
 }
 

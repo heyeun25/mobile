@@ -83,7 +83,7 @@ export default {
 }
 
 #ontv {
-    margin-top: 220px;
+    margin-top: 160px;
     background-image: url('../assets/main/View on TV button.png');
 }
 

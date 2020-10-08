@@ -5,7 +5,7 @@
             v-bind:color="shelfColor">
             <Info v-bind:clockIdx="clockIdx"></Info>
         </Plate>
-        <Plate id="plate-02" v-bind:lineWidth=916
+        <Plate id="plate-04" v-bind:lineWidth=916
             v-bind:contentHeight=1376
             v-bind:color="shelfColor">
             <ShelfPhoto
@@ -21,8 +21,8 @@
                 class="shelf-photo"
                 v-bind:src="photoSet[photoIdx][1]"></ShelfPhoto>
         </Plate>
-        <Plate id="plate-04" v-bind:lineWidth=689
-            v-bind:contentHeight=448
+        <Plate id="plate-02" v-bind:lineWidth=940
+            v-bind:contentHeight=545
             v-bind:color="shelfColor">
             <ShelfPhoto
             id="photo3"
@@ -221,23 +221,23 @@ export default {
 }
 
 #plate-01 {
-    top: 1026px;
-    left: 318px;
-}
-
-#plate-02 {
-    top: 357px;
-    left: 2785px;
-}
-
-#plate-03 {
-  left: 1882px;
-  top: 1178px;
+    top: 1081px;
+    left: 183px;
 }
 
 #plate-04 {
-  left: 1375px;
-  top: 188px;
+    top: 357px;
+    left: 2760px;
+}
+
+#plate-03 {
+  left: 1868px;
+  top: 1057px;
+}
+
+#plate-02 {
+  left: 1228px;
+  top: 283px;
 }
 
 @keyframes toLeft {

@@ -99,8 +99,8 @@ export default {
 }
 
 .color-item {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     margin: 15px 5px;
     background-color: #ffcc00;

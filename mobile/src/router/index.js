@@ -5,6 +5,7 @@ import SmartThings from '../components/SmartThings';
 import Setting from '../components/Setting';
 import SelectPhoto from '../components/SelectPhoto';
 import SelectPhoto2 from '../components/SelectPhoto2';
+import QrScanner from '../components/QrScanner';
 
 Vue.use(Router)
 export default new Router({
@@ -12,5 +13,6 @@ export default new Router({
     {path: '/', name: 'smartthings', component: SmartThings},
     {path: '/setting', name: 'setting', component: Setting},
     {path: '/selectPhoto', name: 'selectPhoto', component: SelectPhoto},
-    {path: '/selectPhoto2', name: 'selectPhoto2', component: SelectPhoto2}
+    {path: '/selectPhoto2', name: 'selectPhoto2', component: SelectPhoto2},
+    {path: '/qrScanner', name: 'qrScanner', component: QrScanner}
 ]});

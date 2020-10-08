@@ -3,7 +3,7 @@
         <img class="header" src="../assets/main/1_Upper Tab.png" />
         <img class="header2" src="../assets/main/2_Lower Tab.png" />
         <div class="splide">
-            <div class="splide__track" v-bind:style="{height: '500px'}">
+            <div class="splide__track" v-bind:style="{height: '480px'}">
                <ul class="splide__list">
                     <li class="splide__slide">
                         <Theme v-bind:num="0"></Theme>

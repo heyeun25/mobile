@@ -63,7 +63,7 @@ export default {
             date: '00',
             month: '0',
             clockImgs: [
-                require('../assets/clock/orange.png'),
+                require('../assets/clock/Clock.png'),
                 require('../assets/clock/green.png'),
             ],
             hourImgs: [
@@ -126,7 +126,6 @@ export default {
 }
 .clock
 {
-  bottom: 0;
   margin: 0 20px 0 0;
   width: 495px;
   height: 475px;
