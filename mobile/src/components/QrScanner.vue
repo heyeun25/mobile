@@ -38,7 +38,6 @@ export default {
         // if (code) {
         //     console.log("Found QR code", code);
         // }
-        alert('hello');
         canvas = this.$refs.canvas;
         ctx = canvas.getContext('2d');
         video = document.createElement('video');
@@ -46,7 +45,6 @@ export default {
         window.navigator.mediaDevices.getUserMedia({
             video: { facingMode: "environment"}
         }).then(function(stream) {
-            alert('hey');
             video.srcObject = stream;
             video.setAttribute("playsinline", true);
             video.play();

@@ -14,6 +14,9 @@
                     <li class="splide__slide">
                         <Theme v-bind:num="2"></Theme>
                     </li>
+                    <li class="splide__slide">
+                        <Theme v-bind:num="3"></Theme>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -23,13 +26,19 @@
 import Theme from './Theme';
 import Splide from '@splidejs/splide';
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
-
+var splide;
 export default {
     components: {
         Theme
     },
+    props: ['query'],
+    watch: {
+        'query' (to, from) {
+            console.log(to, from);
+        }
+    },
     mounted() {
-        new Splide( '.splide', {
+        splide = new Splide( '.splide', {
             // type     : 'loop',
             // autoHeight: true,
             direction: 'ttb',
@@ -37,6 +46,9 @@ export default {
             // height: '489px'
             heightRatio: 1.63,
         }).mount();
+        console.log(this.query);
+
+        splide.go( this.query );
     },
 }
 </script>

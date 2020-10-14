@@ -9,11 +9,10 @@
 </template>
 <script>
 const imgs = [
-    '3_Shelf Theme1_BG.png',
-    '3_Shelf Theme1_BG.png',
-    '3_Shelf Theme1_BG.png',
-    '3_Shelf Theme1_BG.png',
-    '3_Shelf Theme1_BG.png',
+    'Theme 01.png',
+    'Theme 02.png',
+    'Theme 03.png',
+    'Theme 04.png',
 ];
 export default {
     computed: {
